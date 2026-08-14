@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Public Theme Colors - Light Theme Default */
+    --bg-base: #FAFAFA;
+    --bg-surface: #FFFFFF;
+    --text-base: #121212;
+    --text-muted: rgba(18, 18, 18, 0.7);
+    --accent: #fe0000;
+  }
+
+  body {
+    @apply bg-[#FAFAFA] text-rpo-black font-inter antialiased;
+  }
+
+  /* Admin Theme override can be applied via a class if needed, e.g., .admin-theme */
+  .admin-theme input,
+  .admin-theme textarea,
+  .admin-theme select,
+  .admin-theme .ql-editor,
+  .admin-theme [type='text'],
+  .admin-theme [type='number'],
+  .admin-theme [type='date'],
+  .admin-theme [type='time'],
+  [role="dialog"] input,
+  [role="dialog"] textarea,
+  [role="dialog"] select {
+    @apply text-black !important;
+  }
+  
+  .admin-theme {
+    --bg-base: #F8F9FA;
+    --bg-surface: #FFFFFF;
+    --text-base: #1A1A2E;
+    --text-muted: #6B7280;
+    
+    background-color: var(--bg-base);
+    color: var(--text-base);
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but keep scroll functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,298 @@
+// RPO Website — Prisma Schema
+// Sumber kebenaran: docs/Guideline.md §5 (Skema Database / ERD)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum HeroMode {
+  TEMPLATE
+  POSTER
+}
+
+enum TalentRole {
+  GUEST
+  PERFORMER
+}
+
+enum ChannelType {
+  WA
+  EMAIL
+  IG
+  OTHER
+}
+
+// ─────────────────────────────────────────────
+// 5.1 — Entitas Sistem
+// ─────────────────────────────────────────────
+
+/// Single admin account — no multi-role, no public registration.
+model User {
+  id           Int    @id @default(autoincrement())
+  username     String @unique
+  passwordHash String
+}
+
+/// Session store for connect-pg-simple.
+/// tableName di index.ts = "Session" — model name = "Session" → tabel default "Session".
+/// Kolom wajib: sid (PK text), sess (json), expire (timestamptz).
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json
+  expire DateTime @db.Timestamptz(6)
+
+  @@index([expire], name: "IDX_session_expire")
+}
+
+// ─────────────────────────────────────────────
+// 5.2 — Entitas Inti (Core Content)
+// ─────────────────────────────────────────────
+
+model Event {
+  id              Int       @id @default(autoincrement())
+  slug            String    @unique
+  name            String
+  theme           String?
+  startDate       DateTime
+  endDate         DateTime
+  location        String
+  heroMode        HeroMode  @default(TEMPLATE)
+  posterImageUrl  String?
+  heroImageUrl    String?
+  googleDriveUrl  String?
+  isActive        Boolean   @default(false)
+  isForceDraft    Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  eventDays     EventDay[]
+  eventTalents  EventTalent[]
+  eventPrograms EventProgram[]
+  galleryPhotos GalleryPhoto[]
+}
+
+model Talent {
+  id              Int     @id @default(autoincrement())
+  slug            String  @unique
+  stageName       String
+  tag             String?
+  instagramUrl    String?
+  followerCount   Int?
+  postCount       Int?
+  bio             String?
+  profileImageUrl String?
+
+  // Relations
+  eventTalents EventTalent[]
+}
+
+model Community {
+  id              Int     @id @default(autoincrement())
+  slug            String  @unique
+  name            String
+  category        String?
+  establishedYear Int?
+  instagramUrl    String?
+  description     String?
+  logoUrl         String?
+  displayOrder    Int     @default(0)
+
+  // Relations
+  photos CommunityPhoto[]
+}
+
+model Program {
+  id           Int     @id @default(autoincrement())
+  slug         String  @unique
+  name         String
+  description  String?
+  rulesHtml    String? @db.Text
+  coverImageUrl String?
+  displayOrder Int     @default(0)
+
+  // Relations
+  photos        ProgramPhoto[]
+  eventPrograms EventProgram[]
+}
+
+// ─────────────────────────────────────────────
+// 5.3 — Entitas Relasional & Kompleks
+// ─────────────────────────────────────────────
+
+model EventTalent {
+  id           Int        @id @default(autoincrement())
+  eventId      Int
+  talentId     Int
+  role         TalentRole
+  performOrder Int?
+  performTime  String?
+  displayOrder Int        @default(0)
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, talentId])
+}
+
+model EventProgram {
+  id              Int @id @default(autoincrement())
+  eventId         Int
+  programId       Int
+  displayOrder    Int @default(0)
+  registrationUrl String?
+
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, programId])
+}
+
+model EventDay {
+  id               Int      @id @default(autoincrement())
+  eventId          Int
+  dayNumber        Int
+  date             DateTime
+  locationOverride String?
+
+  event        Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rundownItems RundownItem[]
+
+  @@unique([eventId, dayNumber])
+}
+
+model RundownItem {
+  id           Int    @id @default(autoincrement())
+  eventDayId   Int
+  time         String
+  activityName String
+  location     String?
+  displayOrder Int    @default(0)
+
+  eventDay EventDay @relation(fields: [eventDayId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────
+// 5.4 — Entitas Media (Gallery & Strip Foto)
+// Entitas galeri: 2 versi (_full + _thumb) + width/height untuk CLS prevention.
+// ─────────────────────────────────────────────
+
+model GalleryPhoto {
+  id            Int      @id @default(autoincrement())
+  eventId       Int
+  imageUrlFull  String
+  imageUrlThumb String
+  width         Int
+  height        Int
+  caption       String?
+  isCover       Boolean  @default(false)
+  displayOrder  Int      @default(0)
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model CommunityPhoto {
+  id            Int    @id @default(autoincrement())
+  communityId   Int
+  imageUrlFull  String
+  imageUrlThumb String
+  width         Int
+  height        Int
+  caption       String?
+  displayOrder  Int    @default(0)
+
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+}
+
+model ProgramPhoto {
+  id            Int    @id @default(autoincrement())
+  programId     Int
+  imageUrlFull  String
+  imageUrlThumb String
+  width         Int
+  height        Int
+  caption       String?
+  displayOrder  Int    @default(0)
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────
+// 5.5 — Entitas Informasi Statis & Pengaturan
+// ─────────────────────────────────────────────
+
+model FAQItem {
+  id           Int    @id @default(autoincrement())
+  question     String
+  answer       String @db.Text
+  displayOrder Int    @default(0)
+}
+
+model SiteSettings {
+  id                Int     @id @default(1)
+  logoUrl           String?
+  heroImageUrl      String?
+  siteTitle         String?
+  siteDescription   String?
+  footerDescription String?
+  footerCopyright   String?
+}
+
+model PolicyRule {
+  id           Int    @id @default(autoincrement())
+  ruleText     String
+  iconName     String
+  displayOrder Int    @default(0)
+}
+
+model SafetyProcedure {
+  id           Int    @id @default(autoincrement())
+  question     String
+  answer       String @db.Text
+  displayOrder Int    @default(0)
+}
+
+model ContactChannel {
+  id                 Int         @id @default(autoincrement())
+  type               ChannelType
+  label              String
+  value              String
+  url                String?
+  isEmergencyContact Boolean     @default(false)
+  displayOrder       Int         @default(0)
+}
+
+model ContactMessage {
+  id          Int      @id @default(autoincrement())
+  senderName  String
+  senderEmail String
+  senderPhone String?
+  message     String   @db.Text
+  createdAt   DateTime @default(now())
+  isRead      Boolean  @default(false)
+}
+
+model AboutContent {
+  id            Int    @id @default(autoincrement())
+  storyText     String @db.Text
+  storyImageUrl String?
+  visionText    String @db.Text
+  missionList   Json
+}
+
+model TeamMember {
+  id              Int     @id @default(autoincrement())
+  name            String
+  role            String
+  profileImageUrl String?
+  displayOrder    Int     @default(0)
+}
