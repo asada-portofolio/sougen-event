@@ -22,7 +22,7 @@ export default function EventList() {
   if (error) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA] flex items-center justify-center">
-        <p className="text-rpo-red font-inter text-lg">Gagal memuat daftar event. Silakan coba lagi nanti.</p>
+        <p className="text-rpo-negative font-inter text-lg">Gagal memuat daftar event. Silakan coba lagi nanti.</p>
       </div>
     );
   }
@@ -62,29 +62,47 @@ export default function EventList() {
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA]">
       <SEO 
-        title="Jelajahi Event | Reality Project Organizer" 
-        description="Jelajahi riwayat dan daftar event kreatif budaya pop Jepang dari RPO." 
+        title="Jelajahi Event | Sougen Creative Management" 
+        description="Jelajahi riwayat dan agenda daftar event kreatif, festival budaya pop Jepang, anime expo, serta kompetisi cosplay dari Sougen Creative Management." 
         canonicalUrl="/event"
       />
 
-      {/* Banner Khusus Event Aktif */}
+      {/* Banner Khusus Event Aktif ATAU Intro Hero saat Tidak Ada Event Aktif */}
       {loadingActive ? (
         <Skeleton className="w-full h-96 bg-black/5 rounded-none" />
-      ) : (
+      ) : activeEvent?.isActive ? (
         <HighlightBanner event={activeEvent} />
+      ) : (
+        <div className="w-full bg-[#00486E] pt-24 pb-8 md:pt-36 md:pb-20">
+          <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+            <SectionHeader 
+              as="h1"
+              label="OUR JOURNEY"
+              title="EVENT ARCHIVE"
+              description="Jelajahi riwayat dan daftar event kreatif budaya pop Jepang dari Sougen Creative Management."
+              theme="dark"
+              align="full-center"
+            />
+          </div>
+        </div>
       )}
 
       {/* Daftar Event */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <SectionHeader 
-            label="OUR JOURNEY"
-            title="EVENT ARCHIVE"
-            description="Rekam jejak perjalanan komunitas dan acara dari tahun ke tahun"
-            theme="light"
-            align="left"
-            className="mb-0"
-          />
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-6 pb-12 md:py-16">
+        <div className={cn(
+          "flex flex-col md:flex-row md:items-end gap-4 md:gap-6 mb-6 md:mb-10",
+          !activeEvent?.isActive ? "justify-start md:justify-end" : "justify-between"
+        )}>
+          {activeEvent?.isActive && (
+            <SectionHeader 
+              label="OUR JOURNEY"
+              title="EVENT ARCHIVE"
+              description="Rekam jejak perjalanan komunitas dan acara dari tahun ke tahun"
+              theme="light"
+              align="left"
+              className="mb-0"
+            />
+          )}
 
           {/* Pill Filters */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
@@ -93,8 +111,8 @@ export default function EventList() {
               className={cn(
                 "px-5 py-2 rounded-full font-inter text-sm font-bold tracking-wide transition-all duration-300 shrink-0 border-2",
                 filter === 'ALL' 
-                  ? "bg-rpo-red text-white border-rpo-red" 
-                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-rpo-red hover:text-rpo-red"
+                  ? "bg-sougen-blue text-white border-sougen-blue shadow-sm" 
+                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-sougen-blue hover:text-sougen-blue"
               )}
             >
               Semua Event
@@ -104,8 +122,8 @@ export default function EventList() {
               className={cn(
                 "px-5 py-2 rounded-full font-inter text-sm font-bold tracking-wide transition-all duration-300 shrink-0 border-2",
                 filter === 'ACTIVE' 
-                  ? "bg-rpo-red text-white border-rpo-red" 
-                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-rpo-red hover:text-rpo-red"
+                  ? "bg-sougen-blue text-white border-sougen-blue shadow-sm" 
+                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-sougen-blue hover:text-sougen-blue"
               )}
             >
               Aktif
@@ -115,8 +133,8 @@ export default function EventList() {
               className={cn(
                 "px-5 py-2 rounded-full font-inter text-sm font-bold tracking-wide transition-all duration-300 shrink-0 border-2",
                 filter === 'COMPLETED' 
-                  ? "bg-rpo-red text-white border-rpo-red" 
-                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-rpo-red hover:text-rpo-red"
+                  ? "bg-sougen-blue text-white border-sougen-blue shadow-sm" 
+                  : "bg-white text-rpo-black/50 border-rpo-black/10 hover:border-sougen-blue hover:text-sougen-blue"
               )}
             >
               Selesai

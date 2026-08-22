@@ -34,7 +34,7 @@ export function AlbumCard({ album }: AlbumCardProps) {
   return (
     <Link 
       to={`/gallery/${album.slug}`}
-      className="group flex flex-col bg-white border border-rpo-black/5 rounded-xl overflow-hidden hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+      className="group flex flex-col bg-white border border-rpo-black/5 rounded-xl overflow-hidden hover:-translate-y-1 transition-all duration-300 hover:border-sougen-blue/30 hover:shadow-[0_8px_30px_rgba(0,148,222,0.12)]"
     >
       {/* Cover Image */}
       <div className="w-full aspect-[4/3] bg-black/5 relative overflow-hidden">
@@ -51,8 +51,8 @@ export function AlbumCard({ album }: AlbumCardProps) {
         )}
         
         {/* Photo Count Badge */}
-        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md border border-rpo-black/10 px-3 py-1.5 rounded-sm flex items-center gap-2 shadow-sm">
-          <ImageIcon className="w-4 h-4 text-rpo-red" />
+        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md border border-rpo-black/10 px-3 py-1.5 rounded-md flex items-center gap-2 shadow-sm">
+          <ImageIcon className="w-4 h-4 text-sougen-blue" />
           <span className="text-xs font-inter font-bold text-rpo-black">
             {photoCount} Foto
           </span>
@@ -61,12 +61,12 @@ export function AlbumCard({ album }: AlbumCardProps) {
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-poppins text-lg font-bold text-rpo-black mb-2 group-hover:text-rpo-red transition-colors line-clamp-2">
+        <h3 className="font-poppins text-lg font-bold text-rpo-black mb-2 group-hover:text-sougen-blue transition-colors line-clamp-2">
           {album.name}
         </h3>
         
         <div className="flex items-center gap-2 text-sm font-inter text-rpo-black/50 mt-auto">
-          <Calendar className="w-4 h-4 shrink-0 text-rpo-red" />
+          <Calendar className="w-4 h-4 shrink-0 text-sougen-blue" />
           <span className="truncate">
             {formatEventDate(album.startDate, album.endDate)}
           </span>

@@ -103,7 +103,13 @@ export default function TabTalent({ eventData, onUpdate }: TabTalentProps) {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h4 className="font-poppins font-semibold text-admin-dark text-sm truncate">{et.talent.stageName}</h4>
-                    <p className="text-xs text-admin-secondary truncate">{et.role}</p>
+                    <span className={`inline-flex items-center px-2 py-0.5 mt-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
+                      et.role === 'GUEST' 
+                        ? 'bg-sougen-blue/10 text-sougen-blue' 
+                        : 'bg-emerald-50 text-sougen-green-dark'
+                    }`}>
+                      {et.role}
+                    </span>
                   </div>
                 </div>
 
@@ -123,7 +129,7 @@ export default function TabTalent({ eventData, onUpdate }: TabTalentProps) {
                     placeholder="Override Peran (Opsional)" 
                     defaultValue={et.roleOverride || ''}
                     onBlur={(e) => handleUpdateRole(et.id, e.target.value)}
-                    className="w-full sm:w-auto px-3 py-1.5 text-xs border border-admin-border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full sm:w-auto px-3 py-1.5 text-xs border border-admin-border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                   />
                 </div>
               </div>
@@ -149,7 +155,7 @@ export default function TabTalent({ eventData, onUpdate }: TabTalentProps) {
             placeholder="Cari talent..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
           />
         </div>
 
@@ -160,7 +166,7 @@ export default function TabTalent({ eventData, onUpdate }: TabTalentProps) {
             </div>
           ) : filteredAvailable.length > 0 ? (
             filteredAvailable.map(t => (
-              <div key={t.id} className="flex items-center justify-between p-3 border border-admin-border rounded-lg bg-white hover:border-gray-300 transition-colors">
+              <div key={t.id} className="flex items-center justify-between p-3 border border-admin-border rounded-lg bg-white hover:border-sougen-blue/40 transition-colors">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 shrink-0">
                     {t.profileImageUrl ? (
@@ -176,7 +182,7 @@ export default function TabTalent({ eventData, onUpdate }: TabTalentProps) {
                 <button
                   onClick={() => handleAddTalent(t.id)}
                   disabled={addingId === t.id}
-                  className="p-1.5 bg-admin-dark text-white rounded hover:bg-black transition-colors disabled:opacity-50 shrink-0 ml-2"
+                  className="p-1.5 bg-sougen-blue text-white rounded hover:bg-sougen-blue/90 shadow-sm transition-colors disabled:opacity-50 shrink-0 ml-2"
                 >
                   {addingId === t.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
                 </button>

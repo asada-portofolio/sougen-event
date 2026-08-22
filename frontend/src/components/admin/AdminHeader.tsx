@@ -48,7 +48,7 @@ export function AdminHeader() {
               {seg.href && !isLast ? (
                 <Link
                   to={seg.href}
-                  className="text-admin-secondary hover:text-admin-dark transition-colors"
+                  className="text-admin-secondary hover:text-sougen-blue transition-colors"
                 >
                   {seg.label}
                 </Link>
@@ -67,7 +67,7 @@ export function AdminHeader() {
         href="/"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-1.5 text-sm text-admin-secondary hover:text-admin-dark transition-colors"
+        className="flex items-center gap-1.5 text-sm text-admin-secondary hover:text-sougen-blue transition-colors"
       >
         <ExternalLink className="w-3.5 h-3.5" />
         Lihat Website

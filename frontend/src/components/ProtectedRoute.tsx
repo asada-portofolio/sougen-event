@@ -21,7 +21,7 @@ export default function ProtectedRoute() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F8F9FA]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-[#FE0000]" />
+          <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
           <p className="font-inter text-sm text-[#6B7280]">Memverifikasi sesi...</p>
         </div>
       </div>

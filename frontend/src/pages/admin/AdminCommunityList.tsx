@@ -76,7 +76,7 @@ export default function AdminCommunityList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -90,7 +90,7 @@ export default function AdminCommunityList() {
         </div>
         <button 
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           Tambah Komunitas
@@ -106,7 +106,7 @@ export default function AdminCommunityList() {
             placeholder="Cari nama komunitas..." 
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
           />
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function AdminCommunityList() {
       {filteredCommunities.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCommunities.map(community => (
-            <div key={community.id} className="bg-white border border-admin-border rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+            <div key={community.id} className="bg-white border border-admin-border rounded-xl shadow-sm hover:shadow-md hover:border-sougen-blue/30 transition-all overflow-hidden flex flex-col">
               {/* Card Header (Logo & Info) */}
               <div className="p-5 flex items-start gap-4">
                 <div className="w-16 h-16 rounded-xl bg-gray-100 shrink-0 border border-admin-border overflow-hidden flex items-center justify-center">
@@ -151,7 +151,7 @@ export default function AdminCommunityList() {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     community.photos.map((photo: any) => (
                       <div key={photo.id} className="w-12 h-12 rounded-lg bg-gray-100 shrink-0 overflow-hidden border border-admin-border">
-                        <img src={getImageUrl(photo.url)} alt="" className="w-full h-full object-cover" />
+                        <img src={getImageUrl(photo.url)} alt={`Dokumentasi ${community.name}`} className="w-full h-full object-cover" />
                       </div>
                     ))
                   ) : (
@@ -173,7 +173,7 @@ export default function AdminCommunityList() {
                 </button>
                 <Link 
                   to={`/admin/community/${community.id}`}
-                  className="px-4 py-2 bg-white border border-admin-border text-admin-dark text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-white border border-admin-border text-admin-dark text-sm font-medium rounded-lg hover:bg-sougen-blue/5 hover:border-sougen-blue/40 hover:text-sougen-blue transition-colors flex items-center gap-2"
                 >
                   <Edit className="w-4 h-4" />
                   Edit Komunitas
@@ -201,7 +201,7 @@ export default function AdminCommunityList() {
                   <label className="block text-sm font-medium text-admin-dark mb-1">Nama Komunitas</label>
                   <input 
                     {...register('name')}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     placeholder="Contoh: Street Fighter Club"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
@@ -210,7 +210,7 @@ export default function AdminCommunityList() {
                   <label className="block text-sm font-medium text-admin-dark mb-1">Kategori (Opsional)</label>
                   <input 
                     {...register('category')}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     placeholder="Contoh: Otomotif"
                   />
                 </div>
@@ -222,7 +222,7 @@ export default function AdminCommunityList() {
                 <button 
                   type="submit" 
                   disabled={isCreating}
-                  className="px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm disabled:opacity-50"
                 >
                   {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Buat & Lanjut Edit'}
                 </button>

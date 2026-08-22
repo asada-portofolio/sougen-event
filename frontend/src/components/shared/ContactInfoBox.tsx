@@ -44,15 +44,15 @@ export function ContactInfoBox({ className }: ContactInfoBoxProps) {
               className={cn(
                 "flex items-start space-x-4 p-3 rounded-sm border",
                 channel.isEmergencyContact 
-                  ? "border-rpo-red bg-rpo-red/5" 
-                  : "border-transparent"
+                  ? "border-rpo-negative bg-rpo-negative/5" 
+                  : "border-transparent hover:bg-black/[0.02] transition-colors"
               )}
             >
               <div className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
                 channel.isEmergencyContact
-                  ? "bg-rpo-red text-white"
-                  : "bg-rpo-red/10 text-rpo-red" // lingkaran merah muda untuk ikon
+                  ? "bg-rpo-negative text-white"
+                  : "bg-sougen-blue/10 text-sougen-blue"
               )}>
                 {getIcon(channel.type)}
               </div>
@@ -60,7 +60,7 @@ export function ContactInfoBox({ className }: ContactInfoBoxProps) {
                 <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-rpo-black/50">
                   {channel.type}
                   {channel.isEmergencyContact && (
-                    <span className="px-1.5 py-0.5 rounded-sm bg-rpo-red text-white text-[10px] shadow-sm">
+                    <span className="px-1.5 py-0.5 rounded-sm bg-rpo-negative text-white text-[10px] shadow-sm font-bold">
                       Darurat
                     </span>
                   )}
@@ -70,7 +70,7 @@ export function ContactInfoBox({ className }: ContactInfoBoxProps) {
                     href={channel.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-rpo-black transition-colors hover:text-rpo-red"
+                    className="text-sm font-medium text-rpo-black transition-colors hover:text-sougen-blue"
                   >
                     {channel.label || channel.value}
                   </a>

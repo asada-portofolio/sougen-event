@@ -206,7 +206,7 @@ export default function AdminKontak() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -224,17 +224,17 @@ export default function AdminKontak() {
         <Tabs.List className="flex shrink-0 border-b border-admin-border mb-6">
           <Tabs.Trigger 
             value="channels" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none"
           >
             Kanal Komunikasi
           </Tabs.Trigger>
           <Tabs.Trigger 
             value="messages" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none flex items-center gap-2"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none flex items-center gap-2"
           >
             Pesan Masuk
             {messages.filter(m => !m.isRead).length > 0 && (
-              <span className="bg-rpo-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+              <span className="bg-sougen-blue text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                 {messages.filter(m => !m.isRead).length}
               </span>
             )}
@@ -246,7 +246,7 @@ export default function AdminKontak() {
           <div className="flex justify-end mb-4">
             <button 
               onClick={openCreateChannelModal}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               Tambah Kanal
@@ -282,14 +282,14 @@ export default function AdminKontak() {
                         <div className="flex items-center gap-2">
                           <h3 className="font-poppins font-semibold text-admin-dark">{chan.label}</h3>
                           {chan.isEmergencyContact && (
-                            <span className="flex items-center gap-1 text-[10px] font-bold bg-red-50 text-rpo-red px-2 py-0.5 rounded-full uppercase tracking-wider">
+                            <span className="flex items-center gap-1 text-[10px] font-bold bg-red-50 text-red-600 px-2 py-0.5 rounded-full uppercase tracking-wider">
                               <AlertCircle className="w-3 h-3" /> Darurat
                             </span>
                           )}
                         </div>
                         <p className="text-sm font-medium text-admin-dark mt-1">{chan.value}</p>
                         {chan.url && (
-                          <a href={chan.url} target="_blank" rel="noreferrer" className="text-xs text-blue-600 hover:underline mt-1 truncate block max-w-[250px]">
+                          <a href={chan.url} target="_blank" rel="noreferrer" className="text-xs text-sougen-blue hover:underline mt-1 truncate block max-w-[250px]">
                             {chan.url}
                           </a>
                         )}
@@ -301,7 +301,7 @@ export default function AdminKontak() {
                         <Switch.Root
                           checked={chan.isEmergencyContact}
                           onCheckedChange={() => toggleEmergencyContact(chan.id, chan.isEmergencyContact)}
-                          className="w-[36px] h-[20px] bg-gray-200 rounded-full relative data-[state=checked]:bg-rpo-red outline-none cursor-pointer transition-colors"
+                          className="w-[36px] h-[20px] bg-gray-200 rounded-full relative data-[state=checked]:bg-sougen-blue outline-none cursor-pointer transition-colors"
                         >
                           <Switch.Thumb className="block w-[16px] h-[16px] bg-white rounded-full transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[18px]" />
                         </Switch.Root>
@@ -348,10 +348,10 @@ export default function AdminKontak() {
                     <div 
                       key={msg.id}
                       onClick={() => handleSelectMessage(msg)}
-                      className={`p-4 border-b border-admin-border cursor-pointer transition-colors relative ${selectedMessageId === msg.id ? 'bg-red-50/50' : 'hover:bg-gray-50'} ${!msg.isRead ? 'bg-white' : 'bg-gray-50/30'}`}
+                      className={`p-4 border-b border-admin-border cursor-pointer transition-colors relative ${selectedMessageId === msg.id ? 'bg-sougen-blue/5' : 'hover:bg-gray-50'} ${!msg.isRead ? 'bg-white' : 'bg-gray-50/30'}`}
                     >
                       {!msg.isRead && (
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-rpo-red"></div>
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-sougen-blue"></div>
                       )}
                       <div className="flex justify-between items-start mb-1 gap-2">
                         <h4 className={`text-sm truncate ${!msg.isRead ? 'font-bold text-admin-dark' : 'font-medium text-gray-700'}`}>
@@ -384,11 +384,11 @@ export default function AdminKontak() {
                       <div>
                         <h2 className="text-xl font-poppins font-bold text-admin-dark mb-1">{selectedMessage.senderName}</h2>
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-admin-secondary">
-                          <a href={`mailto:${selectedMessage.senderEmail}`} className="hover:text-blue-600 hover:underline flex items-center gap-1">
+                          <a href={`mailto:${selectedMessage.senderEmail}`} className="hover:text-sougen-blue hover:underline flex items-center gap-1">
                             <Mail className="w-3 h-3" /> {selectedMessage.senderEmail}
                           </a>
                           {selectedMessage.senderPhone && (
-                            <a href={`https://wa.me/${selectedMessage.senderPhone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="hover:text-green-600 hover:underline flex items-center gap-1">
+                            <a href={`https://wa.me/${selectedMessage.senderPhone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="hover:text-emerald-600 hover:underline flex items-center gap-1">
                               <MessageSquare className="w-3 h-3" /> {selectedMessage.senderPhone}
                             </a>
                           )}
@@ -439,7 +439,7 @@ export default function AdminKontak() {
                       type="button"
                       onClick={() => setValue('type', type)}
                       className={`py-2 px-3 flex flex-col items-center gap-2 rounded-lg border text-xs font-medium transition-colors ${
-                        watchType === type ? 'border-rpo-red bg-red-50 text-rpo-red' : 'border-admin-border bg-white text-gray-500 hover:bg-gray-50'
+                        watchType === type ? 'border-sougen-blue bg-sougen-blue/10 text-sougen-blue' : 'border-admin-border bg-white text-gray-500 hover:bg-gray-50'
                       }`}
                     >
                       {getIconForType(type)}
@@ -453,7 +453,7 @@ export default function AdminKontak() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Label (Contoh: Sponsorship, General Inquiries)</label>
                 <input 
                   {...register('label')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Contoh: Media Partner"
                 />
                 {errors.label && <p className="text-red-500 text-xs mt-1">{errors.label.message}</p>}
@@ -463,7 +463,7 @@ export default function AdminKontak() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Nilai / Teks (Contoh: 08123456789, email@domain.com)</label>
                 <input 
                   {...register('value')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Isi teks yang akan ditampilkan..."
                 />
                 {errors.value && <p className="text-red-500 text-xs mt-1">{errors.value.message}</p>}
@@ -473,7 +473,7 @@ export default function AdminKontak() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">URL / Link Tujuan (Opsional)</label>
                 <input 
                   {...register('url')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Contoh: https://wa.me/628123456789"
                 />
                 {errors.url && <p className="text-red-500 text-xs mt-1">{errors.url.message}</p>}
@@ -488,7 +488,7 @@ export default function AdminKontak() {
                 <button 
                   type="submit" 
                   disabled={isSavingChannel}
-                  className="inline-flex items-center gap-2 px-6 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSavingChannel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Simpan

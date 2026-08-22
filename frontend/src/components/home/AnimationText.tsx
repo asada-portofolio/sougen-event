@@ -24,7 +24,7 @@ export function AnimationText({ text, className }: AnimationTextProps) {
           </text>
         </svg>
       </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-rpo-red shadow-[0_0_10px_rgba(254,0,0,0.8)]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-sougen-blue shadow-[0_0_10px_rgba(0,148,222,0.8)]" />
     </div>
   );
 }

@@ -54,12 +54,12 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
   if (!guests || guests.length === 0) return null;
 
   return (
-    <section className="relative w-full bg-[#FFF8F8] py-12 md:py-16 px-4 lg:px-8 overflow-hidden">
+    <section className="relative w-full bg-[#FAFAFA] py-12 md:py-16 px-4 lg:px-8 overflow-hidden">
       {/* Creative Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#8b0a1a 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#0094DE 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
         <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-white/80 blur-[80px]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[#FFEDED]/80 blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[#E0F2FE]/80 blur-[100px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -92,7 +92,7 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
             <div className="flex justify-end mt-6">
               <Link 
                 to={`/event/${eventSlug}`} 
-                className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-rpo-red hover:text-red-800 transition-colors duration-300"
+                className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-sougen-blue hover:text-sougen-green-dark transition-colors duration-300"
               >
                 <span>Lihat selengkapnya</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -129,7 +129,7 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
             {eventSlug && (
               <Link 
                 to={`/event/${eventSlug}`} 
-                className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-rpo-red transition-colors duration-300"
+                className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-sougen-blue transition-colors duration-300"
               >
                 <span>Lihat semua</span>
                 <ArrowRight className="w-4 h-4" />
@@ -140,14 +140,14 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => scroll('left')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-rpo-red hover:text-white hover:border-rpo-red text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rpo-red/20"
+                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll left"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={() => scroll('right')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-rpo-red hover:text-white hover:border-rpo-red text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rpo-red/20"
+                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll right"
                 >
                   <ChevronRight className="w-5 h-5" />
@@ -155,10 +155,10 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
               </div>
             )}
           </div>
-          <div className="mt-12 w-full h-2 bg-rpo-red rounded-full" />
+          <div className="mt-12 w-full h-2 bg-sougen-blue rounded-full" />
         </div>
 
-        <div className="lg:hidden mt-10 w-full h-1.5 bg-rpo-red rounded-full mx-auto max-w-[85%]" />
+        <div className="lg:hidden mt-10 w-full h-1.5 bg-sougen-blue rounded-full mx-auto max-w-[85%]" />
       </div>
     </section>
   );

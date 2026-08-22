@@ -64,7 +64,7 @@ function ProgramRow({ ep, onRemove, onUpdate }: { ep: any, onRemove: (id: number
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://forms.gle/..."
-              className="w-full pl-8 pr-3 py-1.5 border border-admin-border rounded-lg text-xs bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+              className="w-full pl-8 pr-3 py-1.5 border border-admin-border rounded-lg text-xs bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
             />
           </div>
           <button
@@ -72,9 +72,9 @@ function ProgramRow({ ep, onRemove, onUpdate }: { ep: any, onRemove: (id: number
             disabled={saving || url === ep.registrationUrl}
             className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${
               saved 
-                ? 'bg-green-100 text-green-600'
+                ? 'bg-emerald-100 text-emerald-700'
                 : url !== ep.registrationUrl
-                  ? 'bg-admin-dark text-white hover:bg-black'
+                  ? 'bg-sougen-blue text-white hover:bg-sougen-blue/90 shadow-sm'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
             title="Simpan Tautan"
@@ -189,7 +189,7 @@ export default function TabProgram({ eventData, onUpdate }: TabProgramProps) {
             placeholder="Cari program..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
           />
         </div>
 
@@ -200,7 +200,7 @@ export default function TabProgram({ eventData, onUpdate }: TabProgramProps) {
             </div>
           ) : filteredAvailable.length > 0 ? (
             filteredAvailable.map(p => (
-              <div key={p.id} className="flex items-center justify-between p-3 border border-admin-border rounded-lg bg-white hover:border-gray-300 transition-colors">
+              <div key={p.id} className="flex items-center justify-between p-3 border border-admin-border rounded-lg bg-white hover:border-sougen-blue/40 transition-colors">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 shrink-0">
                     {p.coverImageUrl ? (
@@ -216,7 +216,7 @@ export default function TabProgram({ eventData, onUpdate }: TabProgramProps) {
                 <button
                   onClick={() => handleAddProgram(p.id)}
                   disabled={addingId === p.id}
-                  className="p-1.5 bg-admin-dark text-white rounded hover:bg-black transition-colors disabled:opacity-50 shrink-0 ml-2"
+                  className="p-1.5 bg-sougen-blue text-white rounded hover:bg-sougen-blue/90 shadow-sm transition-colors disabled:opacity-50 shrink-0 ml-2"
                 >
                   {addingId === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
                 </button>

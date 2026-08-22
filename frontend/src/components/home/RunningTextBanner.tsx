@@ -78,7 +78,7 @@ export function RunningTextBanner({ event }: RunningTextBannerProps) {
         new Date(nearestEvent.startDate).getTime() > now
       : false;
 
-    const displayText = isWithinWeek && nearestEvent ? nearestEvent.name : "REALITY PROJECT ORGANIZER";
+    const displayText = isWithinWeek && nearestEvent ? nearestEvent.name : "SOUGEN CREATIVE MANAGEMENT";
     
     return (
       <BannerLayout 
@@ -236,7 +236,7 @@ function BannerLayout({
   secondaryText: string;
 }) {
   return (
-    <div className="w-full bg-rpo-red py-4 md:py-5 overflow-hidden flex items-center justify-center relative">
+    <div className="w-full bg-sougen-blue py-4 md:py-5 overflow-hidden flex items-center justify-center relative">
       <div className="h-[32px] md:h-[36px] w-full flex items-center justify-center relative">
         
         {/* Primary State */}

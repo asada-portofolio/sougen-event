@@ -45,9 +45,10 @@ export function ImageWithSkeleton({
       {src && (
         <img
           src={getImageUrl(src)}
-          alt={alt || ''}
+          alt={alt || 'Gambar Konten'}
           width={width}
           height={height}
+          loading="lazy"
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
           className={cn(

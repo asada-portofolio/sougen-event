@@ -18,7 +18,7 @@ export default function EventDetail() {
   if (error) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center gap-4 text-center px-4">
-        <h2 className="text-rpo-red font-poppins text-2xl font-bold">Event Tidak Ditemukan</h2>
+        <h2 className="text-sougen-blue font-poppins text-2xl font-bold">Event Tidak Ditemukan</h2>
         <p className="text-rpo-black/60 font-inter mb-4">Event yang Anda cari mungkin telah dihapus atau URL tidak valid.</p>
         <Button asChild>
           <Link to="/event" className="flex items-center gap-2">
@@ -52,13 +52,52 @@ export default function EventDetail() {
   const guests = event.eventTalents.filter(et => et.role === 'GUEST');
   const lineup = event.eventTalents.filter(et => et.role === 'PERFORMER');
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://sougen.id';
+
+  const eventStructuredData: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": event.name,
+    "description": event.theme ? `${event.name} - ${event.theme}` : `Informasi lengkap event ${event.name} oleh Sougen Creative Management.`,
+    "startDate": event.startDate,
+    "endDate": event.endDate,
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": event.location,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Makassar",
+        "addressCountry": "ID"
+      }
+    },
+    "image": [
+      event.posterImageUrl
+        ? (event.posterImageUrl.startsWith('http') ? event.posterImageUrl : `${baseUrl}${event.posterImageUrl}`)
+        : `${baseUrl}/og-default.png`
+    ],
+    "organizer": {
+      "@type": "Organization",
+      "name": "Sougen Creative Management",
+      "url": baseUrl
+    },
+    ...(event.eventTalents && event.eventTalents.length > 0 && {
+      "performer": event.eventTalents.map(et => ({
+        "@type": "Person",
+        "name": et.talent.stageName
+      }))
+    })
+  };
+
   return (
     <div className="w-full bg-[#FAFAFA] min-h-screen">
       <SEO 
-        title={`${event.name} | Reality Project Organizer`}
-        description={`Detail event ${event.name} oleh Reality Project Organizer. Tema: ${event.theme || '-'}.`}
+        title={`${event.name} | Sougen Creative Management`}
+        description={`Informasi lengkap event ${event.name}${event.theme ? ` (${event.theme})` : ''} oleh Sougen Creative Management. Lihat jadwal rundown, bintang tamu, dan lokasi acara.`}
         ogImage={event.posterImageUrl || undefined}
         canonicalUrl={`/event/${event.slug}`}
+        structuredData={eventStructuredData}
       />
 
       {/* Hero Header */}

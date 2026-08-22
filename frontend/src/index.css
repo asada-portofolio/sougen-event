@@ -11,7 +11,10 @@
     --bg-surface: #FFFFFF;
     --text-base: #121212;
     --text-muted: rgba(18, 18, 18, 0.7);
-    --accent: #fe0000;
+    --accent: #0094DE;
+    --accent-secondary: #004D2C;
+    --accent-tertiary: #3ECC8B;
+    --accent-neutral: #9CA3A7;
   }
 
   body {

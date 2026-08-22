@@ -42,7 +42,7 @@ export function EventInfoSection({ days, defaultLocation }: EventInfoSectionProp
               key={day.id} 
               className="bg-white border border-rpo-black/10 rounded-[12px] md:rounded-[16px] p-2.5 md:p-4 flex flex-col items-center justify-center gap-1 md:gap-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 flex-1 min-w-[120px] md:min-w-[140px] max-w-[180px] md:max-w-[220px]"
             >
-              <div className="flex items-center gap-1 md:gap-1.5 text-rpo-red mb-0.5">
+              <div className="flex items-center gap-1 md:gap-1.5 text-sougen-blue mb-0.5">
                 <CalendarDays className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 <span className="font-poppins font-black text-xs md:text-sm uppercase tracking-wider">
                   Day {day.dayNumber}
@@ -57,7 +57,7 @@ export function EventInfoSection({ days, defaultLocation }: EventInfoSectionProp
 
         {/* Location Card */}
         <div className="bg-white border border-rpo-black/10 rounded-[12px] md:rounded-[16px] p-3 md:p-5 flex items-start sm:items-center gap-3 md:gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 w-full">
-          <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-rpo-red/10 text-rpo-red shrink-0 mt-0.5 sm:mt-0">
+          <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-sougen-blue/10 text-sougen-blue shrink-0 mt-0.5 sm:mt-0">
             <MapPin className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div className="flex flex-col flex-1">

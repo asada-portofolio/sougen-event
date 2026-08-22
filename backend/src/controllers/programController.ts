@@ -4,12 +4,14 @@ import * as programService from '../services/programService';
 
 const createSchema = z.object({
   name: z.string().min(1),
+  category: z.string().optional(),
   description: z.string().optional(),
   rulesHtml: z.string().optional(),
 });
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
+  category: z.string().optional(),
   description: z.string().optional(),
   rulesHtml: z.string().optional(),
 });

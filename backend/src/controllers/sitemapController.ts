@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../utils/prisma';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://www.rpo.com';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://sougen.id';
 
 function escapeXml(unsafe: string) {
   return unsafe.replace(/[<>&'"]/g, function (c) {
@@ -40,7 +40,7 @@ export async function getSitemap(_req: Request, res: Response, next: NextFunctio
       '/safety',
       '/community',
       '/programs',
-      '/line-up',
+      '/lineup',
       '/event',
       '/gallery'
     ];

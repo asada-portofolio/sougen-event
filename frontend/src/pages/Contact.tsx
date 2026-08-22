@@ -29,6 +29,7 @@ export default function Contact() {
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    mode: 'onTouched',
     defaultValues: {
       senderName: '',
       senderEmail: '',
@@ -53,17 +54,17 @@ export default function Contact() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
+    <div className="w-full min-h-screen bg-[#FAFAFA] text-rpo-black">
       <SEO 
-        title="Hubungi Kami | Reality Project Organizer"
-        description="Hubungi tim Reality Project Organizer untuk kerjasama, pertanyaan, atau dukungan darurat terkait event."
+        title="Hubungi Kami | Sougen Creative Management"
+        description="Hubungi tim Sougen Creative Management untuk kolaborasi kemitraan, sponsor, media partner, pertanyaan umum, atau informasi seputar event kami."
         canonicalUrl="/contact"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "ContactPage",
-          "name": "Hubungi Reality Project Organizer",
-          "description": "Formulir kontak dan daftar saluran komunikasi resmi Reality Project Organizer.",
-          "url": "https://rpo.com/contact",
+          "name": "Hubungi Sougen Creative Management",
+          "description": "Formulir kontak dan daftar saluran komunikasi resmi Sougen Creative Management.",
+          "url": "https://sougen.id/contact",
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer support"
@@ -71,21 +72,25 @@ export default function Contact() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        
-        <SectionHeader 
-          label="Mari Berkolaborasi"
-          title="Hubungi Kami"
-          description="Punya pertanyaan, ide kolaborasi, atau butuh bantuan untuk acara Anda? Jangan ragu untuk menghubungi tim RPO melalui kanal di bawah ini."
-          theme="light"
-          align="center"
-          className="mb-12"
-        />
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="LET'S CONNECT"
+            title="CONTACT US"
+            description="Punya pertanyaan, ide kolaborasi, atau butuh bantuan untuk acara Anda? Jangan ragu untuk menghubungi tim Sougen melalui kanal di bawah ini."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           
           {/* Sisi Kiri: Kanal Komunikasi Aktif */}
-          <div>
+          <div className="order-2 lg:order-1">
             <h2 className="font-poppins text-2xl font-bold text-rpo-black mb-6">
               Kanal Resmi Kami
             </h2>
@@ -96,7 +101,7 @@ export default function Contact() {
           </div>
 
           {/* Sisi Kanan: Form Pesan Langsung */}
-          <div className="bg-white border border-rpo-black/10 p-8 rounded-xl shadow-sm">
+          <div className="bg-white border border-rpo-black/10 p-8 rounded-xl shadow-sm order-1 lg:order-2">
             <h2 className="font-poppins text-2xl font-bold text-rpo-black mb-2">
               Kirim Pesan
             </h2>
@@ -114,7 +119,7 @@ export default function Contact() {
             )}
 
             {submitStatus === 'error' && errorMessage && (
-              <div className="mb-6 p-4 rounded-sm bg-red-50 border border-red-200 flex items-start gap-3 text-rpo-red">
+              <div className="mb-6 p-4 rounded-sm bg-red-50 border border-red-200 flex items-start gap-3 text-rpo-negative">
                 <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
                 <p className="font-inter text-sm">{errorMessage}</p>
               </div>
@@ -130,36 +135,36 @@ export default function Contact() {
 
               <div>
                 <label htmlFor="senderName" className="block text-sm font-bold text-rpo-black mb-1.5 font-inter">
-                  Nama Lengkap <span className="text-rpo-red">*</span>
+                  Nama Lengkap <span className="text-sougen-blue">*</span>
                 </label>
                 <input
                   id="senderName"
                   type="text"
                   placeholder="Masukkan nama lengkap Anda"
-                  className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-rpo-red focus:ring-1 focus:ring-rpo-red transition-colors font-inter placeholder:text-rpo-black/30"
+                  className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter placeholder:text-rpo-black/30"
                   disabled={isSubmitting}
                   {...register('senderName')}
                 />
                 {errors.senderName && (
-                  <p className="text-rpo-red text-xs mt-1.5 font-inter">{errors.senderName.message}</p>
+                  <p className="text-rpo-negative text-xs mt-1.5 font-inter">{errors.senderName.message}</p>
                 )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label htmlFor="senderEmail" className="block text-sm font-bold text-rpo-black mb-1.5 font-inter">
-                    Alamat Email <span className="text-rpo-red">*</span>
+                    Alamat Email <span className="text-sougen-blue">*</span>
                   </label>
                   <input
                     id="senderEmail"
                     type="email"
                     placeholder="nama@email.com"
-                    className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-rpo-red focus:ring-1 focus:ring-rpo-red transition-colors font-inter placeholder:text-rpo-black/30"
+                    className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter placeholder:text-rpo-black/30"
                     disabled={isSubmitting}
                     {...register('senderEmail')}
                   />
                   {errors.senderEmail && (
-                    <p className="text-rpo-red text-xs mt-1.5 font-inter">{errors.senderEmail.message}</p>
+                    <p className="text-rpo-negative text-xs mt-1.5 font-inter">{errors.senderEmail.message}</p>
                   )}
                 </div>
                 <div>
@@ -170,37 +175,37 @@ export default function Contact() {
                     id="senderPhone"
                     type="tel"
                     placeholder="0812xxxxxx"
-                    className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-rpo-red focus:ring-1 focus:ring-rpo-red transition-colors font-inter placeholder:text-rpo-black/30"
+                    className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter placeholder:text-rpo-black/30"
                     disabled={isSubmitting}
                     {...register('senderPhone')}
                   />
                   {errors.senderPhone && (
-                    <p className="text-rpo-red text-xs mt-1.5 font-inter">{errors.senderPhone.message}</p>
+                    <p className="text-rpo-negative text-xs mt-1.5 font-inter">{errors.senderPhone.message}</p>
                   )}
                 </div>
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-bold text-rpo-black mb-1.5 font-inter">
-                  Pesan <span className="text-rpo-red">*</span>
+                  Pesan <span className="text-sougen-blue">*</span>
                 </label>
                 <textarea
                   id="message"
                   rows={5}
                   placeholder="Tuliskan pertanyaan atau pesan Anda di sini..."
-                  className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-rpo-red focus:ring-1 focus:ring-rpo-red transition-colors font-inter placeholder:text-rpo-black/30 resize-y min-h-[120px]"
+                  className="w-full bg-[#FAFAFA] border border-rpo-black/10 text-rpo-black rounded-sm px-4 py-3 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter placeholder:text-rpo-black/30 resize-y min-h-[120px]"
                   disabled={isSubmitting}
                   {...register('message')}
                 />
                 {errors.message && (
-                  <p className="text-rpo-red text-xs mt-1.5 font-inter">{errors.message.message}</p>
+                  <p className="text-rpo-negative text-xs mt-1.5 font-inter">{errors.message.message}</p>
                 )}
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto mt-4 px-8 py-3 bg-rpo-black text-white font-poppins font-bold rounded-sm hover:bg-rpo-red transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto mt-4 px-8 py-3 bg-rpo-black text-white font-poppins font-bold rounded-sm hover:bg-sougen-blue transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow"
               >
                 {isSubmitting ? (
                   <>

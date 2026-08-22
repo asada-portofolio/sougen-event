@@ -105,7 +105,7 @@ export default function AdminTalentForm() {
   if (loading || !talent) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -139,7 +139,7 @@ export default function AdminTalentForm() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Nama Panggung / Grup</label>
                 <input
                   {...register('stageName')}
-                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
                 {errors.stageName && <p className="text-red-500 text-xs mt-1">{errors.stageName.message}</p>}
               </div>
@@ -148,7 +148,7 @@ export default function AdminTalentForm() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Tag / Jenis Talent</label>
                 {!showCustom && !isCustomTag ? (
                   <select 
-                    className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red appearance-none"
+                    className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue appearance-none"
                     value={watchTag || ''}
                     onChange={(e) => {
                       if (e.target.value === 'custom') {
@@ -169,7 +169,7 @@ export default function AdminTalentForm() {
                       {...register('tag')}
                       autoFocus
                       placeholder="Ketik tag custom..."
-                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     />
                     <button 
                       type="button" 
@@ -177,7 +177,7 @@ export default function AdminTalentForm() {
                         setShowCustom(false); 
                         setValue('tag', ''); 
                       }} 
-                      className="text-xs text-admin-secondary hover:text-rpo-red underline whitespace-nowrap px-1"
+                      className="text-xs text-admin-secondary hover:text-sougen-blue underline whitespace-nowrap px-1"
                     >
                       Batal
                     </button>
@@ -192,7 +192,7 @@ export default function AdminTalentForm() {
               <textarea
                 {...register('bio')}
                 rows={4}
-                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
               />
             </div>
 
@@ -207,7 +207,7 @@ export default function AdminTalentForm() {
                     <input
                       {...register('instagramUrl')}
                       placeholder="https://instagram.com/..."
-                      className="w-full pl-10 pr-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                      className="w-full pl-10 pr-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     />
                   </div>
                   {errors.instagramUrl && <p className="text-red-500 text-xs mt-1">{errors.instagramUrl.message}</p>}
@@ -220,7 +220,7 @@ export default function AdminTalentForm() {
                       type="number"
                       {...register('followerCount', { valueAsNumber: true })}
                       placeholder="Contoh: 15000"
-                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     />
                   </div>
                   <div>
@@ -229,7 +229,7 @@ export default function AdminTalentForm() {
                       type="number"
                       {...register('postCount', { valueAsNumber: true })}
                       placeholder="Contoh: 120"
-                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                      className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     />
                   </div>
                 </div>
@@ -240,7 +240,7 @@ export default function AdminTalentForm() {
               <button 
                 type="submit" 
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-70"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 Simpan Perubahan
@@ -255,18 +255,18 @@ export default function AdminTalentForm() {
             
             <div 
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-admin-secondary hover:bg-gray-50 hover:border-rpo-red hover:text-rpo-red cursor-pointer transition-all group"
+              className="border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-admin-secondary hover:bg-gray-50 hover:border-sougen-blue hover:text-sougen-blue cursor-pointer transition-all group"
             >
               {uploading ? (
                 <div className="flex flex-col items-center">
-                  <Loader2 className="w-8 h-8 animate-spin mb-3" />
+                  <Loader2 className="w-8 h-8 animate-spin mb-3 text-sougen-blue" />
                   <span className="text-sm font-medium">Mengunggah...</span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
                   <UploadCloud className="w-10 h-10 mb-3" />
                   <span className="text-sm font-medium">Pilih file foto dari perangkat</span>
-                  <span className="text-xs mt-1 text-gray-400 group-hover:text-rpo-red/70">JPG, JPEG, PNG</span>
+                  <span className="text-xs mt-1 text-gray-400 group-hover:text-sougen-blue/70">JPG, JPEG, PNG</span>
                 </div>
               )}
               <input 
@@ -299,7 +299,7 @@ export default function AdminTalentForm() {
               
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 {watchAll.tag && (
-                  <span className="inline-block px-2 py-0.5 bg-rpo-red text-white text-[10px] font-bold uppercase tracking-wider rounded-sm mb-1">
+                  <span className="inline-block px-2 py-0.5 bg-sougen-blue text-white text-[10px] font-bold uppercase tracking-wider rounded-sm mb-1">
                     {watchAll.tag}
                   </span>
                 )}

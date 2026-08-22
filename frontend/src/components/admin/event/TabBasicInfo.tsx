@@ -72,7 +72,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
               <input
                 {...register('name')}
                 type="text"
-                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
               />
               {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
             </div>
@@ -85,7 +85,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
                 {...register('theme')}
                 type="text"
                 placeholder="Contoh: Bersama Membangun Negeri"
-                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
               />
               {errors.theme && <p className="mt-1 text-xs text-red-500">{errors.theme.message}</p>}
             </div>
@@ -99,7 +99,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
                 <input
                   {...register('startDate')}
                   type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                 />
               </div>
               {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
@@ -114,7 +114,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
                 <input
                   {...register('endDate')}
                   type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                 />
               </div>
               {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
@@ -129,7 +129,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
                 <input
                   {...register('location')}
                   type="text"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                 />
               </div>
               {errors.location && <p className="mt-1 text-xs text-red-500">{errors.location.message}</p>}
@@ -139,7 +139,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
           <div className="pt-4 border-t border-admin-border flex items-center justify-between">
             <div>
               {message && (
-                <span className={`text-sm font-medium ${message.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`text-sm font-medium ${message.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>
                   {message.text}
                 </span>
               )}
@@ -147,7 +147,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
             <button 
               type="submit" 
               disabled={isSaving}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm disabled:opacity-70"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70"
             >
               {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Simpan Perubahan

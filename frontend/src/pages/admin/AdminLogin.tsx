@@ -39,20 +39,20 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#FE0000] rounded mb-4">
-            <span className="text-white font-poppins font-black text-2xl">R</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-sougen-blue rounded-xl shadow-md mb-4">
+            <span className="text-white font-poppins font-black text-2xl">S</span>
           </div>
-          <h1 className="font-poppins text-2xl font-bold text-[#1A1A2E]">
+          <h1 className="font-poppins text-2xl font-bold text-admin-dark">
             Admin Panel
           </h1>
-          <p className="font-inter text-sm text-[#6B7280] mt-1">
-            Reality Project Organizer
+          <p className="font-inter text-sm text-admin-secondary mt-1">
+            Sougen Creative Management
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white border border-[#E5E7EB] rounded p-8 shadow-sm">
-          <h2 className="font-poppins text-lg font-semibold text-[#1A1A2E] mb-6">
+        <div className="bg-white border border-admin-border rounded-xl p-8 shadow-sm">
+          <h2 className="font-poppins text-lg font-semibold text-admin-dark mb-6">
             Masuk ke Akun Admin
           </h2>
 
@@ -65,7 +65,7 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-[#1A1A2E] mb-1.5 font-inter">
+              <label htmlFor="username" className="block text-sm font-medium text-admin-dark mb-1.5 font-inter">
                 Username
               </label>
               <input
@@ -76,12 +76,12 @@ export default function AdminLogin() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
-                className="w-full border border-[#E5E7EB] text-[#1A1A2E] rounded px-4 py-2.5 focus:outline-none focus:border-[#FE0000] focus:ring-1 focus:ring-[#FE0000] transition-colors font-inter text-sm placeholder:text-[#9CA3AF] disabled:opacity-50 disabled:bg-gray-50"
+                className="w-full border border-admin-border text-admin-dark rounded-lg px-4 py-2.5 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter text-sm placeholder:text-gray-400 disabled:opacity-50 disabled:bg-gray-50"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[#1A1A2E] mb-1.5 font-inter">
+              <label htmlFor="password" className="block text-sm font-medium text-admin-dark mb-1.5 font-inter">
                 Password
               </label>
               <div className="relative">
@@ -93,12 +93,12 @@ export default function AdminLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full border border-[#E5E7EB] text-[#1A1A2E] rounded px-4 py-2.5 pr-11 focus:outline-none focus:border-[#FE0000] focus:ring-1 focus:ring-[#FE0000] transition-colors font-inter text-sm placeholder:text-[#9CA3AF] disabled:opacity-50 disabled:bg-gray-50"
+                  className="w-full border border-admin-border text-admin-dark rounded-lg px-4 py-2.5 pr-11 focus:outline-none focus:border-sougen-blue focus:ring-1 focus:ring-sougen-blue transition-colors font-inter text-sm placeholder:text-gray-400 disabled:opacity-50 disabled:bg-gray-50"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A2E] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-admin-secondary hover:text-admin-dark transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -109,7 +109,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 px-6 py-2.5 bg-[#FE0000] text-white font-inter font-semibold text-sm rounded hover:bg-red-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-2 px-6 py-2.5 bg-sougen-blue text-white font-inter font-semibold text-sm rounded-lg hover:bg-sougen-blue/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             >
               {loading ? (
                 <>
@@ -126,8 +126,8 @@ export default function AdminLogin() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-[#9CA3AF] font-inter mt-6">
-          &copy; {new Date().getFullYear()} Reality Project Organizer
+        <p className="text-center text-xs text-gray-400 font-inter mt-6">
+          &copy; {new Date().getFullYear()} Sougen Creative Management
         </p>
       </div>
     </div>

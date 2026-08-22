@@ -6,14 +6,18 @@ import { cn } from '../../lib/utils';
 export function BottomNav() {
   const location = useLocation();
   
-  // Jika rute saat ini adalah event detail (berisi /event/slug, tetapi bukan /event saja)
+  // Jika rute saat ini adalah event detail atau halaman line-up
   const isEventDetail = location.pathname.startsWith('/event/') && location.pathname !== '/event';
+  const isLineUp = location.pathname === '/lineup' || location.pathname === '/line-up';
+  const isAbout = location.pathname === '/about';
   
-  const [isVisible, setIsVisible] = useState(isEventDetail);
+  const alwaysVisiblePages = isEventDetail || isLineUp || isAbout;
+  
+  const [isVisible, setIsVisible] = useState(alwaysVisiblePages);
 
   useEffect(() => {
-    // Jika berada di halaman Event Detail, pastikan selalu terlihat
-    if (isEventDetail) {
+    // Jika berada di halaman yang diatur selalu terlihat, pastikan muncul
+    if (alwaysVisiblePages) {
       setIsVisible(true);
       return;
     }
@@ -61,10 +65,10 @@ export function BottomNav() {
             <div
               className={cn(
                 'flex flex-col items-center justify-center px-4 py-2 rounded-xl transition-all duration-300 space-y-1',
-                isActive ? 'bg-rpo-red/10 text-rpo-red' : 'text-rpo-black/40 hover:text-rpo-black/70'
+                isActive ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-rpo-black/40 hover:text-rpo-black/70'
               )}
             >
-              <Icon className={cn('h-6 w-6', isActive ? 'text-rpo-red' : 'text-rpo-black/40')} />
+              <Icon className={cn('h-6 w-6', isActive ? 'text-sougen-blue' : 'text-rpo-black/40')} />
               <span className="text-[10px] font-inter font-bold uppercase tracking-wider mt-1">
                 {item.name}
               </span>

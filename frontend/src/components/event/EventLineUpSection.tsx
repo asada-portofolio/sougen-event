@@ -75,7 +75,7 @@ export function EventLineUpSection({ lineup }: EventLineUpSectionProps) {
           ))}
         </div>
         
-        <div className="mt-12 lg:mt-16 w-full h-1.5 md:h-2 bg-rpo-red rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
+        <div className="mt-12 lg:mt-16 w-full h-1.5 md:h-2 bg-sougen-blue rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
       </div>
     </section>
   );

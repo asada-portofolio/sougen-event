@@ -46,14 +46,14 @@ export function RulesModal({ title, rulesHtml, isOpen, onClose }: RulesModalProp
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-black/10 bg-white sticky top-0 z-10 rounded-t-xl">
           <div className="flex items-center gap-3">
-            <FileText className="w-6 h-6 text-rpo-red" />
+            <FileText className="w-6 h-6 text-sougen-blue" />
             <h3 className="font-poppins text-lg sm:text-xl font-bold text-rpo-black">
               Aturan Main: {title}
             </h3>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 text-rpo-black/50 hover:text-rpo-red hover:bg-black/5 rounded-sm transition-colors"
+            className="p-2 text-rpo-black/50 hover:text-sougen-blue hover:bg-sougen-blue/10 rounded-md transition-colors"
             aria-label="Tutup"
           >
             <X className="w-5 h-5" />
@@ -63,7 +63,7 @@ export function RulesModal({ title, rulesHtml, isOpen, onClose }: RulesModalProp
         {/* Content (Scrollable) */}
         <div className="p-4 sm:p-6 overflow-y-auto custom-scrollbar">
           <div 
-            className="prose prose-rpo max-w-none prose-p:text-rpo-black/70 prose-a:text-rpo-red hover:prose-a:text-red-700 prose-headings:text-rpo-black font-inter"
+            className="prose prose-rpo max-w-none prose-p:text-rpo-black/70 prose-a:text-sougen-blue hover:prose-a:text-sougen-green-dark prose-headings:text-rpo-black font-inter"
             dangerouslySetInnerHTML={{ __html: safeHtml }}
           />
         </div>
@@ -72,7 +72,7 @@ export function RulesModal({ title, rulesHtml, isOpen, onClose }: RulesModalProp
         <div className="p-4 border-t border-black/10 bg-[#FAFAFA] flex justify-end rounded-b-xl">
           <button 
             onClick={onClose}
-            className="px-6 py-2 bg-rpo-red hover:bg-red-700 text-white font-inter font-semibold rounded-sm transition-colors shadow-sm"
+            className="px-6 py-2 bg-sougen-blue hover:bg-sougen-green-dark text-white font-inter font-semibold rounded-md transition-all duration-300 shadow-sm"
           >
             Mengerti & Tutup
           </button>

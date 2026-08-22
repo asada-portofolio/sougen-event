@@ -85,9 +85,9 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
           >
             <label className={`
               relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all
-              ${heroMode === 'TEMPLATE' ? 'border-rpo-red bg-red-50/50' : 'border-admin-border bg-white hover:border-gray-300'}
+              ${heroMode === 'TEMPLATE' ? 'border-sougen-blue bg-sougen-blue/5' : 'border-admin-border bg-white hover:border-gray-300'}
             `}>
-              <RadioGroup.Item value="TEMPLATE" className="w-5 h-5 rounded-full border border-gray-300 bg-white data-[state=checked]:border-rpo-red data-[state=checked]:bg-rpo-red flex items-center justify-center outline-none">
+              <RadioGroup.Item value="TEMPLATE" className="w-5 h-5 rounded-full border border-gray-300 bg-white data-[state=checked]:border-sougen-blue data-[state=checked]:bg-sougen-blue flex items-center justify-center outline-none">
                 <RadioGroup.Indicator className="w-2.5 h-2.5 rounded-full bg-white" />
               </RadioGroup.Item>
               <div>
@@ -98,9 +98,9 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
 
             <label className={`
               relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all
-              ${heroMode === 'POSTER' ? 'border-rpo-red bg-red-50/50' : 'border-admin-border bg-white hover:border-gray-300'}
+              ${heroMode === 'POSTER' ? 'border-sougen-blue bg-sougen-blue/5' : 'border-admin-border bg-white hover:border-gray-300'}
             `}>
-              <RadioGroup.Item value="POSTER" className="w-5 h-5 rounded-full border border-gray-300 bg-white data-[state=checked]:border-rpo-red data-[state=checked]:bg-rpo-red flex items-center justify-center outline-none">
+              <RadioGroup.Item value="POSTER" className="w-5 h-5 rounded-full border border-gray-300 bg-white data-[state=checked]:border-sougen-blue data-[state=checked]:bg-sougen-blue flex items-center justify-center outline-none">
                 <RadioGroup.Indicator className="w-2.5 h-2.5 rounded-full bg-white" />
               </RadioGroup.Item>
               <div>
@@ -114,7 +114,7 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
             <button 
               onClick={handleSaveMode}
               disabled={isSavingMode}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-70 h-[64px]"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70 h-[64px]"
             >
               {isSavingMode ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Simpan Mode
@@ -136,17 +136,17 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
               <p className="text-xs text-admin-secondary mt-1">Digunakan untuk Thumbnail Card (Aspek 4:3).</p>
             </div>
             {eventData.posterImageUrl && (
-              <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">Terpasang</span>
+              <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">Terpasang</span>
             )}
           </div>
           
           <div 
             onClick={() => posterInputRef.current?.click()}
-            className="group relative aspect-[4/3] w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 hover:border-rpo-red transition-all overflow-hidden"
+            className="group relative aspect-[4/3] w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 hover:border-sougen-blue transition-all overflow-hidden"
           >
             {uploadingPoster ? (
               <div className="flex flex-col items-center text-admin-secondary">
-                <Loader2 className="w-8 h-8 animate-spin mb-2 text-rpo-red" />
+                <Loader2 className="w-8 h-8 animate-spin mb-2 text-sougen-blue" />
                 <span className="text-sm font-medium">Mengunggah...</span>
               </div>
             ) : eventData.posterImageUrl ? (
@@ -158,7 +158,7 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center text-admin-secondary group-hover:text-rpo-red transition-colors">
+              <div className="flex flex-col items-center text-admin-secondary group-hover:text-sougen-blue transition-colors">
                 <UploadCloud className="w-8 h-8 mb-2" />
                 <span className="text-sm font-medium">Klik untuk unggah poster</span>
                 <span className="text-xs mt-1">Maks. 2MB (JPG, PNG)</span>
@@ -184,17 +184,17 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
               <p className="text-xs text-admin-secondary mt-1">Digunakan untuk header lebar (Aspek 21:9 atau 16:9).</p>
             </div>
             {eventData.heroImageUrl && (
-              <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">Terpasang</span>
+              <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">Terpasang</span>
             )}
           </div>
           
           <div 
             onClick={() => heroInputRef.current?.click()}
-            className="group relative aspect-[4/3] md:aspect-[16/9] w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 hover:border-rpo-red transition-all overflow-hidden"
+            className="group relative aspect-[4/3] md:aspect-[16/9] w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 hover:border-sougen-blue transition-all overflow-hidden"
           >
             {uploadingHero ? (
               <div className="flex flex-col items-center text-admin-secondary">
-                <Loader2 className="w-8 h-8 animate-spin mb-2 text-rpo-red" />
+                <Loader2 className="w-8 h-8 animate-spin mb-2 text-sougen-blue" />
                 <span className="text-sm font-medium">Mengunggah...</span>
               </div>
             ) : eventData.heroImageUrl ? (
@@ -206,7 +206,7 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center text-admin-secondary group-hover:text-rpo-red transition-colors">
+              <div className="flex flex-col items-center text-admin-secondary group-hover:text-sougen-blue transition-colors">
                 <ImageIcon className="w-8 h-8 mb-2" />
                 <span className="text-sm font-medium">Klik untuk unggah hero</span>
                 <span className="text-xs mt-1">Maks. 2MB (JPG, PNG)</span>

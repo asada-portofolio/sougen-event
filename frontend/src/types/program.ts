@@ -13,6 +13,7 @@ export interface Program {
   id: number;
   slug: string;
   name: string;
+  category: string | null;
   description: string | null;
   rulesHtml: string | null;
   coverImageUrl: string | null;

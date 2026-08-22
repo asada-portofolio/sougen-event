@@ -218,7 +218,7 @@ export default function AdminAbout() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -234,13 +234,13 @@ export default function AdminAbout() {
         <Tabs.List className="flex shrink-0 border-b border-admin-border mb-6">
           <Tabs.Trigger 
             value="content" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none"
           >
             Konten Utama
           </Tabs.Trigger>
           <Tabs.Trigger 
             value="team" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none"
           >
             Tim Kami
           </Tabs.Trigger>
@@ -259,8 +259,8 @@ export default function AdminAbout() {
                     <textarea 
                       {...regContent('storyText')}
                       rows={6}
-                      className="w-full px-4 py-3 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors resize-none"
-                      placeholder="Tuliskan cerita singkat tentang RPO..."
+                      className="w-full px-4 py-3 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors resize-none"
+                      placeholder="Tuliskan cerita singkat tentang Sougen..."
                     />
                   </div>
 
@@ -269,7 +269,7 @@ export default function AdminAbout() {
                     <textarea 
                       {...regContent('visionText')}
                       rows={3}
-                      className="w-full px-4 py-3 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors resize-none"
+                      className="w-full px-4 py-3 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors resize-none"
                       placeholder="Visi utama..."
                     />
                   </div>
@@ -280,12 +280,12 @@ export default function AdminAbout() {
                   <div>
                     <label className="block text-sm font-semibold text-admin-dark mb-2">Foto Cerita</label>
                     <div 
-                      className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-300 overflow-hidden relative group bg-gray-50 flex items-center justify-center cursor-pointer hover:border-rpo-red transition-colors"
+                      className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-300 overflow-hidden relative group bg-gray-50 flex items-center justify-center cursor-pointer hover:border-sougen-blue transition-colors"
                       onClick={() => fileInputRef.current?.click()}
                     >
                       {isUploadingStory && (
                         <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
-                          <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+                          <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
                         </div>
                       )}
                       
@@ -319,7 +319,7 @@ export default function AdminAbout() {
                         <div key={field.id} className="flex gap-2">
                           <input
                             {...regContent(`missionList.${index}.value` as const)}
-                            className="flex-1 px-3 py-2 border border-admin-border rounded-lg text-sm bg-white focus:outline-none focus:border-rpo-red transition-colors"
+                            className="flex-1 px-3 py-2 border border-admin-border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors"
                             placeholder={`Misi ${index + 1}`}
                           />
                           <button
@@ -334,7 +334,7 @@ export default function AdminAbout() {
                       <button
                         type="button"
                         onClick={() => appendMission({ value: '' })}
-                        className="inline-flex items-center gap-2 text-sm font-medium text-rpo-red hover:text-red-700 transition-colors py-2"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-sougen-blue hover:text-sougen-blue/80 transition-colors py-2"
                       >
                         <Plus className="w-4 h-4" /> Tambah Misi
                       </button>
@@ -347,7 +347,7 @@ export default function AdminAbout() {
                 <button 
                   type="submit" 
                   disabled={isSavingContent}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-rpo-red text-white font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSavingContent ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                   Simpan Konten
@@ -363,7 +363,7 @@ export default function AdminAbout() {
           <div className="flex justify-end mb-6">
             <button 
               onClick={openCreateTeamModal}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               Tambah Anggota Tim
@@ -421,7 +421,7 @@ export default function AdminAbout() {
                         </button>
                         <button 
                           onClick={() => handleDeleteTeam(member.id)}
-                          className="p-1.5 bg-rpo-red text-white rounded-lg hover:bg-red-700 transition-colors"
+                          className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -462,7 +462,7 @@ export default function AdminAbout() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Nama Lengkap</label>
                 <input 
                   {...regTeam('name')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Contoh: Budi Santoso"
                 />
                 {teamErrors.name && <p className="text-red-500 text-xs mt-1">{teamErrors.name.message}</p>}
@@ -472,7 +472,7 @@ export default function AdminAbout() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Peran / Posisi</label>
                 <input 
                   {...regTeam('role')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Contoh: Ketua Panitia"
                 />
                 {teamErrors.role && <p className="text-red-500 text-xs mt-1">{teamErrors.role.message}</p>}
@@ -482,7 +482,7 @@ export default function AdminAbout() {
                 <button 
                   type="submit" 
                   disabled={isSavingTeam}
-                  className="w-full inline-flex justify-center items-center gap-2 px-6 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-50"
+                  className="w-full inline-flex justify-center items-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSavingTeam ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Simpan'}
                 </button>

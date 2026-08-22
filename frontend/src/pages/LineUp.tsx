@@ -15,7 +15,7 @@ export default function LineUp() {
   if (error) {
     return (
       <div className="w-full min-h-[70vh] bg-[#FAFAFA] flex items-center justify-center pt-24">
-        <p className="text-rpo-red font-inter text-lg">Gagal memuat katalog talent. Silakan coba lagi nanti.</p>
+        <p className="text-sougen-blue font-inter text-lg">Gagal memuat katalog talent. Silakan coba lagi nanti.</p>
       </div>
     );
   }
@@ -26,21 +26,29 @@ export default function LineUp() {
   const currentTalents = talents.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
+    <div className="w-full min-h-screen bg-[#FAFAFA]">
       <SEO 
-        title="Katalog Talent & Line Up | Reality Project Organizer"
-        description="Jelajahi galeri bintang tamu, cosplayer, idol, dan performer berbakat yang pernah atau akan meramaikan panggung RPO."
-        canonicalUrl="/line-up"
+        title="Our Line-Up | Sougen Creative Management"
+        description="Jelajahi galeri bintang tamu, cosplayer, idol, dan performer berbakat yang pernah atau akan meramaikan panggung Sougen Creative Management."
+        canonicalUrl="/lineup"
       />
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <SectionHeader 
-          label="Hall of Fame"
-          title="Katalog Talent & Line Up"
-          description="Galeri bintang tamu dan performer berbakat yang turut meramaikan sejarah panggung RPO"
-          theme="light"
-          className="mb-12"
-        />
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="HALL OF FAME"
+            title="OUR LINE-UP"
+            description="Galeri bintang tamu dan performer berbakat yang turut meramaikan sejarah panggung Sougen Creative Management."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
+      </div>
+
+      {/* Grid Section */}
+      <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
 
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">

@@ -66,7 +66,7 @@ export function Pagination({
         size="sm"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="px-2"
+        className="px-2 hover:border-sougen-blue hover:text-sougen-blue transition-colors"
         aria-label="Previous Page"
       >
         <ChevronLeft className="h-4 w-4" />
@@ -92,8 +92,10 @@ export function Pagination({
                 size="sm"
                 onClick={() => onPageChange(page)}
                 className={cn(
-                  'h-9 w-9 p-0',
-                  isActive ? '' : 'text-rpo-black/50 hover:text-rpo-black'
+                  'h-9 w-9 p-0 font-bold transition-colors',
+                  isActive
+                    ? 'bg-sougen-blue text-white hover:bg-sougen-blue/90 border border-sougen-blue shadow-sm'
+                    : 'text-rpo-black/60 hover:text-sougen-blue hover:bg-sougen-blue/10'
                 )}
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={`Page ${page}`}
@@ -110,7 +112,7 @@ export function Pagination({
         size="sm"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="px-2"
+        className="px-2 hover:border-sougen-blue hover:text-sougen-blue transition-colors"
         aria-label="Next Page"
       >
         <ChevronRight className="h-4 w-4" />

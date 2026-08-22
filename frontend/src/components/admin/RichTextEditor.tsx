@@ -43,13 +43,13 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   const redo = () => editor.chain().focus().redo().run();
 
   return (
-    <div className="border border-admin-border rounded-lg overflow-hidden bg-white">
+    <div className="border border-admin-border rounded-lg overflow-hidden bg-white focus-within:border-sougen-blue focus-within:ring-1 focus-within:ring-sougen-blue transition-all">
       {/* Toolbar */}
       <div className="bg-gray-50 border-b border-admin-border p-2 flex flex-wrap gap-1">
         <button
           type="button"
           onClick={toggleBold}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bold') ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('bold') ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Bold"
         >
           <Bold className="w-4 h-4" />
@@ -57,7 +57,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         <button
           type="button"
           onClick={toggleItalic}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('italic') ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('italic') ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Italic"
         >
           <Italic className="w-4 h-4" />
@@ -65,7 +65,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         <button
           type="button"
           onClick={toggleHeading}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('heading', { level: 2 }) ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Heading 2"
         >
           <Heading2 className="w-4 h-4" />
@@ -74,7 +74,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         <button
           type="button"
           onClick={toggleBulletList}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bulletList') ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('bulletList') ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Bullet List"
         >
           <List className="w-4 h-4" />
@@ -82,7 +82,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         <button
           type="button"
           onClick={toggleOrderedList}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('orderedList') ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('orderedList') ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Ordered List"
         >
           <ListOrdered className="w-4 h-4" />
@@ -90,7 +90,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         <button
           type="button"
           onClick={toggleBlockquote}
-          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('blockquote') ? 'bg-gray-200 text-admin-dark' : 'text-gray-500'}`}
+          className={`p-1.5 rounded transition-colors ${editor.isActive('blockquote') ? 'bg-sougen-blue/10 text-sougen-blue' : 'text-gray-500 hover:bg-gray-200'}`}
           title="Quote"
         >
           <Quote className="w-4 h-4" />

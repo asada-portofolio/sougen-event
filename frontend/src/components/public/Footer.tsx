@@ -29,39 +29,39 @@ export function Footer() {
   };
 
   return (
-    <footer className="hidden lg:block mt-auto border-t-4 border-rpo-red bg-rpo-black py-16">
-      <div className="mx-auto max-w-[1200px] px-8">
-        <div className="grid grid-cols-3 gap-12">
+    <footer className="hidden lg:block mt-auto border-t-2 border-sougen-blue bg-rpo-black py-8">
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="grid grid-cols-3 gap-8 items-start">
           
           {/* Kolom Kiri: Logo + Sosial Media */}
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col space-y-4">
             <div>
-              <Link to="/" className="text-3xl font-poppins font-bold tracking-tighter text-rpo-red block">
-                RPO<span className="text-white">.</span>
+              <Link to="/" className="inline-block">
+                <img src="/images/main-logo.png" alt="Sougen Logo" className="h-8 w-auto object-contain" />
               </Link>
-              <p className="text-sm font-poppins text-white/80 mt-1 uppercase tracking-wider">
-                Reality Project Organizer
+              <p className="text-xs font-poppins text-white/70 mt-1.5 uppercase tracking-wider">
+                Sougen Creative Management
               </p>
             </div>
             
             <div className="w-full h-px bg-white/10" />
 
             <div>
-              <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-sm mb-4">Follow Us</h3>
+              <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-xs mb-2.5">Follow Us</h3>
               {loading ? (
                 <div className="flex space-x-3">
-                  <Skeleton className="w-8 h-8 rounded-full bg-white/10" />
-                  <Skeleton className="w-8 h-8 rounded-full bg-white/10" />
+                  <Skeleton className="w-7 h-7 rounded-full bg-white/10" />
+                  <Skeleton className="w-7 h-7 rounded-full bg-white/10" />
                 </div>
               ) : socialChannels.length > 0 ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3.5">
                   {socialChannels.map(channel => (
                     <a 
                       key={channel.id}
                       href={channel.url || '#'} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-white/60 hover:text-rpo-red transition-colors duration-300"
+                      className="text-white/60 hover:text-sougen-blue transition-colors duration-300"
                       title={channel.label || channel.value}
                     >
                       {getIcon(channel.type) || <span className="text-xs uppercase">{channel.type}</span>}
@@ -69,47 +69,45 @@ export function Footer() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-white/60">Sosial media belum tersedia.</p>
+                <p className="text-xs text-white/60">Sosial media belum tersedia.</p>
               )}
             </div>
           </div>
 
           {/* Kolom Tengah: Menu Utama & Sampingan */}
           <div className="flex justify-center">
-            <div className="flex gap-16">
+            <div className="flex gap-12">
               {/* Menu Utama */}
-              <div className="flex flex-col space-y-3">
-                <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-sm mb-4">Menu Utama</h3>
-                <Link to="/" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Home</Link>
-                <Link to="/guest" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Guest</Link>
-                <Link to="/lineup" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">LineUp</Link>
-                <Link to="/community" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Community</Link>
-                <Link to="/activity" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Activity</Link>
-                <Link to="/event" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Event</Link>
-                <Link to="/contact" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Contact</Link>
+              <div className="flex flex-col space-y-2">
+                <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-xs mb-2">Menu</h3>
+                <Link to="/" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">Home</Link>
+                <Link to="/event" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">Event</Link>
+                <Link to="/lineup" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">LineUp</Link>
+                <Link to="/community" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">Community</Link>
+                <Link to="/about" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">About</Link>
+                <Link to="/contact" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">Contact</Link>
               </div>
 
               {/* Menu Sampingan */}
-              <div className="flex flex-col space-y-3">
-                <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-sm mb-4">Resource</h3>
-                <Link to="/gallery" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Gallery</Link>
-                <Link to="/faq" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">FAQ</Link>
-                <Link to="/guidelines" className="text-sm text-white/60 transition-colors duration-300 hover:text-rpo-red w-fit">Event Guidelines</Link>
+              <div className="flex flex-col space-y-2">
+                <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-xs mb-2">Resource</h3>
+                <Link to="/gallery" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">Gallery</Link>
+                <Link to="/faq" className="text-xs text-white/60 transition-colors duration-300 hover:text-sougen-blue w-fit">FAQ</Link>
               </div>
             </div>
           </div>
 
           {/* Kolom Kanan: Kontak Langsung */}
           <div className="flex justify-end">
-            <div className="flex flex-col space-y-4">
-              <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-sm mb-4">Hubungi Kami</h3>
+            <div className="flex flex-col space-y-3">
+              <h3 className="font-poppins font-semibold text-white uppercase tracking-wider text-xs mb-2">Hubungi Kami</h3>
               {loading ? (
                 <div className="flex flex-col space-y-2">
-                  <Skeleton className="h-4 w-32 bg-white/10" />
-                  <Skeleton className="h-4 w-40 bg-white/10" />
+                  <Skeleton className="h-3.5 w-28 bg-white/10" />
+                  <Skeleton className="h-3.5 w-36 bg-white/10" />
                 </div>
               ) : directChannels.length > 0 ? (
-                <ul className="flex flex-col space-y-4">
+                <ul className="flex flex-col space-y-2.5">
                   {directChannels.map(channel => (
                     <li key={channel.id}>
                       {channel.url ? (
@@ -117,24 +115,24 @@ export function Footer() {
                           href={channel.url} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 text-white/60 hover:text-rpo-red transition-colors duration-300 group"
+                          className="flex items-center gap-2.5 text-white/60 hover:text-sougen-blue transition-colors duration-300 group"
                         >
-                          <div className="p-2 rounded-full bg-white/5 group-hover:bg-rpo-red/10 group-hover:text-rpo-red transition-colors">
+                          <div className="p-1.5 rounded-full bg-white/5 group-hover:bg-sougen-blue/10 group-hover:text-sougen-blue transition-colors">
                             {getIcon(channel.type)}
                           </div>
                           <div>
-                            <p className="text-xs font-semibold text-white/80 uppercase">{channel.type}</p>
-                            <p className="text-sm group-hover:text-rpo-red transition-colors">{channel.label || channel.value}</p>
+                            <p className="text-[10px] font-semibold text-white/70 uppercase">{channel.type}</p>
+                            <p className="text-xs group-hover:text-sougen-blue transition-colors">{channel.label || channel.value}</p>
                           </div>
                         </a>
                       ) : (
-                        <div className="flex items-center gap-3 text-white/60">
-                          <div className="p-2 rounded-full bg-white/5">
+                        <div className="flex items-center gap-2.5 text-white/60">
+                          <div className="p-1.5 rounded-full bg-white/5">
                             {getIcon(channel.type)}
                           </div>
                           <div>
-                            <p className="text-xs font-semibold text-white/80 uppercase">{channel.type}</p>
-                            <p className="text-sm">{channel.value}</p>
+                            <p className="text-[10px] font-semibold text-white/70 uppercase">{channel.type}</p>
+                            <p className="text-xs">{channel.value}</p>
                           </div>
                         </div>
                       )}
@@ -142,7 +140,7 @@ export function Footer() {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-white/60">Kontak belum tersedia.</p>
+                <p className="text-xs text-white/60">Kontak belum tersedia.</p>
               )}
             </div>
           </div>
@@ -150,8 +148,8 @@ export function Footer() {
         </div>
 
         {/* Bottom Copyright */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex justify-center items-center">
-          <p className="text-xs text-white/40">&copy; {new Date().getFullYear()} Reality Project Organizer. All rights reserved.</p>
+        <div className="mt-8 pt-4 border-t border-white/10 flex justify-center items-center">
+          <p className="text-[11px] text-white/40">&copy; {new Date().getFullYear()} Sougen Creative Management. All rights reserved.</p>
         </div>
       </div>
     </footer>

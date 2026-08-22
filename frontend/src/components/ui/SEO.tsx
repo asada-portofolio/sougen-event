@@ -14,7 +14,7 @@ export function SEO({
   description, 
   canonicalUrl, 
   ogType = 'website', 
-  ogImage = '/poster-placeholder.png',
+  ogImage = '/og-default.png',
   structuredData 
 }: SEOProps) {
   
@@ -30,6 +30,7 @@ export function SEO({
 
   return (
     <Helmet>
+      <html lang="id" />
       {/* Standard Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
@@ -41,7 +42,10 @@ export function SEO({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={absoluteCanonicalUrl} />
       <meta property="og:image" content={absoluteOgImage} />
-      <meta property="og:site_name" content="Reality Project Organizer" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
+      <meta property="og:site_name" content="Sougen Creative Management" />
 
       {/* Twitter Card Tags */}
       <meta name="twitter:card" content="summary_large_image" />

@@ -132,7 +132,7 @@ export default function AdminFAQ() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -146,7 +146,7 @@ export default function AdminFAQ() {
         </div>
         <button 
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Tambah Pertanyaan
@@ -168,7 +168,7 @@ export default function AdminFAQ() {
                 onDragEnter={(e) => handleDragEnter(e, index)}
                 onDragEnd={handleDragEnd}
                 onDragOver={(e) => e.preventDefault()}
-                className={`group flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-2 transition-all ${isDragging ? 'opacity-90' : 'hover:border-rpo-red/30 hover:shadow-sm'}`}
+                className={`group flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-2 transition-all ${isDragging ? 'opacity-90' : 'hover:border-sougen-blue/40 hover:shadow-sm'}`}
               >
                 {/* Drag Handle */}
                 <div className="cursor-move pt-3 pl-2 text-gray-400 hover:text-admin-dark">
@@ -179,7 +179,7 @@ export default function AdminFAQ() {
                 <div className="flex-1">
                   <Accordion.Item value={`faq-${faq.id}`} className="border-none">
                     <Accordion.Header>
-                      <Accordion.Trigger className="w-full text-left py-3 px-2 font-poppins font-medium text-admin-dark focus:outline-none flex justify-between items-center group-data-[state=open]:text-rpo-red">
+                      <Accordion.Trigger className="w-full text-left py-3 px-2 font-poppins font-medium text-admin-dark focus:outline-none flex justify-between items-center group-data-[state=open]:text-sougen-blue">
                         <span>{faq.question}</span>
                         <div className="text-gray-400 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180">
                           ▼
@@ -231,8 +231,8 @@ export default function AdminFAQ() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Pertanyaan</label>
                 <input 
                   {...register('question')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
-                  placeholder="Contoh: Kapan acara RPO diselenggarakan?"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
+                  placeholder="Contoh: Kapan acara Sougen diselenggarakan?"
                 />
                 {errors.question && <p className="text-red-500 text-xs mt-1">{errors.question.message}</p>}
               </div>
@@ -242,7 +242,7 @@ export default function AdminFAQ() {
                 <textarea 
                   {...register('answer')}
                   rows={4}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red resize-none"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue resize-none"
                   placeholder="Isi jawaban di sini..."
                 />
                 {errors.answer && <p className="text-red-500 text-xs mt-1">{errors.answer.message}</p>}
@@ -257,7 +257,7 @@ export default function AdminFAQ() {
                 <button 
                   type="submit" 
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-6 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Simpan

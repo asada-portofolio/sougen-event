@@ -37,7 +37,7 @@ export function AdminBottomNav() {
                 key={item.label}
                 onClick={() => setSheetOpen(true)}
                 className={`flex flex-col items-center justify-center gap-0.5 py-1 px-2 text-[11px] font-medium transition-colors ${
-                  sheetOpen ? 'text-rpo-red' : 'text-admin-secondary'
+                  sheetOpen ? 'text-sougen-blue' : 'text-admin-secondary'
                 }`}
               >
                 <item.icon className="w-5 h-5" />
@@ -53,7 +53,7 @@ export function AdminBottomNav() {
               end={item.href === '/admin'}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center gap-0.5 py-1 px-2 text-[11px] font-medium transition-colors ${
-                  isActive ? 'text-rpo-red' : 'text-admin-secondary'
+                  isActive ? 'text-sougen-blue' : 'text-admin-secondary'
                 }`
               }
             >

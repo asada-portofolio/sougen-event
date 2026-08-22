@@ -7,12 +7,14 @@ import { processAndSaveImage, deleteImageFile } from '../utils/imageProcessor';
 
 interface CreateProgramInput {
   name: string;
+  category?: string;
   description?: string;
   rulesHtml?: string;
 }
 
 interface UpdateProgramInput {
   name?: string;
+  category?: string;
   description?: string;
   rulesHtml?: string;
 }
@@ -48,6 +50,7 @@ export async function createProgram(data: CreateProgramInput) {
     data: {
       slug,
       name: data.name,
+      category: data.category,
       description: data.description,
       rulesHtml: data.rulesHtml,
     },
@@ -58,12 +61,21 @@ export async function updateProgram(id: number, data: UpdateProgramInput) {
   const program = await prisma.program.findUnique({ where: { id } });
   if (!program) throw createHttpError(404, 'Program tidak ditemukan.');
 
+  let slug: string | undefined;
+  if (data.name) {
+    slug = slugify(data.name);
+    const existing = await prisma.program.findUnique({ where: { slug } });
+    if (existing && existing.id !== id) slug = `${slug}-${Date.now()}`;
+  }
+
   return prisma.program.update({
     where: { id },
     data: {
-      name: data.name,
-      description: data.description,
-      rulesHtml: data.rulesHtml,
+      ...(slug && { slug }),
+      ...(data.name !== undefined && { name: data.name }),
+      ...(data.category !== undefined && { category: data.category }),
+      ...(data.description !== undefined && { description: data.description }),
+      ...(data.rulesHtml !== undefined && { rulesHtml: data.rulesHtml }),
     },
   });
 }

@@ -12,8 +12,8 @@ export default function AdminLayout() {
       <div className="flex flex-1 flex-col overflow-hidden relative">
         {/* Mobile Header */}
         <header className="flex h-14 shrink-0 items-center justify-between border-b border-admin-border bg-admin-surface px-4 md:hidden shadow-admin z-10">
-          <span className="font-poppins font-bold text-lg text-rpo-red">
-            RPO <span className="text-admin-dark">Admin</span>
+          <span className="font-poppins font-bold text-lg text-sougen-blue">
+            Sougen <span className="text-admin-dark">Admin</span>
           </span>
         </header>
 

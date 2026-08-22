@@ -28,7 +28,7 @@ export default function GalleryDetail() {
   if (error) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center pt-24 text-center px-4">
-        <p className="text-rpo-red font-inter text-lg mb-4">Gagal memuat detail galeri.</p>
+        <p className="text-sougen-blue font-inter text-lg mb-4">Gagal memuat detail galeri.</p>
         <Link to="/gallery" className="text-rpo-black/60 hover:text-rpo-black underline font-inter">
           Kembali ke Galeri
         </Link>
@@ -47,14 +47,15 @@ export default function GalleryDetail() {
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
       <SEO 
-        title={eventData ? `${eventData.name} - Galeri | RPO` : 'Memuat Galeri... | RPO'}
-        description={eventData ? `Koleksi foto dan dokumentasi eksklusif dari event ${eventData.name}.` : 'Memuat Galeri...'}
+        title={eventData ? `${eventData.name} - Galeri | Sougen Creative Management` : 'Memuat Galeri... | Sougen Creative Management'}
+        description={eventData ? `Koleksi foto dan dokumentasi eksklusif dari event ${eventData.name}. Lihat keseruan momen panggung, bintang tamu, cosplayer, dan pengunjung Sougen.` : 'Memuat Galeri...'}
+        ogImage={photos[0]?.imageUrlFull || undefined}
         canonicalUrl={eventData ? `/gallery/${eventData.slug}` : undefined}
       />
 
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="mb-8 border-b-4 border-rpo-red pb-6">
+        <div className="mb-8 border-b-4 border-sougen-blue pb-6">
           <Link 
             to="/gallery" 
             className="inline-flex items-center gap-2 text-rpo-black/50 hover:text-rpo-black font-inter text-sm mb-4 transition-colors"
@@ -75,7 +76,7 @@ export default function GalleryDetail() {
         {/* Loading Initial */}
         {loading && photos.length === 0 ? (
           <div className="flex justify-center items-center py-32">
-            <Loader2 className="w-8 h-8 text-rpo-red animate-spin" />
+            <Loader2 className="w-8 h-8 text-sougen-blue animate-spin" />
           </div>
         ) : photos.length === 0 ? (
           <div className="text-center py-20 bg-white border border-black/10 rounded-xl shadow-sm">
@@ -102,7 +103,7 @@ export default function GalleryDetail() {
                 <button
                   onClick={loadMore}
                   disabled={loadingMore}
-                  className="bg-white border-2 border-rpo-red text-rpo-red hover:bg-rpo-red hover:text-white px-8 py-3 rounded-sm font-inter font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-white border-2 border-sougen-blue text-sougen-blue hover:bg-sougen-blue hover:text-white px-8 py-3 rounded-sm font-inter font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {loadingMore ? (
                     <>

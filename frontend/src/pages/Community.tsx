@@ -15,7 +15,7 @@ export default function Community() {
   if (error) {
     return (
       <div className="w-full min-h-[70vh] bg-[#FAFAFA] flex items-center justify-center pt-24">
-        <p className="text-rpo-red font-inter text-lg">Gagal memuat daftar komunitas. Silakan coba lagi nanti.</p>
+        <p className="text-sougen-blue font-inter text-lg">Gagal memuat daftar komunitas. Silakan coba lagi nanti.</p>
       </div>
     );
   }
@@ -26,26 +26,32 @@ export default function Community() {
   const currentCommunities = communities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
+    <div className="w-full min-h-screen bg-[#FAFAFA]">
       <SEO 
-        title="Komunitas & Partner | Reality Project Organizer"
-        description="Eksplorasi ragam komunitas pop-kultur, hobi, dan partner yang tergabung di dalam ekosistem Reality Project Organizer."
+        title="Komunitas & Partner | Sougen Creative Management"
+        description="Eksplorasi ragam komunitas pop-kultur, hobi, dan partner yang tergabung di dalam ekosistem Sougen Creative Management."
         canonicalUrl="/community"
       />
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <SectionHeader 
-          label="Ekosistem RPO"
-          title="Komunitas & Partner"
-          description="Eksplorasi keragaman komunitas penggiat hobi dan seni pop-kultur yang berkolaborasi dalam panggung karya kami."
-          theme="light"
-          align="left"
-          className="mb-12"
-        />
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="OUR PARTNERS"
+            title="COMMUNITY"
+            description="Eksplorasi keragaman komunitas penggiat hobi dan seni pop-kultur yang berkolaborasi dalam panggung karya kami."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
 
         {loading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map(i => (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            {[1, 2, 3, 4, 5, 6].map(i => (
               <Skeleton key={i} className="w-full h-80 bg-black/5 rounded-xl border border-black/10" />
             ))}
           </div>
@@ -55,7 +61,7 @@ export default function Community() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {currentCommunities.map(community => (
                 <CommunityCard 
                   key={community.id}

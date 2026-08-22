@@ -88,7 +88,7 @@ export default function AdminTalentList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -102,7 +102,7 @@ export default function AdminTalentList() {
         </div>
         <button 
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           Tambah Talent
@@ -118,7 +118,7 @@ export default function AdminTalentList() {
             placeholder="Cari nama talent..." 
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
           />
         </div>
 
@@ -129,7 +129,7 @@ export default function AdminTalentList() {
               onClick={() => setFilterRole(role)}
               className={`px-4 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
                 filterRole === role 
-                  ? 'bg-red-50 text-rpo-red border-rpo-red border'
+                  ? 'bg-sougen-blue/10 text-sougen-blue border-sougen-blue border'
                   : 'bg-white text-admin-secondary border border-admin-border hover:bg-gray-50'
               }`}
             >
@@ -177,7 +177,7 @@ export default function AdminTalentList() {
                 <div className="mt-1.5 flex flex-wrap justify-center gap-1">
                   {talent.eventTalents?.length > 0 ? (
                     talent.eventTalents.slice(0, 2).map((et: any, idx: number) => (
-                      <span key={idx} className="px-1.5 py-0.5 text-[10px] font-medium bg-red-50 text-rpo-red rounded-full">
+                      <span key={idx} className="px-1.5 py-0.5 text-[10px] font-medium bg-sougen-blue/10 text-sougen-blue rounded-full">
                         {et.role}
                       </span>
                     ))
@@ -214,7 +214,7 @@ export default function AdminTalentList() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Nama Panggung / Grup</label>
                 <input 
                   {...register('stageName')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Contoh: The Adams"
                 />
                 {errors.stageName && <p className="text-red-500 text-xs mt-1">{errors.stageName.message}</p>}
@@ -223,7 +223,7 @@ export default function AdminTalentList() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Tag / Jenis Talent (Opsional)</label>
                 {!showCustom && !isCustomTag ? (
                   <select 
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red appearance-none"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue appearance-none"
                     value={watchTag || ''}
                     onChange={(e) => {
                       if (e.target.value === 'custom') {
@@ -244,7 +244,7 @@ export default function AdminTalentList() {
                       {...register('tag')}
                       autoFocus
                       placeholder="Ketik tag custom..."
-                      className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                      className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                     />
                     <button 
                       type="button" 
@@ -252,7 +252,7 @@ export default function AdminTalentList() {
                         setShowCustom(false); 
                         setValue('tag', ''); 
                       }} 
-                      className="text-xs text-admin-secondary hover:text-rpo-red underline whitespace-nowrap px-1"
+                      className="text-xs text-admin-secondary hover:text-sougen-blue underline whitespace-nowrap px-1"
                     >
                       Batal
                     </button>
@@ -267,7 +267,7 @@ export default function AdminTalentList() {
                 <button 
                   type="submit" 
                   disabled={isCreating}
-                  className="px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm disabled:opacity-50"
                 >
                   {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Buat & Lanjut Edit'}
                 </button>

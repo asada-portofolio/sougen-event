@@ -1,10 +1,11 @@
 import { SEO } from '../components/ui/SEO';
-import { Trophy, Users, HeartHandshake } from 'lucide-react';
+import { Trophy, Users, HeartHandshake, Flag } from 'lucide-react';
 import { useAbout } from '../hooks/useAbout';
 import { SectionHeader } from '../components/shared/SectionHeader';
 import { Skeleton } from '../components/ui/Skeleton';
 import { ImageWithSkeleton } from '../components/ui/ImageWithSkeleton';
 import { TalentCard } from '../components/shared/TalentCard';
+import { Link } from 'react-router-dom';
 
 export default function AboutUs() {
   const { content, team, stats, loading, error } = useAbout();
@@ -12,28 +13,44 @@ export default function AboutUs() {
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] text-rpo-black">
       <SEO 
-        title="Tentang Kami | Reality Project Organizer" 
-        description="Kisah, visi, misi, serta profil tim di balik layar kesuksesan Reality Project Organizer." 
+        title="Tentang Kami | Sougen Creative Management" 
+        description="Mengenal sejarah, visi, misi, nilai-nilai komunitas, dan profil tim kreatif di balik kesuksesan berbagai perhelatan Sougen Creative Management." 
         canonicalUrl="/about"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Sougen Creative Management",
+          "alternateName": ["Sougen", "Reality Project Organizer", "RPO"],
+          "url": typeof window !== 'undefined' ? `${window.location.origin}/about` : "https://sougen.id/about",
+          "logo": `${typeof window !== 'undefined' ? window.location.origin : "https://sougen.id"}/images/main-logo.png`,
+          "description": "Mengenal sejarah, visi, misi, nilai-nilai komunitas, dan profil tim kreatif di balik kesuksesan berbagai perhelatan Sougen Creative Management.",
+          "sameAs": [
+            "https://www.instagram.com/sougen.id"
+          ]
+        }}
       />
 
-      {/* Crimson Header Banner */}
-      <div className="w-full bg-rpo-red pt-32 pb-12 px-4 text-center">
-        <h1 className="font-poppins text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white mb-4">
-          Tentang Kami
-        </h1>
-        <p className="font-inter text-white/90 max-w-2xl mx-auto text-lg">
-          Kisah, visi, misi, serta profil tim di balik layar kesuksesan Reality Project Organizer.
-        </p>
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="GET TO KNOW"
+            title="ABOUT US"
+            description="Kisah, visi, misi, serta profil tim di balik layar kesuksesan Sougen Creative Management di Makassar."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16 space-y-24">
+      <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-24 py-16 space-y-16 lg:space-y-20">
         
         {/* Kisah Perjalanan (Sejarah) */}
         <section>
           {error ? (
             <div className="text-center py-10">
-              <p className="text-rpo-red font-inter text-lg">Gagal memuat profil. Silakan coba lagi nanti.</p>
+              <p className="text-sougen-blue font-inter text-lg">Gagal memuat profil. Silakan coba lagi nanti.</p>
             </div>
           ) : loading ? (
             <div className="flex flex-col md:flex-row gap-8 items-center">
@@ -52,7 +69,7 @@ export default function AboutUs() {
                   <div className="relative overflow-hidden border-2 border-rpo-black/10 shadow-elevated aspect-video md:aspect-[4/3] rounded-xl">
                     <ImageWithSkeleton 
                       src={content.storyImageUrl} 
-                      alt="Cerita RPO" 
+                      alt="Foto Profil Kisah Sougen Creative Management" 
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -63,8 +80,8 @@ export default function AboutUs() {
                 )}
               </div>
               
-              {/* Teks Story dengan Aksen Garis Merah */}
-              <div className="w-full md:w-1/2 relative pl-6 border-l-4 border-rpo-red">
+              {/* Teks Story dengan Aksen Garis Biru Sougen */}
+              <div className="w-full md:w-1/2 relative pl-6 border-l-4 border-sougen-blue">
                 <h2 className="font-poppins text-3xl md:text-4xl font-black text-rpo-black mb-6 uppercase tracking-tight">
                   Kisah Perjalanan
                 </h2>
@@ -85,8 +102,8 @@ export default function AboutUs() {
                   label="Tujuan Kami"
                   title="Visi"
                   theme="light"
-                  align="left"
-                  className="mb-8"
+                  align="full-center"
+                  className="mb-8 md:!items-start [&>div]:md:!items-start"
                 />
                 <p className="font-inter text-rpo-black/70 leading-relaxed text-lg">
                   {content?.visionText || 'Belum ada visi yang ditetapkan.'}
@@ -97,14 +114,14 @@ export default function AboutUs() {
                   label="Cara Kami"
                   title="Misi"
                   theme="light"
-                  align="left"
-                  className="mb-8"
+                  align="full-center"
+                  className="mb-8 md:!items-start [&>div]:md:!items-start"
                 />
                 {content?.missionList && content.missionList.length > 0 ? (
                   <ul className="space-y-6">
                     {content.missionList.map((mission, idx) => (
                       <li key={idx} className="flex items-start gap-4">
-                        <span className="shrink-0 flex items-center justify-center w-10 h-10 bg-rpo-red text-white text-lg font-black font-poppins rounded-sm shadow-sm">
+                        <span className="shrink-0 flex items-center justify-center w-10 h-10 bg-sougen-blue text-white text-lg font-black font-poppins rounded-sm shadow-sm">
                           {idx + 1}
                         </span>
                         <span className="font-inter text-rpo-black/70 leading-relaxed text-lg pt-1">
@@ -130,34 +147,44 @@ export default function AboutUs() {
             align="center"
             className="mb-12"
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center justify-center p-8 bg-white border-2 border-rpo-red/10 rounded-xl text-center shadow-sm hover:border-rpo-red transition-colors duration-300">
-              <Trophy className="w-10 h-10 text-rpo-red mb-4" />
-              <span className="font-poppins text-5xl md:text-6xl font-black text-rpo-black mb-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-white border-2 border-sougen-blue/10 rounded-xl text-center shadow-sm hover:border-sougen-blue transition-colors duration-300">
+              <Trophy className="w-8 h-8 md:w-10 md:h-10 text-sougen-blue mb-3 md:mb-4" />
+              <span className="font-poppins text-4xl md:text-5xl lg:text-6xl font-black text-rpo-black mb-1 md:mb-2">
                 {loading ? '-' : stats?.events || 0}
               </span>
-              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.1em] text-sm font-bold">
+              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.05em] md:tracking-[0.1em] text-[10px] md:text-xs lg:text-sm font-bold">
                 Event Sukses
               </span>
             </div>
             
-            <div className="flex flex-col items-center justify-center p-8 bg-white border-2 border-rpo-red/10 rounded-xl text-center shadow-sm hover:border-rpo-red transition-colors duration-300">
-              <Users className="w-10 h-10 text-rpo-red mb-4" />
-              <span className="font-poppins text-5xl md:text-6xl font-black text-rpo-black mb-2">
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-white border-2 border-sougen-blue/10 rounded-xl text-center shadow-sm hover:border-sougen-blue transition-colors duration-300">
+              <Users className="w-8 h-8 md:w-10 md:h-10 text-sougen-blue mb-3 md:mb-4" />
+              <span className="font-poppins text-4xl md:text-5xl lg:text-6xl font-black text-rpo-black mb-1 md:mb-2">
                 {loading ? '-' : stats?.talents || 0}
               </span>
-              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.1em] text-sm font-bold">
+              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.05em] md:tracking-[0.1em] text-[10px] md:text-xs lg:text-sm font-bold">
                 Talent Tersalurkan
               </span>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-8 bg-white border-2 border-rpo-red/10 rounded-xl text-center shadow-sm hover:border-rpo-red transition-colors duration-300">
-              <HeartHandshake className="w-10 h-10 text-rpo-red mb-4" />
-              <span className="font-poppins text-5xl md:text-6xl font-black text-rpo-black mb-2">
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-white border-2 border-sougen-blue/10 rounded-xl text-center shadow-sm hover:border-sougen-blue transition-colors duration-300">
+              <HeartHandshake className="w-8 h-8 md:w-10 md:h-10 text-sougen-blue mb-3 md:mb-4" />
+              <span className="font-poppins text-4xl md:text-5xl lg:text-6xl font-black text-rpo-black mb-1 md:mb-2">
                 {loading ? '-' : stats?.communities || 0}
               </span>
-              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.1em] text-sm font-bold">
+              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.05em] md:tracking-[0.1em] text-[10px] md:text-xs lg:text-sm font-bold">
                 Mitra Komunitas
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-white border-2 border-sougen-blue/10 rounded-xl text-center shadow-sm hover:border-sougen-blue transition-colors duration-300">
+              <Flag className="w-8 h-8 md:w-10 md:h-10 text-sougen-blue mb-3 md:mb-4" />
+              <span className="font-poppins text-4xl md:text-5xl lg:text-6xl font-black text-rpo-black mb-1 md:mb-2">
+                2015
+              </span>
+              <span className="font-inter text-rpo-black/50 uppercase tracking-[0.05em] md:tracking-[0.1em] text-[10px] md:text-xs lg:text-sm font-bold">
+                Tahun Berdiri
               </span>
             </div>
           </div>
@@ -194,10 +221,41 @@ export default function AboutUs() {
                   name={member.name}
                   role={member.role}
                   imageUrl={member.profileImageUrl}
+                  showStats={false}
                 />
               ))}
             </div>
           )}
+        </section>
+
+        {/* CTA Penutup */}
+        <section className="bg-[#00486E] rounded-2xl p-8 md:p-12 lg:p-16 text-center shadow-lg relative overflow-hidden">
+          {/* Subtle Background Pattern/Gradient */}
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,transparent_100%)] pointer-events-none"></div>
+          
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="font-poppins text-3xl md:text-4xl font-black text-white mb-4 uppercase tracking-wide">
+              Mari Berkolaborasi!
+            </h2>
+            <p className="font-inter text-white/80 text-base md:text-lg mb-8 leading-relaxed">
+              Kami selalu terbuka untuk ide-ide baru, kemitraan, dan peluang untuk menciptakan acara budaya pop Jepang yang lebih meriah dan tak terlupakan di Makassar.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                to="/community"
+                className="w-full sm:w-auto px-8 py-3.5 bg-white text-sougen-blue hover:text-sougen-green-dark font-poppins font-bold rounded-full shadow-md hover:scale-105 hover:shadow-xl transition-all duration-300 uppercase tracking-wide text-sm"
+              >
+                Lihat Komunitas Mitra
+              </Link>
+              <Link 
+                to="/contact"
+                className="w-full sm:w-auto px-8 py-3.5 bg-transparent border-2 border-white text-white font-poppins font-bold rounded-full hover:bg-white/10 hover:scale-105 transition-all duration-300 uppercase tracking-wide text-sm"
+              >
+                Hubungi Kami
+              </Link>
+            </div>
+          </div>
         </section>
 
       </div>

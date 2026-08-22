@@ -28,7 +28,7 @@ export function EventHero({ event }: EventHeroProps) {
 
   if (event.heroMode === 'POSTER' && bgImage) {
     return (
-      <section className="relative w-full h-[70vh] md:h-[85vh] bg-rpo-black flex flex-col justify-end overflow-hidden border-b border-rpo-red/30">
+      <section className="relative w-full h-[70vh] md:h-[85vh] bg-rpo-black flex flex-col justify-end overflow-hidden border-b border-sougen-blue/30">
         {/* Background Image (Cinematic) */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -46,18 +46,18 @@ export function EventHero({ event }: EventHeroProps) {
               {event.name}
             </h1>
             {event.theme && (
-              <p className="text-xl md:text-2xl text-rpo-red font-inter font-bold drop-shadow-md">
+              <p className="text-xl md:text-2xl text-sougen-blue font-inter font-bold drop-shadow-md">
                 {event.theme}
               </p>
             )}
             
             <div className="flex flex-wrap items-center gap-6 text-rpo-near-white font-inter py-2">
               <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-rpo-red" />
+                <Calendar className="w-5 h-5 text-sougen-blue" />
                 <span>{formatDate(event.startDate, event.endDate)}</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-rpo-red" />
+                <MapPin className="w-5 h-5 text-sougen-blue" />
                 <span>{event.location}</span>
               </div>
             </div>
@@ -91,7 +91,7 @@ export function EventHero({ event }: EventHeroProps) {
 
   // TEMPLATE Mode
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-rpo-black px-4 lg:px-8 py-24 border-b border-rpo-red/30">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-rpo-black px-4 lg:px-8 py-24 border-b border-sougen-blue/30">
       {/* Decorative spinning text element */}
       <div className="absolute -bottom-32 -right-32 opacity-10 hidden md:block pointer-events-none">
         <AnimationText text="REALITY PROJECT ORGANIZER" className="w-[600px] h-[600px]" />
@@ -116,7 +116,7 @@ export function EventHero({ event }: EventHeroProps) {
           {/* Decorative Grid Background */}
           <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
           {/* Red Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-rpo-red/20 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-sougen-blue/20 blur-[120px] rounded-full pointer-events-none" />
         </>
       )}
 
@@ -127,8 +127,8 @@ export function EventHero({ event }: EventHeroProps) {
 
             {/* ── Bagian 1: Header — Nama RPO ── */}
             <div className="relative px-6 pt-5 pb-4 text-center">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-rpo-red" />
-              <div className="font-poppins font-black text-rpo-red text-[1.1rem] tracking-[0.18em] uppercase leading-none">
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-sougen-blue" />
+              <div className="font-poppins font-black text-sougen-blue text-[1.1rem] tracking-[0.18em] uppercase leading-none">
                 Reality Project
               </div>
               <div className="font-inter font-medium text-gray-500 text-[0.55rem] tracking-[0.4em] uppercase mt-1.5">
@@ -146,12 +146,12 @@ export function EventHero({ event }: EventHeroProps) {
             {/* ── Bagian 2: Body — Info Event ── */}
             <div className="px-5 pt-5 pb-4 flex flex-col items-center text-center">
               <div className="flex items-center gap-1.5 mb-2">
-                <Calendar className="w-3.5 h-3.5 text-rpo-red" />
+                <Calendar className="w-3.5 h-3.5 text-sougen-blue" />
                 <span className="font-inter font-semibold text-gray-500 text-[0.65rem] tracking-[0.15em] uppercase">
                   {formatDate(event.startDate, event.endDate)}
                 </span>
               </div>
-              <h2 className="font-poppins font-black text-rpo-red text-[1.4rem] leading-[1.05] uppercase tracking-tight mb-1">
+              <h2 className="font-poppins font-black text-sougen-blue text-[1.4rem] leading-[1.05] uppercase tracking-tight mb-1">
                 {event.name}
               </h2>
               {event.theme && (
@@ -160,7 +160,7 @@ export function EventHero({ event }: EventHeroProps) {
                 </div>
               )}
               <div className="flex items-center gap-1.5 text-gray-500 text-[0.65rem] mt-1.5 w-full justify-center">
-                <MapPin className="w-3.5 h-3.5 text-rpo-red shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-sougen-blue shrink-0" />
                 <span className="font-inter truncate">{event.location}</span>
               </div>
             </div>
@@ -202,21 +202,21 @@ export function EventHero({ event }: EventHeroProps) {
         <div className="hidden md:flex w-full relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 items-center justify-center mt-10">
           <div className="p-10 lg:p-14 flex flex-col items-center text-center max-w-5xl w-full">
             
-            {/* RPO presenter line */}
+            {/* Sougen presenter line */}
             <div className="flex items-center gap-3 mb-6 lg:mb-4 opacity-90">
               {settings?.logoUrl ? (
-                <img src={getImageUrl(settings.logoUrl)} alt="RPO" className="h-8 lg:h-6 object-contain" />
+                <img src={getImageUrl(settings.logoUrl)} alt="Logo Sougen Creative Management" className="h-8 lg:h-6 object-contain" />
               ) : (
-                <div className="flex h-8 w-8 lg:h-6 lg:w-6 items-center justify-center bg-rpo-red rounded-[6px]">
-                  <span className="font-poppins text-xs lg:text-[10px] font-black text-white leading-none">RP</span>
+                <div className="flex h-8 w-8 lg:h-6 lg:w-6 items-center justify-center bg-sougen-blue rounded-[6px]">
+                  <span className="font-poppins text-xs lg:text-[10px] font-black text-white leading-none">SG</span>
                 </div>
               )}
-              <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Reality Project Organizer</span>
+              <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Sougen Creative Management</span>
             </div>
 
             {/* Event Name & Theme */}
             {event.theme && (
-              <p className="font-inter font-bold text-rpo-red text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
+              <p className="font-inter font-bold text-sougen-blue text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
                 {event.theme}
               </p>
             )}
@@ -227,11 +227,11 @@ export function EventHero({ event }: EventHeroProps) {
             {/* Unified metadata row */}
             <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 mb-10 pb-10 lg:mb-8 lg:pb-8 border-b border-white/10 w-full max-w-3xl">
               <div className="flex items-center gap-2.5 text-white/90">
-                <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                 <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{formatDate(event.startDate, event.endDate)}</span>
               </div>
               <div className="flex items-center gap-2.5 text-white/90">
-                <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                 <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{event.location}</span>
               </div>
             </div>

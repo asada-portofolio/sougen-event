@@ -4,12 +4,9 @@ import { Menu, X, ChevronDown, ArrowLeft } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
 import { SideMenu } from './SideMenu';
-import { useSiteSettings } from '../../hooks/useSiteSettings';
-import { getImageUrl } from '../../utils/getImageUrl';
 
 export function Navbar() {
   const location = useLocation();
-  const { settings } = useSiteSettings();
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -50,7 +47,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 z-[100] w-full transition duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
           isScrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]'
+            ? 'bg-white/95 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.08)] border-b border-black/[0.04]'
             : 'bg-gradient-to-b from-black/60 to-transparent'
         )}
       >
@@ -63,7 +60,7 @@ export function Navbar() {
                 to={leftNav.to} 
                 className={cn(
                   "flex items-center gap-2 transition-colors duration-300",
-                  isScrolled ? "text-rpo-black hover:text-rpo-red" : "text-white hover:text-rpo-red"
+                  isScrolled ? "text-rpo-black hover:text-sougen-blue" : "text-white hover:text-sougen-blue"
                 )}
               >
                 <ArrowLeft className="w-5 h-5 lg:w-4 lg:h-4" />
@@ -72,28 +69,25 @@ export function Navbar() {
                 </span>
               </Link>
             ) : (
-              <Link to="/" className="flex items-center gap-3">
-                {settings?.logoUrl ? (
-                  <img 
-                    src={getImageUrl(settings.logoUrl)} 
-                    alt="RPO Logo" 
-                    className="h-8 lg:h-7 object-contain"
-                  />
-                ) : (
-                  <div className="flex h-8 w-8 lg:h-7 lg:w-7 shrink-0 items-center justify-center rounded-sm bg-rpo-red text-white font-poppins font-black text-lg lg:text-base leading-none shadow-sm">
-                    RP
-                  </div>
-                )}
-                {!settings?.logoUrl && (
-                  <div className={cn(
-                    "hidden sm:flex flex-col font-poppins font-bold leading-[1.15] tracking-tight transition-colors duration-500",
-                    isScrolled ? 'text-rpo-black' : 'text-white'
-                  )}>
-                    <span className="text-[10px] md:text-[11px] lg:text-[9.5px] uppercase">Reality</span>
-                    <span className="text-[10px] md:text-[11px] lg:text-[9.5px] uppercase">Project</span>
-                    <span className="text-[10px] md:text-[11px] lg:text-[9.5px] uppercase">Organizer</span>
-                  </div>
-                )}
+              <Link to="/" className="relative flex items-center h-10 lg:h-9">
+                {/* Logo Putih (Original) saat Navbar transparan / di atas */}
+                <img 
+                  src="/images/main-logo.png" 
+                  alt="Sougen Logo" 
+                  className={cn(
+                    "h-10 lg:h-9 w-auto object-contain transition-opacity duration-500",
+                    isScrolled ? "opacity-0 pointer-events-none" : "opacity-100"
+                  )}
+                />
+                {/* Logo Abu-abu saat Navbar putih / setelah di-scroll */}
+                <img 
+                  src="/images/logo-ver2.png" 
+                  alt="Sougen Logo" 
+                  className={cn(
+                    "h-10 lg:h-9 w-auto object-contain absolute left-0 top-0 transition-opacity duration-500",
+                    isScrolled ? "opacity-100" : "opacity-0 pointer-events-none"
+                  )}
+                />
               </Link>
             )}
           </div>
@@ -108,15 +102,18 @@ export function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={cn(
-                    'text-sm lg:text-[12px] font-inter font-bold transition-colors duration-300',
+                    'relative text-sm lg:text-[12px] font-inter font-bold transition-colors duration-300 py-1',
                     isActive
-                      ? 'text-rpo-red'
+                      ? 'text-sougen-blue'
                       : isScrolled
-                        ? 'text-rpo-black/80 hover:text-rpo-red'
-                        : 'text-white hover:text-rpo-red'
+                        ? 'text-rpo-black/80 hover:text-sougen-blue'
+                        : 'text-white hover:text-sougen-blue'
                   )}
                 >
                   {link.name}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-sougen-blue rounded-full" />
+                  )}
                 </Link>
               );
             })}
@@ -124,7 +121,7 @@ export function Navbar() {
             {/* Hover Dropdown for Resources */}
             <div className="group relative flex items-center h-16 lg:h-14 cursor-pointer">
               <button className={cn(
-                "flex items-center space-x-1 text-sm lg:text-[12px] font-inter font-bold group-hover:text-rpo-red transition-colors duration-300 focus:outline-none",
+                "flex items-center space-x-1 text-sm lg:text-[12px] font-inter font-bold group-hover:text-sougen-blue transition-colors duration-300 focus:outline-none",
                 isScrolled ? 'text-rpo-black/80' : 'text-white'
               )}>
                 <span>Resources</span>
@@ -138,7 +135,7 @@ export function Navbar() {
                     <Link
                       key={link.path}
                       to={link.path}
-                      className="relative flex cursor-pointer select-none items-center rounded-lg px-4 py-2 text-sm lg:text-xs font-inter font-bold text-rpo-black/70 outline-none transition-colors hover:bg-rpo-red hover:text-white"
+                      className="relative flex cursor-pointer select-none items-center rounded-lg px-4 py-2 text-sm lg:text-xs font-inter font-bold text-rpo-black/70 outline-none transition-colors hover:bg-sougen-blue hover:text-white"
                     >
                       {link.name}
                     </Link>
@@ -151,15 +148,18 @@ export function Navbar() {
             <Link
               to="/contact"
               className={cn(
-                'text-sm lg:text-[12px] font-inter font-bold transition-colors duration-300',
+                'relative text-sm lg:text-[12px] font-inter font-bold transition-colors duration-300 py-1',
                 location.pathname === '/contact'
-                  ? 'text-rpo-red'
+                  ? 'text-sougen-blue'
                   : isScrolled
-                    ? 'text-rpo-black/80 hover:text-rpo-red'
-                    : 'text-white hover:text-rpo-red'
+                    ? 'text-rpo-black/80 hover:text-sougen-blue'
+                    : 'text-white hover:text-sougen-blue'
               )}
             >
               Contact
+              {location.pathname === '/contact' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-sougen-blue rounded-full" />
+              )}
             </Link>
           </nav>
 
@@ -168,11 +168,10 @@ export function Navbar() {
             <button
               className={cn(
                 'flex h-12 w-12 lg:h-10 lg:w-10 items-center justify-center rounded-full transition-all duration-300 focus:outline-none',
-                isSideMenuOpen 
-                  ? 'bg-transparent text-white rotate-90 scale-110' // SideMenu overlay handles this visually
-                  : isScrolled
-                    ? 'text-rpo-black hover:bg-rpo-black/5'
-                    : 'text-white hover:bg-white/10'
+                isScrolled
+                  ? 'text-rpo-black hover:bg-rpo-black/5'
+                  : 'text-white hover:bg-white/10',
+                isSideMenuOpen && 'rotate-90 scale-110'
               )}
               onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
             >

@@ -252,7 +252,7 @@ export default function AdminKebijakan() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -270,13 +270,13 @@ export default function AdminKebijakan() {
         <Tabs.List className="flex shrink-0 border-b border-admin-border mb-6">
           <Tabs.Trigger 
             value="aturan" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none"
           >
             Aturan Pengunjung
           </Tabs.Trigger>
           <Tabs.Trigger 
             value="prosedur" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none"
           >
             Prosedur Darurat
           </Tabs.Trigger>
@@ -301,14 +301,14 @@ export default function AdminKebijakan() {
                   value={newPolicyIcon} 
                   onChange={(e) => setNewPolicyIcon(e.target.value)} 
                   placeholder="Ikon (mis: Shield)" 
-                  className="w-full md:w-32 px-3 py-2 border border-admin-border rounded-lg text-sm"
+                  className="w-full md:w-32 px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
                 <input 
                   type="text" 
                   value={newPolicyText} 
                   onChange={(e) => setNewPolicyText(e.target.value)} 
                   placeholder="Masukkan isi aturan pengunjung..." 
-                  className="w-full flex-1 px-3 py-2 border border-admin-border rounded-lg text-sm"
+                  className="w-full flex-1 px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   autoFocus
                 />
                 <div className="flex gap-2 w-full md:w-auto">
@@ -321,7 +321,7 @@ export default function AdminKebijakan() {
                   <button 
                     onClick={handleCreatePolicy}
                     disabled={isSavingPolicy || !newPolicyText.trim()}
-                    className="flex-1 md:flex-none px-4 py-2 text-sm bg-rpo-red text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                    className="flex-1 md:flex-none px-4 py-2 text-sm bg-sougen-blue text-white rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                   >
                     {isSavingPolicy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Simpan'}
                   </button>
@@ -356,13 +356,13 @@ export default function AdminKebijakan() {
                           value={inlinePolicyIcon} 
                           onChange={(e) => setInlinePolicyIcon(e.target.value)} 
                           placeholder="Ikon" 
-                          className="w-full md:w-24 px-2 py-1.5 border border-admin-border rounded text-sm"
+                          className="w-full md:w-24 px-2 py-1.5 border border-admin-border rounded text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                         />
                         <input 
                           type="text" 
                           value={inlinePolicyText} 
                           onChange={(e) => setInlinePolicyText(e.target.value)} 
-                          className="w-full flex-1 px-2 py-1.5 border border-admin-border rounded text-sm"
+                          className="w-full flex-1 px-2 py-1.5 border border-admin-border rounded text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                           autoFocus
                         />
                       </div>
@@ -387,7 +387,7 @@ export default function AdminKebijakan() {
                           <button 
                             onClick={() => saveInlineEditPolicy(policy.id)}
                             disabled={isSavingPolicy}
-                            className="p-1.5 text-rpo-red hover:bg-red-50 rounded transition-colors"
+                            className="p-1.5 text-sougen-blue hover:bg-sougen-blue/10 rounded transition-colors"
                           >
                             {isSavingPolicy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                           </button>
@@ -421,7 +421,7 @@ export default function AdminKebijakan() {
           <div className="flex justify-end">
             <button 
               onClick={openCreateSafetyModal}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               Tambah Prosedur
@@ -441,7 +441,7 @@ export default function AdminKebijakan() {
                     onDragEnter={(e) => handleDragEnterSafety(e, index)}
                     onDragEnd={handleDragEndSafety}
                     onDragOver={(e) => e.preventDefault()}
-                    className={`group flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-2 transition-all ${isDraggingSafety ? 'opacity-90' : 'hover:border-rpo-red/30 hover:shadow-sm'}`}
+                    className={`group flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-2 transition-all ${isDraggingSafety ? 'opacity-90' : 'hover:border-sougen-blue/40 hover:shadow-sm'}`}
                   >
                     <div className="cursor-move pt-3 pl-2 text-gray-400 hover:text-admin-dark">
                       <GripVertical className="w-5 h-5" />
@@ -450,7 +450,7 @@ export default function AdminKebijakan() {
                     <div className="flex-1">
                       <Accordion.Item value={`saf-${saf.id}`} className="border-none">
                         <Accordion.Header>
-                          <Accordion.Trigger className="w-full text-left py-3 px-2 font-poppins font-medium text-admin-dark focus:outline-none flex justify-between items-center group-data-[state=open]:text-rpo-red">
+                          <Accordion.Trigger className="w-full text-left py-3 px-2 font-poppins font-medium text-admin-dark focus:outline-none flex justify-between items-center group-data-[state=open]:text-sougen-blue">
                             <span>{saf.question}</span>
                             <div className="text-gray-400 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180">
                               ▼
@@ -501,7 +501,7 @@ export default function AdminKebijakan() {
                 <label className="block text-sm font-medium text-admin-dark mb-1">Pertanyaan / Kondisi</label>
                 <input 
                   {...registerSafety('question')}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   placeholder="Misal: Apa yang harus dilakukan saat gempa?"
                 />
                 {errorsSafety.question && <p className="text-red-500 text-xs mt-1">{errorsSafety.question.message}</p>}
@@ -512,7 +512,7 @@ export default function AdminKebijakan() {
                 <textarea 
                   {...registerSafety('answer')}
                   rows={4}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red resize-none"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue resize-none"
                   placeholder="Isi instruksi evakuasi atau prosedur..."
                 />
                 {errorsSafety.answer && <p className="text-red-500 text-xs mt-1">{errorsSafety.answer.message}</p>}
@@ -527,7 +527,7 @@ export default function AdminKebijakan() {
                 <button 
                   type="submit" 
                   disabled={isSavingSafety}
-                  className="inline-flex items-center gap-2 px-6 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSavingSafety ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Simpan

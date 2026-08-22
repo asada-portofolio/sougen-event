@@ -75,7 +75,7 @@ export default function AdminProgramList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -85,11 +85,11 @@ export default function AdminProgramList() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-poppins font-bold text-admin-dark">Manajemen Program</h1>
-          <p className="text-sm text-admin-secondary mt-1">Kelola data program kegiatan RPO.</p>
+          <p className="text-sm text-admin-secondary mt-1">Kelola data program kegiatan Sougen.</p>
         </div>
         <button 
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           Tambah Program
@@ -105,7 +105,7 @@ export default function AdminProgramList() {
             placeholder="Cari nama program..." 
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+            className="w-full pl-10 pr-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
           />
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function AdminProgramList() {
       {filteredPrograms.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPrograms.map(program => (
-            <div key={program.id} className="bg-white border border-admin-border rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+            <div key={program.id} className="bg-white border border-admin-border rounded-xl shadow-sm hover:shadow-md hover:border-sougen-blue/30 transition-all overflow-hidden flex flex-col">
               {/* Cover Photo */}
               <div className="h-40 relative bg-gray-100 flex items-center justify-center overflow-hidden border-b border-admin-border">
                 {program.coverImageUrl ? (
@@ -147,7 +147,7 @@ export default function AdminProgramList() {
                 </button>
                 <Link 
                   to={`/admin/programs/${program.id}`}
-                  className="px-4 py-2 bg-white border border-admin-border text-admin-dark text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2 flex-1 justify-center"
+                  className="px-4 py-2 bg-white border border-admin-border text-admin-dark text-sm font-medium rounded-lg hover:bg-sougen-blue/5 hover:border-sougen-blue/40 hover:text-sougen-blue transition-colors flex items-center gap-2 flex-1 justify-center"
                 >
                   <Edit className="w-4 h-4" />
                   Edit Program
@@ -175,8 +175,8 @@ export default function AdminProgramList() {
                   <label className="block text-sm font-medium text-admin-dark mb-1">Nama Program</label>
                   <input 
                     {...register('name')}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
-                    placeholder="Contoh: RPO Mini Competition"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
+                    placeholder="Contoh: Sougen Mini Competition"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                 </div>
@@ -188,7 +188,7 @@ export default function AdminProgramList() {
                 <button 
                   type="submit" 
                   disabled={isCreating}
-                  className="px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm disabled:opacity-50"
                 >
                   {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Buat & Lanjut Edit'}
                 </button>

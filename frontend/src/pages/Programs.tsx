@@ -6,7 +6,7 @@ import { Pagination } from '../components/shared/Pagination';
 import { Skeleton } from '../components/ui/Skeleton';
 import { SectionHeader } from '../components/shared/SectionHeader';
 
-const ITEMS_PER_PAGE = 6; // Set to 6 since cards are large
+const ITEMS_PER_PAGE = 10;
 
 export default function Programs() {
   const { programs, loading, error } = usePrograms();
@@ -15,7 +15,7 @@ export default function Programs() {
   if (error) {
     return (
       <div className="w-full min-h-[70vh] bg-[#FAFAFA] flex items-center justify-center pt-24">
-        <p className="text-rpo-red font-inter text-lg">Gagal memuat daftar program. Silakan coba lagi nanti.</p>
+        <p className="text-sougen-blue font-inter text-lg">Gagal memuat daftar program. Silakan coba lagi nanti.</p>
       </div>
     );
   }
@@ -26,27 +26,32 @@ export default function Programs() {
   const currentPrograms = programs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
+    <div className="w-full min-h-screen bg-[#FAFAFA]">
       <SEO 
-        title="Program & Kegiatan | Reality Project Organizer"
-        description="Temukan berbagai program, kompetisi, dan kegiatan seru yang rutin digelar di setiap event Reality Project Organizer."
+        title="Program & Kegiatan | Sougen Creative Management"
+        description="Temukan berbagai program, kompetisi, dan kegiatan seru yang rutin digelar di setiap event Sougen Creative Management."
         canonicalUrl="/programs"
       />
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <SectionHeader 
-          label="Aktivitas Acara"
-          title="Program & Kegiatan"
-          description="Eksplorasi lini program reguler, kompetisi cosplay, hingga kegiatan seru komunitas yang menjadi denyut nadi di setiap perhelatan kami."
-          theme="light"
-          align="left"
-          className="mb-12"
-        />
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="WHAT WE DO"
+            title="PROGRAMS & ACTIVITIES"
+            description="Eksplorasi lini program reguler, kompetisi cosplay, hingga kegiatan seru komunitas yang menjadi denyut nadi di setiap perhelatan kami."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <Skeleton key={i} className="w-full h-[500px] bg-black/5 rounded-xl border border-black/10" />
+              <Skeleton key={i} className="w-full h-80 bg-black/5 rounded-xl border border-black/10" />
             ))}
           </div>
         ) : programs.length === 0 ? (
@@ -55,7 +60,7 @@ export default function Programs() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {currentPrograms.map(program => (
                 <ProgramCard 
                   key={program.id}

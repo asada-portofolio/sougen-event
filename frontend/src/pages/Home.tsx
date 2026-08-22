@@ -26,12 +26,12 @@ export default function Home() {
   if (eventLoading || (talentsLoading && !event)) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA]">
-        <SEO title="Memuat... | Reality Project Organizer" description="Memuat data..." />
+        <SEO title="Memuat... | Sougen Creative Management" description="Memuat data..." />
         <Skeleton className="w-full h-[85vh] min-h-[600px] rounded-none bg-rpo-black/10" />
-        <Skeleton className="w-full h-14 rounded-none bg-rpo-red/20" />
+        <Skeleton className="w-full h-14 rounded-none bg-sougen-blue/20" />
         <div className="max-w-7xl mx-auto py-20 px-4 space-y-24">
           <div className="space-y-6">
-            <Skeleton className="w-32 h-6 mx-auto bg-rpo-red/10" />
+            <Skeleton className="w-32 h-6 mx-auto bg-sougen-blue/10" />
             <Skeleton className="w-64 h-10 mx-auto bg-rpo-black/5" />
             <Skeleton className="w-96 h-4 mx-auto bg-rpo-black/5" />
             <div className="flex gap-6 mt-12 justify-center">
@@ -46,10 +46,22 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen">
       <SEO
-        title={event ? `${event.name} | RPO` : 'Beranda | Reality Project Organizer'}
-        description={event?.theme || 'Komunitas dan event organizer budaya pop Jepang di Makassar'}
-        ogImage={event?.posterImageUrl || '/poster-placeholder.png'}
+        title={event ? `${event.name} | Sougen Creative Management` : 'Beranda | Sougen Creative Management'}
+        description={event ? `${event.name}${event.theme ? ` - ${event.theme}` : ''}. Event resmi budaya pop Jepang diselenggarakan oleh Sougen Creative Management di Makassar.` : 'Platform resmi Sougen Creative Management, event organizer kreatif dan komunitas budaya pop Jepang terkemuka di Makassar. Temukan info event terbaru.'}
+        ogImage={event?.posterImageUrl || '/og-default.png'}
         canonicalUrl="/"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Sougen Creative Management",
+          "alternateName": ["Sougen", "Reality Project Organizer", "RPO"],
+          "url": typeof window !== 'undefined' ? window.location.origin : "https://sougen.id",
+          "logo": `${typeof window !== 'undefined' ? window.location.origin : "https://sougen.id"}/images/main-logo.png`,
+          "description": "Platform resmi Sougen Creative Management, event organizer kreatif dan komunitas budaya pop Jepang terkemuka di Makassar.",
+          "sameAs": [
+            "https://www.instagram.com/sougen.id"
+          ]
+        }}
       />
 
       {/* 1. Hero Section (Always rendered, adapts based on active event) */}

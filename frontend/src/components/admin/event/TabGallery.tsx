@@ -114,15 +114,15 @@ export default function TabGallery({ eventData, onUpdate }: TabGalleryProps) {
       {/* Upload Area */}
       <div 
         onClick={() => fileInputRef.current?.click()}
-        className="group relative w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center p-12 cursor-pointer hover:bg-gray-100 hover:border-rpo-red transition-all"
+        className="group relative w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center justify-center p-12 cursor-pointer hover:bg-gray-100 hover:border-sougen-blue transition-all"
       >
         {uploading ? (
           <div className="flex flex-col items-center text-admin-secondary">
-            <Loader2 className="w-10 h-10 animate-spin mb-4 text-rpo-red" />
+            <Loader2 className="w-10 h-10 animate-spin mb-4 text-sougen-blue" />
             <span className="text-sm font-medium">Mengunggah...</span>
           </div>
         ) : (
-          <div className="flex flex-col items-center text-admin-secondary group-hover:text-rpo-red transition-colors">
+          <div className="flex flex-col items-center text-admin-secondary group-hover:text-sougen-blue transition-colors">
             <UploadCloud className="w-10 h-10 mb-4" />
             <span className="text-sm font-medium">Klik untuk memilih beberapa foto</span>
             <span className="text-xs mt-1">Maks. 5MB per file (JPG, PNG)</span>

@@ -20,7 +20,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
           Dashboard
         </h1>
         <p className="text-sm text-admin-secondary mt-1">
-          Ringkasan aktivitas dan status data website RPO.
+          Ringkasan aktivitas dan status data website Sougen.
         </p>
       </div>
 
@@ -61,11 +61,11 @@ export default function AdminDashboard() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                   Event Aktif
                 </span>
                 {!isEventComplete && (
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-700">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-50 text-yellow-700 border border-yellow-200">
                     Data Belum Lengkap
                   </span>
                 )}
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
             
             <Link
               to="/admin/event"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm transition-colors"
             >
               Kelola Event
               <ChevronRight className="w-4 h-4" />
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
           </p>
           <Link
             to="/admin/event"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
             Buat Event Baru
@@ -115,10 +115,10 @@ export default function AdminDashboard() {
       {/* Statistik Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Event', value: stats.events, icon: CalendarDays, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Total Event', value: stats.events, icon: CalendarDays, color: 'text-sougen-blue', bg: 'bg-sougen-blue/10' },
           { label: 'Talent', value: stats.talents, icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
-          { label: 'Komunitas', value: stats.communities, icon: Handshake, color: 'text-orange-600', bg: 'bg-orange-50' },
-          { label: 'Pesan Baru', value: unreadMessagesCount, icon: MessageSquare, color: 'text-rpo-red', bg: 'bg-red-50' },
+          { label: 'Komunitas', value: stats.communities, icon: Handshake, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: 'Pesan Baru', value: unreadMessagesCount, icon: MessageSquare, color: 'text-sougen-blue', bg: 'bg-sougen-blue/10' },
         ].map((stat, idx) => (
           <div key={idx} className="bg-white border border-admin-border rounded-xl p-5 shadow-sm flex items-start gap-4">
             <div className={`p-3 rounded-lg shrink-0 ${stat.bg} ${stat.color}`}>
@@ -141,7 +141,7 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-white border border-admin-border rounded-xl shadow-sm overflow-hidden flex flex-col">
           <div className="px-6 py-4 border-b border-admin-border flex items-center justify-between">
             <h3 className="font-poppins font-semibold text-admin-dark">Pesan Terbaru</h3>
-            <Link to="/admin/kontak" className="text-sm font-medium text-rpo-red hover:underline">
+            <Link to="/admin/kontak" className="text-sm font-medium text-sougen-blue hover:underline">
               Lihat Semua
             </Link>
           </div>

@@ -8,9 +8,10 @@ export function SideMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?
   const mainLinks = [
     { name: 'Home', path: '/' },
     { name: 'Event', path: '/event' },
-    { name: 'Line Up', path: '/talents' },
+    { name: 'Line Up', path: '/lineup' },
     { name: 'Community', path: '/community' },
-    { name: 'Program', path: '/#programs' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Program', path: '/programs' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -57,7 +58,7 @@ export function SideMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?
                       <Link 
                         to={link.path}
                         onClick={() => onOpenChange?.(false)}
-                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-rpo-red"
+                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-sougen-blue"
                       >
                         {link.name}
                       </Link>
@@ -76,7 +77,7 @@ export function SideMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?
                         href={link.path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-rpo-red"
+                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-sougen-blue"
                       >
                         {link.name}
                       </a>
@@ -95,7 +96,7 @@ export function SideMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?
                         href={link.path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-rpo-red"
+                        className="text-[#111111] text-base font-medium transition-colors duration-200 hover:text-sougen-blue"
                       >
                         {link.name}
                       </a>
@@ -122,8 +123,8 @@ export function SideMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?
                         className={cn(
                           "block text-[#111111] text-3xl font-bold py-[8px] px-[13px] rounded-[8px] transition-all duration-200",
                           isActive 
-                            ? "bg-[#f2f2f2]"
-                            : "hover:bg-[#fafafa] hover:translate-x-[3px]"
+                            ? "bg-sougen-blue/10 text-sougen-blue translate-x-[3px]"
+                            : "hover:bg-[#fafafa] hover:text-sougen-blue hover:translate-x-[3px]"
                         )}
                       >
                         {link.name}

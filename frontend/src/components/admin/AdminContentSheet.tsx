@@ -66,7 +66,7 @@ export function AdminContentSheet({ open, onClose }: AdminContentSheetProps) {
                           onClick={() => handleNavigate(item.href)}
                           className={`flex w-full items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors ${
                             isActive
-                              ? 'bg-red-50 text-rpo-red'
+                              ? 'bg-sougen-blue/10 text-sougen-blue'
                               : 'text-admin-dark hover:bg-gray-100'
                           }`}
                         >

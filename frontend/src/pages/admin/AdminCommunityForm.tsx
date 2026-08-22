@@ -175,7 +175,7 @@ export default function AdminCommunityForm() {
   if (loading || !community) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -227,7 +227,7 @@ export default function AdminCommunityForm() {
                 <button
                   onClick={() => logoInputRef.current?.click()}
                   disabled={uploadingLogo}
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-admin-border bg-white text-admin-dark text-sm font-medium rounded-lg hover:bg-gray-50 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-admin-border bg-white text-admin-dark text-sm font-medium rounded-lg hover:bg-sougen-blue/5 hover:border-sougen-blue/30 hover:text-sougen-blue transition-colors disabled:opacity-50"
                 >
                   {uploadingLogo ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
                   Unggah Logo
@@ -243,7 +243,7 @@ export default function AdminCommunityForm() {
               <label className="block text-sm font-medium text-admin-dark mb-1">Nama Komunitas</label>
               <input
                 {...register('name')}
-                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
               />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
             </div>
@@ -254,7 +254,7 @@ export default function AdminCommunityForm() {
                 <input
                   {...register('category')}
                   placeholder="Contoh: Seni & Budaya"
-                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ export default function AdminCommunityForm() {
                   type="number"
                   {...register('establishedYear', { valueAsNumber: true })}
                   placeholder="Contoh: 2018"
-                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
             </div>
@@ -275,7 +275,7 @@ export default function AdminCommunityForm() {
                 <input
                   {...register('instagramUrl')}
                   placeholder="https://instagram.com/..."
-                  className="w-full pl-10 pr-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full pl-10 pr-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
               {errors.instagramUrl && <p className="text-red-500 text-xs mt-1">{errors.instagramUrl.message}</p>}
@@ -286,7 +286,7 @@ export default function AdminCommunityForm() {
               <textarea
                 {...register('description')}
                 rows={5}
-                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
               />
             </div>
 
@@ -294,7 +294,7 @@ export default function AdminCommunityForm() {
               <button 
                 type="submit" 
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-70"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 Simpan Profil
@@ -318,7 +318,7 @@ export default function AdminCommunityForm() {
           {/* Drag & Drop Area */}
           <div 
             className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors ${
-              dragActive ? 'border-rpo-red bg-red-50' : 'border-gray-300 hover:bg-gray-50'
+              dragActive ? 'border-sougen-blue bg-sougen-blue/5' : 'border-gray-300 hover:bg-gray-50 hover:border-sougen-blue/50'
             }`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
@@ -337,8 +337,8 @@ export default function AdminCommunityForm() {
               }}
             />
             {uploadingPhotos ? (
-              <div className="flex flex-col items-center text-rpo-red">
-                <Loader2 className="w-10 h-10 animate-spin mb-3" />
+              <div className="flex flex-col items-center text-sougen-blue">
+                <Loader2 className="w-10 h-10 animate-spin mb-3 text-sougen-blue" />
                 <span className="text-sm font-medium">Mengunggah Foto...</span>
               </div>
             ) : (

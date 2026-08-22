@@ -10,6 +10,7 @@ import { getImageUrl } from '../../utils/getImageUrl';
 
 const programSchema = z.object({
   name: z.string().min(1, 'Nama wajib diisi'),
+  category: z.string().optional(),
   description: z.string().optional(),
   rulesHtml: z.string().optional(),
 });
@@ -40,6 +41,7 @@ export default function AdminProgramForm() {
       setProgram(res.data);
       reset({
         name: res.data.name,
+        category: res.data.category || '',
         description: res.data.description || '',
         rulesHtml: res.data.rulesHtml || '',
       });
@@ -170,7 +172,7 @@ export default function AdminProgramForm() {
   if (loading || !program) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -206,9 +208,19 @@ export default function AdminProgramForm() {
                   <label className="block text-sm font-medium text-admin-dark mb-1">Nama Program</label>
                   <input
                     {...register('name')}
-                    className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-admin-dark mb-1">Kategori (Opsional)</label>
+                  <input
+                    {...register('category')}
+                    placeholder="Contoh: Lomba/Kompetisi, Workshop, dsb."
+                    className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
+                  />
+                  {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>}
                 </div>
               </div>
 
@@ -218,7 +230,7 @@ export default function AdminProgramForm() {
                   {...register('description')}
                   rows={3}
                   placeholder="Penjelasan singkat mengenai program ini..."
-                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
             </div>
@@ -247,7 +259,7 @@ export default function AdminProgramForm() {
               <button 
                 type="submit" 
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-admin-dark text-white font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-70 w-full md:w-auto justify-center"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-sougen-blue text-white font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70 w-full md:w-auto justify-center"
               >
                 {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Simpan Perubahan
@@ -285,7 +297,7 @@ export default function AdminProgramForm() {
               <button
                 onClick={() => coverInputRef.current?.click()}
                 disabled={uploadingCover}
-                className="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 border-2 border-dashed border-gray-300 text-admin-dark text-sm font-medium rounded-lg hover:bg-gray-50 hover:border-rpo-red hover:text-rpo-red transition-all disabled:opacity-50"
+                className="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 border-2 border-dashed border-gray-300 text-admin-dark text-sm font-medium rounded-lg hover:bg-sougen-blue/5 hover:border-sougen-blue hover:text-sougen-blue transition-all disabled:opacity-50"
               >
                 {uploadingCover ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
                 Ganti Foto Cover
@@ -308,7 +320,7 @@ export default function AdminProgramForm() {
             {/* Drag & Drop Area */}
             <div 
               className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors ${
-                dragActive ? 'border-rpo-red bg-red-50' : 'border-gray-300 hover:bg-gray-50'
+                dragActive ? 'border-sougen-blue bg-sougen-blue/5' : 'border-gray-300 hover:bg-gray-50 hover:border-sougen-blue/50'
               }`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
@@ -327,8 +339,8 @@ export default function AdminProgramForm() {
                 }}
               />
               {uploadingPhotos ? (
-                <div className="flex flex-col items-center text-rpo-red">
-                  <Loader2 className="w-10 h-10 animate-spin mb-3" />
+                <div className="flex flex-col items-center text-sougen-blue">
+                  <Loader2 className="w-10 h-10 animate-spin mb-3 text-sougen-blue" />
                   <span className="text-sm font-medium">Mengunggah Foto...</span>
                 </div>
               ) : (

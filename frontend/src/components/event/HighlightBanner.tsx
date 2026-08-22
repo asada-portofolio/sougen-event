@@ -25,7 +25,7 @@ export function HighlightBanner({ event }: HighlightBannerProps) {
   const bannerImage = event.heroImageUrl || event.posterImageUrl;
 
   return (
-    <div className="w-full relative bg-rpo-black border-b border-rpo-red/30 overflow-hidden h-[70vh] min-h-[500px] flex flex-col justify-end">
+    <div className="w-full relative bg-rpo-black border-b border-sougen-blue/30 overflow-hidden h-[70vh] min-h-[500px] flex flex-col justify-end">
       
       {/* Cinematic Full Background */}
       <div className="absolute inset-0 z-0">
@@ -47,14 +47,14 @@ export function HighlightBanner({ event }: HighlightBannerProps) {
 
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto w-full px-4 lg:px-8 pb-12 md:pb-16 pt-32 text-center md:text-left">
-        <div className="inline-block bg-rpo-red text-rpo-white px-3 py-1 text-xs font-bold font-inter uppercase tracking-wider rounded-sm mb-4 md:mb-6 shadow-md">
+        <div className="inline-block bg-sougen-blue text-white px-3 py-1 text-xs font-bold font-inter uppercase tracking-wider rounded-md mb-4 md:mb-6 shadow-md">
           Sedang Berlangsung
         </div>
         
         <div className="space-y-3 md:w-2/3 lg:w-3/5 mx-auto md:mx-0">
-          <h2 className="font-poppins text-4xl md:text-5xl lg:text-7xl font-extrabold text-rpo-white tracking-tight leading-tight drop-shadow-lg">
+          <h1 className="font-poppins text-4xl md:text-5xl lg:text-7xl font-extrabold text-rpo-white tracking-tight leading-tight drop-shadow-lg">
             {event.name}
-          </h2>
+          </h1>
           {event.theme && (
             <p className="text-lg md:text-xl lg:text-2xl text-white/80 font-inter drop-shadow-md">
               {event.theme}
@@ -63,17 +63,17 @@ export function HighlightBanner({ event }: HighlightBannerProps) {
           
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6 text-rpo-near-white font-medium py-3 md:py-5 drop-shadow">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 md:w-5 md:h-5 text-rpo-red" />
+              <Calendar className="w-4 h-4 md:w-5 md:h-5 text-sougen-blue" />
               <span className="text-sm md:text-base">{formatDate(event.startDate, event.endDate)}</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5 text-rpo-red" />
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 text-sougen-blue" />
               <span className="text-sm md:text-base line-clamp-1">{event.location}</span>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-4 pt-2">
-            <Button asChild size="lg" variant="primary-on-dark" className="shadow-lg shadow-rpo-red/20 font-bold">
+            <Button asChild size="lg" variant="primary-on-dark" className="shadow-lg shadow-sougen-blue/20 font-bold">
               <Link to={`/event/${event.slug}`}>Lihat Detail Acara</Link>
             </Button>
             {event.registrationUrl && (

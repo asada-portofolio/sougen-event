@@ -19,13 +19,13 @@ export function FaqContactSection() {
           <div className="order-1 md:order-2">
             {/* Header FAQ */}
             <div className="mb-8">
-              <span className="block font-poppins font-bold text-rpo-red text-sm uppercase tracking-wider mb-2 md:text-left text-center">
+              <span className="block font-poppins font-bold text-sougen-blue text-sm uppercase tracking-wider mb-2 md:text-left text-center">
                 you have to know
               </span>
               <h2 className="font-poppins font-black text-3xl md:text-4xl text-rpo-black uppercase md:text-left text-center">
                 Frequently Asked Questions
               </h2>
-              <div className="w-16 h-1 bg-rpo-red mt-4 mb-6 md:mx-0 mx-auto" />
+              <div className="w-16 h-1 bg-sougen-blue rounded-full mt-4 mb-6 md:mx-0 mx-auto" />
               <p className="font-inter text-rpo-black/70 text-base leading-relaxed md:text-left text-center max-w-[50ch] mx-auto md:mx-0">
                 Answers to questions regarding the event, tickets, exhibitors, and other booths.
               </p>
@@ -34,7 +34,7 @@ export function FaqContactSection() {
             {/* Konten FAQ Card */}
             <div className="bg-white border border-rpo-black/10 shadow-sm rounded-xl p-4 md:p-6">
               {error ? (
-                <p className="text-center text-rpo-red py-4 font-inter text-sm">Gagal memuat pertanyaan.</p>
+                <p className="text-center text-rpo-negative py-4 font-inter text-sm">Gagal memuat pertanyaan.</p>
               ) : loading ? (
                 <div className="space-y-4">
                   {[1, 2, 3].map((i) => (
@@ -49,8 +49,8 @@ export function FaqContactSection() {
                 <Accordion type="single" collapsible className="w-full">
                   {homeFaqs.map((faq, index) => (
                     <AccordionItem key={faq.id} value={`home-faq-${faq.id}`} className="border-b border-black/5 last:border-0">
-                      <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-rpo-red text-sm md:text-base py-4 flex items-start gap-3">
-                        <span className="shrink-0 flex items-center justify-center w-5 h-5 bg-rpo-red text-white text-[10px] font-black rounded-sm shadow-sm mt-0.5">
+                      <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue text-sm md:text-base py-4 flex items-start gap-3">
+                        <span className="shrink-0 flex items-center justify-center w-5 h-5 bg-sougen-blue text-white text-[10px] font-black rounded-md shadow-sm mt-0.5">
                           {index + 1}
                         </span>
                         <span className="flex-1">{faq.question}</span>
@@ -66,7 +66,7 @@ export function FaqContactSection() {
             
             {!loading && homeFaqs.length > 0 && (
               <div className="mt-6 text-center md:text-left">
-                <Link to="/faq" className="inline-block font-poppins font-bold text-rpo-red text-sm hover:text-black transition-colors duration-300">
+                <Link to="/faq" className="inline-block font-poppins font-bold text-sougen-blue text-sm hover:text-sougen-green-dark transition-colors duration-300">
                   Lihat Semua FAQ &rarr;
                 </Link>
               </div>
@@ -80,11 +80,11 @@ export function FaqContactSection() {
                 Masih ada pertanyaan? langsung kirim ke kami!
               </h3>
               <p className="font-inter text-rpo-black/60 mb-8 max-w-sm mx-auto md:mx-0">
-                Tim RPO siap membantu menjawab pertanyaan spesifik atau mendiskusikan peluang kolaborasi di event selanjutnya.
+                Tim Sougen siap membantu menjawab pertanyaan spesifik atau mendiskusikan peluang kolaborasi di event selanjutnya.
               </p>
               <Link 
                 to="/contact" 
-                className="inline-flex items-center justify-center gap-2 bg-rpo-red text-white font-poppins font-bold px-8 py-4 rounded-sm hover:bg-black transition-colors duration-300 w-full sm:w-auto group shadow-md"
+                className="inline-flex items-center justify-center gap-2 bg-sougen-blue text-white font-poppins font-bold px-8 py-4 rounded-md hover:bg-sougen-green-dark transition-colors duration-300 w-full sm:w-auto group shadow-md"
               >
                 Hubungi Kami
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

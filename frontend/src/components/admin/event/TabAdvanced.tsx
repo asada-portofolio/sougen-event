@@ -91,7 +91,7 @@ export default function TabAdvanced({ eventData, onUpdate }: TabAdvancedProps) {
                 {...register('googleDriveUrl')}
                 type="text"
                 placeholder="https://drive.google.com/..."
-                className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
               />
             </div>
             {errors.googleDriveUrl && <p className="mt-1 text-xs text-red-500">{errors.googleDriveUrl.message}</p>}
@@ -100,7 +100,7 @@ export default function TabAdvanced({ eventData, onUpdate }: TabAdvancedProps) {
           <div className="pt-4 flex items-center justify-between border-t border-admin-border">
             <div>
               {message && (
-                <span className={`text-sm font-medium ${message.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`text-sm font-medium ${message.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>
                   {message.text}
                 </span>
               )}
@@ -108,7 +108,7 @@ export default function TabAdvanced({ eventData, onUpdate }: TabAdvancedProps) {
             <button 
               type="submit" 
               disabled={isSaving}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm disabled:opacity-70"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70"
             >
               {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Simpan Tautan

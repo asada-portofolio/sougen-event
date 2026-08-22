@@ -88,7 +88,7 @@ export function FilmstripCarousel({ items, className }: FilmstripCarouselProps) 
       {canScrollLeft && (
         <button
           onClick={() => scrollBy('left')}
-          className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-rpo-black/80 text-white opacity-0 transition-all duration-300 hover:bg-rpo-black group-hover/carousel:opacity-100 focus:outline-none focus:ring-2 focus:ring-rpo-red hidden md:flex"
+          className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-rpo-black/80 text-white opacity-0 transition-all duration-300 hover:bg-sougen-blue group-hover/carousel:opacity-100 focus:outline-none focus:ring-2 focus:ring-sougen-blue hidden md:flex shadow-md"
           aria-label="Scroll kiri"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -97,7 +97,7 @@ export function FilmstripCarousel({ items, className }: FilmstripCarouselProps) 
       {canScrollRight && (
         <button
           onClick={() => scrollBy('right')}
-          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-rpo-black/80 text-white opacity-0 transition-all duration-300 hover:bg-rpo-black group-hover/carousel:opacity-100 focus:outline-none focus:ring-2 focus:ring-rpo-red hidden md:flex"
+          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-rpo-black/80 text-white opacity-0 transition-all duration-300 hover:bg-sougen-blue group-hover/carousel:opacity-100 focus:outline-none focus:ring-2 focus:ring-sougen-blue hidden md:flex shadow-md"
           aria-label="Scroll kanan"
         >
           <ChevronRight className="h-5 w-5" />

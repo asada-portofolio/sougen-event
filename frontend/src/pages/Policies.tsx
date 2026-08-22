@@ -22,13 +22,14 @@ export default function Policies() {
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
       <SEO 
-        title="Kebijakan & Keamanan | Reality Project Organizer"
-        description="Aturan, tata tertib, dan prosedur keamanan di acara Reality Project Organizer."
+        title="Kebijakan & Keamanan | Sougen Creative Management"
+        description="Panduan aturan, tata tertib, prosedur keamanan, dan kenyamanan bagi seluruh pengunjung, talent, dan staf di event Sougen Creative Management."
         canonicalUrl="/safety"
       />
 
       <div className="max-w-4xl mx-auto px-4 lg:px-8">
         <SectionHeader 
+          as="h1"
           label="Tata Tertib"
           title="Kebijakan & Keamanan"
           description="Demi kenyamanan dan keselamatan bersama, mohon perhatikan aturan dan prosedur berikut."
@@ -39,7 +40,7 @@ export default function Policies() {
 
         {error ? (
           <div className="text-center py-10">
-            <p className="text-rpo-red font-inter text-lg">Gagal memuat data kebijakan. Silakan coba lagi nanti.</p>
+            <p className="text-sougen-blue font-inter text-lg">Gagal memuat data kebijakan. Silakan coba lagi nanti.</p>
           </div>
         ) : loading ? (
           <div className="space-y-12 max-w-[70ch] mx-auto">
@@ -53,7 +54,7 @@ export default function Policies() {
             
             {/* Kebijakan (Tata Tertib) */}
             <section>
-              <h2 className="text-2xl font-poppins font-bold text-rpo-black mb-6 border-b-2 border-rpo-red pb-2 inline-block">
+              <h2 className="text-2xl font-poppins font-bold text-rpo-black mb-6 border-b-2 border-sougen-blue pb-2 inline-block">
                 Tata Tertib Acara
               </h2>
               {policies.length === 0 ? (
@@ -63,9 +64,9 @@ export default function Policies() {
                   {policies.map((policy) => (
                     <div 
                       key={policy.id} 
-                      className="flex items-start gap-4 p-5 rounded-xl bg-white border border-rpo-black/10 shadow-sm hover:border-rpo-red transition-colors duration-300"
+                      className="flex items-start gap-4 p-5 rounded-xl bg-white border border-rpo-black/10 shadow-sm hover:border-sougen-blue transition-colors duration-300"
                     >
-                      <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-sm bg-rpo-red/10 text-rpo-red">
+                      <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-sm bg-sougen-blue/10 text-sougen-blue">
                         <DynamicIcon name={policy.iconName} className="w-6 h-6" />
                       </div>
                       <p className="font-inter text-rpo-black/70 leading-relaxed pt-1">
@@ -79,7 +80,7 @@ export default function Policies() {
 
             {/* Prosedur Keamanan */}
             <section>
-              <h2 className="text-2xl font-poppins font-bold text-rpo-black mb-6 border-b-2 border-rpo-red pb-2 inline-block">
+              <h2 className="text-2xl font-poppins font-bold text-rpo-black mb-6 border-b-2 border-sougen-blue pb-2 inline-block">
                 Prosedur Keamanan Darurat
               </h2>
               {safety.length === 0 ? (
@@ -89,8 +90,8 @@ export default function Policies() {
                   <Accordion type="single" collapsible className="w-full">
                     {safety.map((proc, index) => (
                       <AccordionItem key={proc.id} value={`safety-${proc.id}`} className="border-b border-black/5 last:border-0">
-                        <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-rpo-red text-lg py-5 flex items-start gap-4">
-                          <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-rpo-red text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
+                        <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue text-lg py-5 flex items-start gap-4">
+                          <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-sougen-blue text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
                             {index + 1}
                           </span>
                           <span className="flex-1">{proc.question}</span>

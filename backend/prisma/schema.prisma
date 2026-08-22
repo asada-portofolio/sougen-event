@@ -115,6 +115,7 @@ model Program {
   id           Int     @id @default(autoincrement())
   slug         String  @unique
   name         String
+  category     String?
   description  String?
   rulesHtml    String? @db.Text
   coverImageUrl String?

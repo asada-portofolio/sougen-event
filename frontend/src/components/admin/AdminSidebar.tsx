@@ -16,8 +16,8 @@ export function AdminSidebar() {
     <aside className="hidden w-64 flex-col border-r border-admin-border bg-admin-surface md:flex shadow-admin z-20">
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-admin-border">
-        <span className="font-poppins font-bold text-xl text-rpo-red">
-          RPO <span className="text-admin-dark">Admin</span>
+        <span className="font-poppins font-bold text-xl text-sougen-blue">
+          Sougen <span className="text-admin-dark">Admin</span>
         </span>
       </div>
 
@@ -37,7 +37,7 @@ export function AdminSidebar() {
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-3 py-2 rounded text-sm font-medium transition-colors ${
                         isActive
-                          ? 'bg-red-50 text-rpo-red'
+                          ? 'bg-sougen-blue/10 text-sougen-blue'
                           : 'text-admin-dark hover:bg-gray-100'
                       }`
                     }

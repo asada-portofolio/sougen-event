@@ -74,7 +74,7 @@ export default function AdminEventList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -96,13 +96,13 @@ export default function AdminEventList() {
             Manajemen Event
           </h1>
           <p className="text-sm text-admin-secondary mt-1">
-            Kelola event RPO, dari jadwal hingga line up talent.
+            Kelola event Sougen, dari jadwal hingga line up talent.
           </p>
         </div>
         
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shrink-0 shadow-sm"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shrink-0 shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Buat Event Baru
@@ -118,7 +118,7 @@ export default function AdminEventList() {
             placeholder="Cari nama event atau tema..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-admin-border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-admin-border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
           />
         </div>
         <div className="flex items-center gap-4 px-2 sm:px-4 py-2 bg-gray-50 rounded-lg border border-admin-border text-sm font-medium">
@@ -126,7 +126,7 @@ export default function AdminEventList() {
           <span className="text-admin-dark">{events.length}</span>
           <div className="w-px h-4 bg-gray-300 mx-1" />
           <span className="text-admin-secondary">Aktif:</span>
-          <span className="text-green-600">{activeEventCount}</span>
+          <span className="text-emerald-600">{activeEventCount}</span>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default function AdminEventList() {
               : false;
             
             return (
-              <div key={event.id} className="bg-white border border-admin-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+              <div key={event.id} className="bg-white border border-admin-border hover:border-sougen-blue/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
                 <div className="relative aspect-[4/3] bg-gray-100 flex items-center justify-center overflow-hidden">
                   {event.posterImageUrl ? (
                     <img 
@@ -154,7 +154,7 @@ export default function AdminEventList() {
                   {/* Status Badges Overlay */}
                   <div className="absolute top-3 left-3 flex flex-col gap-2">
                     {event.isActive && (
-                      <span className="inline-flex items-center px-2 py-1 rounded bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                      <span className="inline-flex items-center px-2 py-1 rounded bg-sougen-blue text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
                         Event Aktif
                       </span>
                     )}
@@ -190,7 +190,7 @@ export default function AdminEventList() {
                       <Switch.Root 
                         checked={event.isActive}
                         onCheckedChange={(c) => handleToggleActive(event, c)}
-                        className={`w-9 h-5 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-rpo-red/50 focus:ring-offset-1 ${event.isActive ? 'bg-green-500' : 'bg-gray-300'}`}
+                        className={`w-9 h-5 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-sougen-blue/50 focus:ring-offset-1 ${event.isActive ? 'bg-sougen-blue' : 'bg-gray-300'}`}
                       >
                         <Switch.Thumb className={`block w-3.5 h-3.5 bg-white rounded-full transition-transform duration-200 translate-y-[2px] ${event.isActive ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
                       </Switch.Root>
@@ -201,7 +201,7 @@ export default function AdminEventList() {
                     
                     <Link
                       to={`/admin/event/${event.slug}`}
-                      className="text-sm font-medium text-rpo-red hover:text-red-700 transition-colors"
+                      className="text-sm font-medium text-sougen-blue hover:text-sougen-blue/80 transition-colors"
                     >
                       Kelola Event
                     </Link>
@@ -218,11 +218,11 @@ export default function AdminEventList() {
             Belum ada Event
           </h3>
           <p className="text-sm text-admin-secondary max-w-sm mx-auto mb-6">
-            Anda belum membuat satupun event. Klik tombol di bawah untuk membuat event pertama RPO.
+            Anda belum membuat satupun event. Klik tombol di bawah untuk membuat event pertama Sougen.
           </p>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
             Buat Event Baru
@@ -254,8 +254,8 @@ export default function AdminEventList() {
                 <input
                   {...register('name')}
                   type="text"
-                  placeholder="Contoh: RPO 2026"
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                  placeholder="Contoh: Sougen Matsuri 2026"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                 />
                 {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
               </div>
@@ -270,7 +270,7 @@ export default function AdminEventList() {
                     <input
                       {...register('startDate')}
                       type="date"
-                      className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                      className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                     />
                   </div>
                   {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
@@ -284,7 +284,7 @@ export default function AdminEventList() {
                     <input
                       {...register('endDate')}
                       type="date"
-                      className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                      className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                     />
                   </div>
                   {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
@@ -300,8 +300,8 @@ export default function AdminEventList() {
                   <input
                     {...register('location')}
                     type="text"
-                    placeholder="Contoh: ICE BSD"
-                    className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-all"
+                    placeholder="Contoh: Celebes Convention Center"
+                    className="w-full pl-9 pr-3 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
                   />
                 </div>
                 {errors.location && <p className="mt-1 text-xs text-red-500">{errors.location.message}</p>}
@@ -316,7 +316,7 @@ export default function AdminEventList() {
                 <button 
                   type="submit" 
                   disabled={isCreating}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-70"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm transition-colors disabled:opacity-70"
                 >
                   {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Buat Event'}
                 </button>

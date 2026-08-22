@@ -16,10 +16,10 @@ export default function AdminSettings() {
   const [settings, setSettings] = useState({
     logoUrl: '',
     heroImageUrl: '',
-    siteTitle: 'Reality Project Organizer',
-    siteDescription: 'Event Organizer budaya pop Jepang di Makassar.',
-    footerDescription: 'Reality Project Organizer adalah platform manajemen acara budaya pop Jepang terkemuka di Makassar.',
-    footerCopyright: '© 2026 Reality Project Organizer. All rights reserved.'
+    siteTitle: 'Sougen',
+    siteDescription: 'Platform kreatif dan event pop culture di Makassar.',
+    footerDescription: 'Sougen adalah platform manajemen acara dan komunitas pop culture terkemuka di Makassar.',
+    footerCopyright: '© 2026 Sougen. All rights reserved.'
   });
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function AdminSettings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -117,14 +117,14 @@ export default function AdminSettings() {
         <Tabs.List className="flex shrink-0 border-b border-admin-border mb-6">
           <Tabs.Trigger 
             value="general" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none flex items-center gap-2"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none flex items-center gap-2"
           >
             <Globe className="w-4 h-4" />
             Pengaturan Umum (SEO)
           </Tabs.Trigger>
           <Tabs.Trigger 
             value="footer" 
-            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-rpo-red data-[state=active]:border-b-2 data-[state=active]:border-rpo-red transition-all outline-none flex items-center gap-2"
+            className="px-5 py-3 font-medium text-sm text-admin-secondary data-[state=active]:text-sougen-blue data-[state=active]:border-b-2 data-[state=active]:border-sougen-blue transition-all outline-none flex items-center gap-2"
           >
             <LayoutTemplate className="w-4 h-4" />
             Pengaturan Footer
@@ -141,7 +141,7 @@ export default function AdminSettings() {
               <div className="flex items-start justify-between">
                 <div>
                   <label className="block text-sm font-medium text-admin-dark mb-1">Logo Publik</label>
-                  <p className="text-xs text-admin-secondary">Menggantikan kotak merah "RP" di website publik.</p>
+                  <p className="text-xs text-admin-secondary">Logo resmi brand Sougen di website publik.</p>
                   
                   {settings.logoUrl && (
                     <div className="mt-2 h-16 bg-gray-100 border border-gray-200 rounded p-2 inline-flex items-center">
@@ -202,8 +202,8 @@ export default function AdminSettings() {
                 <input 
                   value={settings.siteTitle}
                   onChange={(e) => setSettings({...settings, siteTitle: e.target.value})}
-                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors"
-                  placeholder="Contoh: RPO Makassar"
+                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors"
+                  placeholder="Contoh: Sougen Makassar"
                   required
                 />
               </div>
@@ -214,7 +214,7 @@ export default function AdminSettings() {
                   value={settings.siteDescription}
                   onChange={(e) => setSettings({...settings, siteDescription: e.target.value})}
                   rows={3}
-                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors resize-none"
+                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors resize-none"
                   placeholder="Deskripsi singkat yang muncul di Google..."
                   required
                 />
@@ -224,7 +224,7 @@ export default function AdminSettings() {
                 <button 
                   type="submit" 
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Simpan Teks Pengaturan
@@ -246,8 +246,8 @@ export default function AdminSettings() {
                   value={settings.footerDescription}
                   onChange={(e) => setSettings({...settings, footerDescription: e.target.value})}
                   rows={3}
-                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors resize-none"
-                  placeholder="Tuliskan deskripsi RPO yang tampil di Footer..."
+                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors resize-none"
+                  placeholder="Tuliskan deskripsi Sougen yang tampil di Footer..."
                   required
                 />
               </div>
@@ -257,8 +257,8 @@ export default function AdminSettings() {
                 <input 
                   value={settings.footerCopyright}
                   onChange={(e) => setSettings({...settings, footerCopyright: e.target.value})}
-                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red transition-colors"
-                  placeholder="© 2026 Reality Project Organizer..."
+                  className="w-full px-4 py-2 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-colors"
+                  placeholder="© 2026 Sougen..."
                   required
                 />
               </div>
@@ -267,7 +267,7 @@ export default function AdminSettings() {
                 <button 
                   type="submit" 
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Simpan Footer
@@ -285,7 +285,7 @@ export default function AdminSettings() {
                   
                   {/* Left Column */}
                   <div className="max-w-sm">
-                    <h2 className="text-2xl font-bold font-poppins text-white mb-4">RPO.</h2>
+                    <h2 className="text-2xl font-bold font-poppins text-white mb-4">SOUGEN.</h2>
                     <p className="text-sm leading-relaxed opacity-80">
                       {settings.footerDescription}
                     </p>

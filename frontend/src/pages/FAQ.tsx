@@ -22,22 +22,28 @@ export default function FAQ() {
   }, [faqs, searchQuery]);
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
+    <div className="w-full min-h-screen bg-[#FAFAFA] text-rpo-black">
       <SEO 
-        title="FAQ & Pusat Bantuan | Reality Project Organizer"
-        description="Temukan jawaban atas pertanyaan yang sering diajukan seputar event, komunitas, dan kolaborasi dengan Reality Project Organizer."
+        title="FAQ & Pusat Bantuan | Sougen Creative Management"
+        description="Temukan jawaban atas pertanyaan yang sering diajukan seputar event, komunitas, dan kolaborasi dengan Sougen Creative Management."
         canonicalUrl="/faq"
       />
 
-      <div className="max-w-4xl mx-auto px-4 lg:px-8">
-        <SectionHeader 
-          label="Pusat Bantuan"
-          title="Frequently Asked Questions"
-          description="Punya pertanyaan seputar acara, tiket, atau hal lainnya? Temukan jawabannya di sini."
-          theme="light"
-          align="center"
-          className="mb-10"
-        />
+      {/* Intro Section */}
+      <div className="w-full bg-[#00486E] pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+          <SectionHeader 
+            as="h1"
+            label="HELP CENTER"
+            title="FREQUENTLY ASKED QUESTIONS"
+            description="Punya pertanyaan seputar acara, tiket, komunitas, atau hal lainnya? Temukan jawabannya di sini."
+            theme="dark"
+            align="full-center"
+          />
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 lg:px-8 py-16">
 
         {/* Search Bar */}
         <div className="relative mb-12 max-w-2xl mx-auto">
@@ -47,14 +53,14 @@ export default function FAQ() {
             placeholder="Cari pertanyaan Anda..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 py-6 bg-white border-rpo-black/10 focus-visible:ring-rpo-red text-lg text-rpo-black rounded-sm shadow-sm placeholder:text-rpo-black/30"
+            className="w-full pl-12 py-6 bg-white border-rpo-black/10 focus-visible:ring-sougen-blue focus-visible:border-sougen-blue text-lg text-rpo-black rounded-sm shadow-sm placeholder:text-rpo-black/30"
           />
         </div>
 
         {/* FAQ Accordion */}
         <div className="bg-white border border-rpo-black/10 shadow-sm rounded-xl p-4 md:p-8 mb-16 max-w-[70ch] mx-auto">
           {error ? (
-            <p className="text-center text-rpo-red py-10 font-inter">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
+            <p className="text-center text-sougen-blue py-10 font-inter">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
           ) : loading ? (
             <div className="space-y-4">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -69,8 +75,8 @@ export default function FAQ() {
             <Accordion type="single" collapsible className="w-full">
               {filteredFaqs.map((faq, index) => (
                 <AccordionItem key={faq.id} value={`faq-${faq.id}`} className="border-b border-black/5 last:border-0">
-                  <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-rpo-red text-lg py-5 flex items-start gap-4">
-                    <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-rpo-red text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
+                  <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue text-lg py-5 flex items-start gap-4">
+                    <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-sougen-blue text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
                       {index + 1}
                     </span>
                     <span className="flex-1">{faq.question}</span>

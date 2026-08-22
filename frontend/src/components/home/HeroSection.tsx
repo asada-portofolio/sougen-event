@@ -54,8 +54,8 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
               {/* ── Bagian 1: Header — Nama RPO ── */}
               <div className="relative px-6 pt-6 pb-5 text-center">
                 {/* Aksen garis merah tipis di paling atas */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-rpo-red" />
-                <div className="font-poppins font-black text-rpo-red text-[1.1rem] tracking-[0.18em] uppercase leading-none">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-sougen-blue" />
+                <div className="font-poppins font-black text-sougen-blue text-[1.1rem] tracking-[0.18em] uppercase leading-none">
                   Reality Project
                 </div>
                 <div className="font-inter font-medium text-gray-500 text-[0.55rem] tracking-[0.4em] uppercase mt-1.5">
@@ -77,14 +77,14 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
               <div className="px-6 pt-6 pb-5 flex flex-col items-center text-center">
                 {/* Tanggal */}
                 <div className="flex items-center gap-1.5 mb-4">
-                  <Calendar className="w-3.5 h-3.5 text-rpo-red" />
+                  <Calendar className="w-3.5 h-3.5 text-sougen-blue" />
                   <span className="font-inter font-semibold text-gray-500 text-[0.65rem] tracking-[0.15em] uppercase">
                     {formatDate(event.startDate, event.endDate)}
                   </span>
                 </div>
 
                 {/* Nama Event */}
-                <h2 className="font-poppins font-black text-rpo-red text-[1.6rem] leading-[1.05] uppercase tracking-tight mb-1">
+                <h2 className="font-poppins font-black text-sougen-blue text-[1.6rem] leading-[1.05] uppercase tracking-tight mb-1">
                   {event.name}
                 </h2>
 
@@ -97,7 +97,7 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
 
                 {/* Lokasi */}
                 <div className="flex items-center gap-1.5 text-gray-500 text-[0.65rem] mt-3 w-full justify-center">
-                  <MapPin className="w-3.5 h-3.5 text-rpo-red shrink-0" />
+                  <MapPin className="w-3.5 h-3.5 text-sougen-blue shrink-0" />
                   <span className="font-inter truncate">{event.location}</span>
                 </div>
               </div>
@@ -124,40 +124,33 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
             <div className="p-10 lg:p-14 flex flex-col items-center text-center max-w-5xl w-full animate-in fade-in slide-in-from-bottom-8 duration-1000">
               
               {/* RPO presenter line */}
-              <div className="flex items-center gap-3 mb-6 lg:mb-4 opacity-90">
-                {settings?.logoUrl ? (
-                  <img src={getImageUrl(settings.logoUrl)} alt="RPO" className="h-8 lg:h-6 object-contain" />
-                ) : (
-                  <div className="flex h-8 w-8 lg:h-6 lg:w-6 items-center justify-center bg-rpo-red rounded-[6px]">
-                    <span className="font-poppins text-xs lg:text-[10px] font-black text-white leading-none">RP</span>
-                  </div>
-                )}
-                <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Reality Project Organizer</span>
+              <div className="flex items-center justify-center mb-6 lg:mb-4 opacity-90">
+                <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Sougen Creative Management</span>
               </div>
 
               {/* Event Name & Theme */}
               {event.theme && (
-                <p className="font-inter font-bold text-rpo-red text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
+                <p className="font-inter font-bold text-sougen-blue text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
                   {event.theme}
                 </p>
               )}
-              <h1 className="font-poppins text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] uppercase mb-10 lg:mb-8">
+              <h1 className="font-poppins text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] uppercase mb-10 lg:mb-8 [-webkit-text-stroke:2px_#0094DE] [text-shadow:0_4px_30px_rgba(0,0,0,0.5)]">
                 {event.name}
               </h1>
 
               {/* Unified metadata row */}
               <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 mb-10 pb-10 lg:mb-8 lg:pb-8 border-b border-white/10 w-full max-w-3xl">
                 <div className="flex items-center gap-2.5 text-white/90">
-                  <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                  <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                   <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{formatDate(event.startDate, event.endDate)}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-white/90">
-                  <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                  <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                   <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{event.location}</span>
                 </div>
                 {event.registrationUrl && (
                   <div className="flex items-center gap-2.5">
-                    <span className="bg-rpo-red/20 text-rpo-red border border-rpo-red/30 px-4 py-1.5 lg:px-3 lg:py-1 rounded-full font-bold uppercase tracking-[0.15em] text-xs lg:text-[11px]">
+                    <span className="bg-sougen-blue/20 text-sougen-blue border border-sougen-blue/30 px-4 py-1.5 lg:px-3 lg:py-1 rounded-full font-bold uppercase tracking-[0.15em] text-xs lg:text-[11px]">
                       🎟️ Ticketed
                     </span>
                   </div>
@@ -167,7 +160,7 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
               {/* CTA buttons */}
               <div className="flex flex-wrap gap-5 lg:gap-4 justify-center w-full">
                 {event.isActive && event.registrationUrl && (
-                  <Button asChild size="lg" variant="primary-on-dark" className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest shadow-[0_4px_24px_rgba(254,0,0,0.3)]">
+                  <Button asChild size="lg" variant="primary-on-dark" className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest shadow-[0_4px_24px_rgba(0,148,222,0.3)]">
                     <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer">Beli Tiket Sekarang</a>
                   </Button>
                 )}
@@ -220,8 +213,8 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
 
                   {/* ── Bagian 1: Header — Nama RPO ── */}
                   <div className="relative px-6 pt-6 pb-5 text-center">
-                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-rpo-red" />
-                    <div className="font-poppins font-black text-rpo-red text-[1.1rem] tracking-[0.18em] uppercase leading-none">
+                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-sougen-blue" />
+                    <div className="font-poppins font-black text-sougen-blue text-[1.1rem] tracking-[0.18em] uppercase leading-none">
                       Reality Project
                     </div>
                     <div className="font-inter font-medium text-gray-500 text-[0.55rem] tracking-[0.4em] uppercase mt-1.5">
@@ -239,12 +232,12 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
                   {/* ── Bagian 2: Body — Info Event ── */}
                   <div className="px-6 pt-6 pb-5 flex flex-col items-center text-center">
                     <div className="flex items-center gap-1.5 mb-4">
-                      <Calendar className="w-3.5 h-3.5 text-rpo-red" />
+                      <Calendar className="w-3.5 h-3.5 text-sougen-blue" />
                       <span className="font-inter font-semibold text-gray-500 text-[0.65rem] tracking-[0.15em] uppercase">
                         {formatDate(event.startDate, event.endDate)}
                       </span>
                     </div>
-                    <h2 className="font-poppins font-black text-rpo-red text-[1.6rem] leading-[1.05] uppercase tracking-tight mb-1">
+                    <h2 className="font-poppins font-black text-sougen-blue text-[1.6rem] leading-[1.05] uppercase tracking-tight mb-1">
                       {event.name}
                     </h2>
                     {event.theme && (
@@ -253,7 +246,7 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
                       </div>
                     )}
                     <div className="flex items-center gap-1.5 text-gray-500 text-[0.65rem] mt-3 w-full justify-center">
-                      <MapPin className="w-3.5 h-3.5 text-rpo-red shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-sougen-blue shrink-0" />
                       <span className="font-inter truncate">{event.location}</span>
                     </div>
                   </div>
@@ -280,40 +273,33 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
                 <div className="p-10 lg:p-14 flex flex-col items-center text-center max-w-5xl w-full">
                   
                   {/* RPO presenter line */}
-                  <div className="flex items-center gap-3 mb-6 lg:mb-4 opacity-90">
-                    {settings?.logoUrl ? (
-                      <img src={getImageUrl(settings.logoUrl)} alt="RPO" className="h-8 lg:h-6 object-contain" />
-                    ) : (
-                      <div className="flex h-8 w-8 lg:h-6 lg:w-6 items-center justify-center bg-rpo-red rounded-[6px]">
-                        <span className="font-poppins text-xs lg:text-[10px] font-black text-white leading-none">RP</span>
-                      </div>
-                    )}
-                    <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Reality Project Organizer</span>
+                  <div className="flex items-center justify-center mb-6 lg:mb-4 opacity-90">
+                    <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Sougen Creative Management</span>
                   </div>
 
                   {/* Event Name & Theme */}
                   {event.theme && (
-                    <p className="font-inter font-bold text-rpo-red text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
+                    <p className="font-inter font-bold text-sougen-blue text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-4 lg:mb-3">
                       {event.theme}
                     </p>
                   )}
-                  <h2 className="font-poppins text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] uppercase mb-10 lg:mb-8">
+                  <h1 className="font-poppins text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] uppercase mb-10 lg:mb-8 [-webkit-text-stroke:2px_#0094DE] [text-shadow:0_4px_30px_rgba(0,0,0,0.5)]">
                     {event.name}
-                  </h2>
+                  </h1>
 
                   {/* Unified metadata row */}
                   <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 mb-10 pb-10 lg:mb-8 lg:pb-8 border-b border-white/10 w-full max-w-3xl">
                     <div className="flex items-center gap-2.5 text-white/90">
-                      <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                      <Calendar className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                       <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{formatDate(event.startDate, event.endDate)}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-white/90">
-                      <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-rpo-red" />
+                      <MapPin className="w-5 h-5 lg:w-4 lg:h-4 text-sougen-blue" />
                       <span className="font-inter font-medium text-sm lg:text-[13px] tracking-wide">{event.location}</span>
                     </div>
                     {event.registrationUrl && (
                       <div className="flex items-center gap-2.5">
-                        <span className="bg-rpo-red/20 text-rpo-red border border-rpo-red/30 px-4 py-1.5 lg:px-3 lg:py-1 rounded-full font-bold uppercase tracking-[0.15em] text-xs lg:text-[11px]">
+                        <span className="bg-sougen-blue/20 text-sougen-blue border border-sougen-blue/30 px-4 py-1.5 lg:px-3 lg:py-1 rounded-full font-bold uppercase tracking-[0.15em] text-xs lg:text-[11px]">
                           🎟️ Ticketed
                         </span>
                       </div>
@@ -323,7 +309,7 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
                   {/* CTA buttons */}
                   <div className="flex flex-wrap gap-5 lg:gap-4 justify-center w-full">
                     {event.isActive && event.registrationUrl && (
-                      <Button asChild size="lg" variant="primary-on-dark" className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest shadow-[0_4px_24px_rgba(254,0,0,0.3)]">
+                      <Button asChild size="lg" variant="primary-on-dark" className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest shadow-[0_4px_24px_rgba(0,148,222,0.3)]">
                         <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer">Beli Tiket Sekarang</a>
                       </Button>
                     )}
@@ -338,40 +324,25 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
           ) : (
             <>
               {/* RPO Logo / Branding Area — No Event */}
-              <div className="mb-8 relative z-10 flex items-center justify-center gap-[12px] animate-in fade-in slide-in-from-bottom-3 duration-1000 max-[515px]:flex-col text-center w-full">
-                {/* Logo ditumpuk 3 ukuran */}
-                <div className="relative flex items-center justify-center shrink-0 w-[110px] h-[110px] max-[686px]:w-[75px] max-[686px]:h-[75px] max-[515px]:w-[85px] max-[515px]:h-[85px]">
+              <div className="mb-5 lg:mb-3 relative z-10 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-3 duration-1000 w-full">
+                {/* Logo Utama */}
+                <div className="relative flex items-center justify-center w-48 md:w-64 lg:w-56 mb-2">
                   {settings?.logoUrl ? (
-                    <>
-                      <img src={getImageUrl(settings.logoUrl)} alt="" className="absolute inset-0 w-full h-full object-contain rounded-[8px] rotate-12 opacity-30 transform scale-75" />
-                      <img src={getImageUrl(settings.logoUrl)} alt="" className="absolute inset-0 w-full h-full object-contain rounded-[8px] -rotate-6 opacity-60 transform scale-90" />
-                      <img src={getImageUrl(settings.logoUrl)} alt="RPO Logo" className="absolute inset-0 w-full h-full object-contain rounded-[8px] shadow-[0_7px_20px_rgba(0,0,0,0.3)] z-10" />
-                    </>
+                    <img src={getImageUrl(settings.logoUrl)} alt="Logo Sougen Creative Management" className="w-full h-auto object-contain z-10" />
                   ) : (
-                    <>
-                      {/* Tumpukan 1 */}
-                      <div className="absolute inset-0 bg-[#ff0000] rounded-[8px] rotate-12 opacity-30 transform scale-75"></div>
-                      {/* Tumpukan 2 */}
-                      <div className="absolute inset-0 bg-[#ff0000] rounded-[8px] -rotate-6 opacity-60 transform scale-90"></div>
-                      {/* Tumpukan 3 (Utama) */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-[#ff0000] rounded-[8px] shadow-[0_7px_20px_rgba(0,0,0,0.3)] z-10">
-                        <span className="font-poppins font-black text-[#ffffff] text-[3rem] tracking-[-2px] max-[686px]:text-[2rem] max-[515px]:text-[2.2rem] leading-none">
-                          RP
-                        </span>
-                      </div>
-                    </>
+                    <img src="/images/main-logo.png" alt="Logo Resmi Sougen Creative Management" className="w-full h-auto object-contain z-10" />
                   )}
                 </div>
 
-                {/* Nama Reality Project Organizer */}
+                {/* Nama Brand */}
                 <div className="flex flex-col justify-center">
-                  <h1 className="font-poppins font-black text-[#ffffff] text-[2.75rem] leading-[0.95] tracking-[1px] [text-shadow:1.3px_2.7px_10px_rgba(0,0,0,0.4)] max-[686px]:text-[2rem] max-[515px]:text-[1.8rem] uppercase text-center">
-                    Reality<br />Project<br />Organizer
+                  <h1 className="font-poppins font-black text-[#ffffff] text-[1.5rem] md:text-[1.8rem] lg:text-[1.6rem] leading-none tracking-tight [text-shadow:0_4px_10px_rgba(0,0,0,0.4)] uppercase text-center w-full">
+                    Sougen Creative Management
                   </h1>
                 </div>
               </div>
 
-              <p className="max-w-2xl text-sm md:text-base text-white/70 mb-8 leading-relaxed font-inter mx-auto text-center">
+              <p className="max-w-2xl text-sm lg:text-[13px] text-white/70 mb-5 lg:mb-4 leading-relaxed font-inter mx-auto text-center">
                 Komunitas dan event organizer yang berdedikasi menghidupkan budaya pop Jepang melalui panggung kreatif dan inovatif di Makassar.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">

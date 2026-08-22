@@ -77,7 +77,7 @@ export default function AdminEventDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-rpo-red" />
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -136,7 +136,7 @@ export default function AdminEventDetail() {
             <Tabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap text-admin-secondary hover:text-admin-dark hover:bg-gray-50 data-[state=active]:bg-rpo-red data-[state=active]:text-white transition-all outline-none"
+              className="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap text-admin-secondary hover:text-admin-dark hover:bg-gray-50 data-[state=active]:bg-sougen-blue data-[state=active]:text-white shadow-sm transition-all outline-none"
             >
               <tab.icon className="w-[18px] h-[18px] shrink-0" />
               {tab.label}

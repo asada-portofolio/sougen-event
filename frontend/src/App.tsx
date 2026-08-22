@@ -16,6 +16,7 @@ const FAQ = lazy(() => import('./pages/FAQ'))
 const Policies = lazy(() => import('./pages/Policies'))
 const Contact = lazy(() => import('./pages/Contact'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
@@ -35,7 +36,7 @@ const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'))
 
 const PageLoader = () => (
   <div className="w-full min-h-screen flex items-center justify-center bg-[#FAFAFA]">
-    <div className="w-12 h-12 border-4 border-rpo-red border-t-transparent rounded-full animate-[spin_1s_linear_infinite]" />
+    <div className="w-12 h-12 border-4 border-sougen-blue border-t-transparent rounded-full animate-[spin_1s_linear_infinite]" />
   </div>
 );
 
@@ -57,13 +58,7 @@ export default function App() {
             <Route path="/safety" element={<Policies />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<AboutUs />} />
-            <Route path="*" element={
-              <div className="w-full min-h-screen flex flex-col items-center justify-center bg-[#FAFAFA] text-rpo-black">
-                <h1 className="text-6xl font-poppins font-bold text-rpo-red mb-4">404</h1>
-                <p className="text-xl font-inter text-rpo-black/70 mb-8">Halaman yang Anda cari tidak ditemukan.</p>
-                <a href="/" className="px-6 py-2 bg-rpo-red hover:bg-red-700 font-bold rounded-sm text-white">Kembali ke Beranda</a>
-              </div>
-            } />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
 
           <Route path="/admin/login" element={<AdminLogin />} />

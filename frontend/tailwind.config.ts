@@ -6,11 +6,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Public Theme
+        // Public Theme - Sougen Brand
+        'sougen-blue': '#0094DE',
+        'sougen-green-dark': '#004D2C',
+        'sougen-green-mint': '#3ECC8B',
+        'sougen-gray': '#9CA3A7',
+
+        // Public Theme - Neutral & Surfaces
         'rpo-black': '#121212',
         'rpo-surface': '#1A1A1A',
         'rpo-mid-dark': '#242424',
-        'rpo-red': '#fe0000',
         'rpo-gray': '#333333', // Border Gray
         'rpo-light-border': '#4d4d4d',
         'rpo-separator': '#2A2A2A',

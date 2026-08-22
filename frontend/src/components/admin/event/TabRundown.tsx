@@ -117,7 +117,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
             setNewDayData(prev => ({ ...prev, dayNumber: eventDays.length + 1 }));
             setDayModalOpen(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-admin-dark text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Tambah Hari
@@ -131,7 +131,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
               {/* Day Header */}
               <div className="flex items-center justify-between bg-white border-b border-admin-border p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-rpo-red font-bold font-poppins shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-sougen-blue/10 flex items-center justify-center text-sougen-blue font-bold font-poppins shrink-0">
                     H{day.dayNumber}
                   </div>
                   <div>
@@ -146,7 +146,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => openRundownModal(day.id)}
-                    className="p-1.5 text-rpo-red hover:bg-red-50 rounded font-medium text-xs flex items-center gap-1 transition-colors"
+                    className="p-1.5 text-sougen-blue hover:bg-sougen-blue/10 rounded font-medium text-xs flex items-center gap-1 transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" /> Item
                   </button>
@@ -217,7 +217,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                   type="number" 
                   value={newDayData.dayNumber}
                   onChange={e => setNewDayData({...newDayData, dayNumber: Number(e.target.value)})}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
               <div>
@@ -226,7 +226,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                   type="date" 
                   value={newDayData.date}
                   onChange={e => setNewDayData({...newDayData, date: e.target.value})}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                 />
               </div>
               <div>
@@ -236,7 +236,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                   value={newDayData.locationOverride}
                   onChange={e => setNewDayData({...newDayData, locationOverride: e.target.value})}
                   placeholder="Isi jika berbeda dari lokasi utama event"
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red text-sm"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue text-sm"
                 />
               </div>
 
@@ -247,7 +247,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                 <button 
                   onClick={handleAddDay}
                   disabled={loading}
-                  className="px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm disabled:opacity-50"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Simpan'}
                 </button>
@@ -277,7 +277,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                     type="time" 
                     value={newRundown.timeStart}
                     onChange={e => setNewRundown({...newRundown, timeStart: e.target.value})}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   />
                 </div>
                 <div>
@@ -286,7 +286,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                     type="time" 
                     value={newRundown.timeEnd}
                     onChange={e => setNewRundown({...newRundown, timeEnd: e.target.value})}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue"
                   />
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                 <select 
                   value={newRundown.activityType}
                   onChange={e => setNewRundown({...newRundown, activityType: e.target.value, activityName: ''})}
-                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red text-sm"
+                  className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue text-sm"
                 >
                   <option value="manual">Ketik Manual</option>
                   {eventData.eventPrograms?.length > 0 && <option value="program">Program Event Terpilih</option>}
@@ -312,14 +312,14 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                     placeholder="Contoh: Registrasi Ulang"
                     value={newRundown.activityName}
                     onChange={e => setNewRundown({...newRundown, activityName: e.target.value})}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red text-sm"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue text-sm"
                   />
                 )}
                 {newRundown.activityType === 'program' && (
                   <select 
                     value={newRundown.activityName}
                     onChange={e => setNewRundown({...newRundown, activityName: e.target.value})}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red text-sm"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue text-sm"
                   >
                     <option value="" disabled>-- Pilih Program --</option>
                     {eventData.eventPrograms.map((ep: any) => (
@@ -331,7 +331,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                   <select 
                     value={newRundown.activityName}
                     onChange={e => setNewRundown({...newRundown, activityName: e.target.value})}
-                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-rpo-red/20 focus:border-rpo-red text-sm"
+                    className="w-full px-3 py-2 border border-admin-border rounded-lg bg-gray-50 text-admin-dark focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue text-sm"
                   >
                     <option value="" disabled>-- Pilih Talent --</option>
                     {eventData.eventTalents.map((et: any) => (
@@ -350,7 +350,7 @@ export default function TabRundown({ eventData, onUpdate }: TabRundownProps) {
                 <button 
                   onClick={handleSubmitRundown}
                   disabled={loading}
-                  className="px-5 py-2 bg-rpo-red text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-5 py-2 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 shadow-sm disabled:opacity-50"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Simpan Rundown'}
                 </button>
