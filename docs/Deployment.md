@@ -1,11 +1,11 @@
-# Deployment.md — Checklist Persiapan & Eksekusi Deployment Website Sougen
+﻿# Deployment.md — Checklist Persiapan & Eksekusi Deployment Website Sougen
 
 Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Setiap item adalah satu unit pekerjaan yang spesifik dan dapat diverifikasi. Urutan pengerjaan mengikuti dependensi teknis — jangan lewati fase sebelum fase di atasnya selesai.
 
 **Platform yang digunakan:**
 - **Git Repository**: GitHub
 - **Database Cloud**: Supabase (PostgreSQL)
-- **Backend Hosting**: Render (Web Service)
+- **Backend Hosting**: Railway (Web Service)
 - **Frontend Hosting**: Vercel
 
 **Status:**
@@ -25,33 +25,33 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 
 ### D-0.2 Push Repositori ke GitHub
 - [x] Buat repositori baru di GitHub (bisa *private* atau *public*, sesuai kebutuhan skripsi)
-- [ ] Verifikasi file `.gitignore` di root sudah mencakup: `node_modules/`, `.env`, `.env.local`, `dist/`, `build/`, `*.log`
-- [ ] Verifikasi file `.gitignore` di `backend/` sudah mencakup: `node_modules`, `.env`, `/src/generated/prisma`
-- [ ] Verifikasi folder `uploads/` **tidak** masuk ke Git (tambahkan `uploads/` ke `.gitignore` backend jika belum ada)
-- [ ] Tambahkan remote GitHub: `git remote add origin https://github.com/USERNAME/NAMA-REPO.git`
-- [ ] Commit semua perubahan terbaru: `git add .` → `git commit -m "Persiapan deployment"`
-- [ ] Push ke GitHub: `git push -u origin main` (atau `master`, sesuai branch utama)
-- [ ] Verifikasi di GitHub: pastikan semua file dan folder sudah muncul di repositori, dan **tidak ada** file `.env` atau `node_modules/` yang ikut ter-push
+- [x] Verifikasi file `.gitignore` di root sudah mencakup: `node_modules/`, `.env`, `.env.local`, `dist/`, `build/`, `*.log`
+- [x] Verifikasi file `.gitignore` di `backend/` sudah mencakup: `node_modules`, `.env`, `/src/generated/prisma`
+- [x] Verifikasi folder `uploads/` **tidak** masuk ke Git (tambahkan `uploads/` ke `.gitignore` backend jika belum ada)
+- [x] Tambahkan remote GitHub: `git remote add origin https://github.com/USERNAME/NAMA-REPO.git`
+- [x] Commit semua perubahan terbaru: `git add .` → `git commit -m "Persiapan deployment"`
+- [x] Push ke GitHub: `git push -u origin main` (atau `master`, sesuai branch utama)
+- [x] Verifikasi di GitHub: pastikan semua file dan folder sudah muncul di repositori, dan **tidak ada** file `.env` atau `node_modules/` yang ikut ter-push
 
 ### D-0.3 Verifikasi Build Lokal
-- [ ] Jalankan `npm run build` di `backend/` — pastikan sukses tanpa error (TypeScript compile)
-- [ ] Jalankan `npm run build` di `frontend/` — pastikan sukses tanpa error (TypeScript + Vite build)
-- [ ] Catat ukuran output `frontend/dist/assets/` sebagai baseline performa
+- [x] Jalankan `npm run build` di `backend/` — pastikan sukses tanpa error (TypeScript compile)
+- [x] Jalankan `npm run build` di `frontend/` — pastikan sukses tanpa error (TypeScript + Vite build)
+- [x] Catat ukuran output `frontend/dist/assets/` sebagai baseline performa
 
 ---
 
 ## FASE D-1 — Setup Database Cloud (Supabase)
 
 ### D-1.1 Buat Project Database di Supabase
-- [ ] Login ke [Supabase Dashboard](https://supabase.com/dashboard)
-- [ ] Buat project baru (atau gunakan project yang sudah ada). Catat **Region** yang dipilih — idealnya pilih region terdekat dengan target pengguna (contoh: `Southeast Asia (Singapore)`)
-- [ ] Set database password yang kuat dan **simpan password ini dengan aman** — tidak bisa dilihat lagi setelah project dibuat
+- [x] Login ke [Supabase Dashboard](https://supabase.com/dashboard)
+- [x] Buat project baru (atau gunakan project yang sudah ada). Catat **Region** yang dipilih — idealnya pilih region terdekat dengan target pengguna (contoh: `Southeast Asia (Singapore)`)
+- [x] Set database password yang kuat dan **simpan password ini dengan aman** — tidak bisa dilihat lagi setelah project dibuat
 
 ### D-1.2 Ambil Connection Strings
-- [ ] Buka menu **Settings → Database** di dashboard Supabase
-- [ ] Salin **Connection String (URI)** mode **Transaction** (port `6543`, via Supavisor pooler) → ini akan menjadi nilai `DATABASE_URL`
-- [ ] Salin **Connection String (URI)** mode **Session** atau **Direct** (port `5432`, koneksi langsung) → ini akan menjadi nilai `DIRECT_URL`
-- [ ] Pastikan kedua string sudah berisi password database yang benar (ganti placeholder `[YOUR-PASSWORD]` dengan password asli)
+- [x] Buka menu **Settings → Database** di dashboard Supabase
+- [x] Salin **Connection String (URI)** mode **Transaction** (port `6543`, via Supavisor pooler) → ini akan menjadi nilai `DATABASE_URL`
+- [x] Salin **Connection String (URI)** mode **Session** atau **Direct** (port `5432`, koneksi langsung) → ini akan menjadi nilai `DIRECT_URL`
+- [x] Pastikan kedua string sudah berisi password database yang benar (ganti placeholder `[YOUR-PASSWORD]` dengan password asli)
 
 > **Catatan Penting:**
 > - `DATABASE_URL` (pooler, port 6543) digunakan oleh Prisma Client saat runtime aplikasi berjalan.
@@ -59,35 +59,36 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 > - Kedua URL **wajib ada** agar backend berfungsi dengan benar.
 
 ### D-1.3 Verifikasi Koneksi Database
-- [ ] Tes koneksi menggunakan tool database client (pgAdmin, DBeaver, atau Supabase SQL Editor) untuk memastikan credential valid
-- [ ] Pastikan database kosong (belum ada tabel) — tabel akan dibuat otomatis oleh Prisma migrate di langkah berikutnya
+- [x] Tes koneksi menggunakan tool database client (pgAdmin, DBeaver, atau Supabase SQL Editor) untuk memastikan credential valid
+- [x] Pastikan database kosong (belum ada tabel) — tabel akan dibuat otomatis oleh Prisma migrate di langkah berikutnya
 
 ---
 
-## FASE D-2 — Deploy Backend ke Render
+## FASE D-2 — Deploy Backend ke Railway
 
-### D-2.1 Buat Web Service di Render
-- [ ] Login ke [Render Dashboard](https://dashboard.render.com)
-- [ ] Klik **New → Web Service**
-- [ ] Hubungkan ke akun GitHub dan pilih repositori proyek
-- [ ] Konfigurasi pengaturan utama:
-  - **Name**: `sougen-backend` (atau nama sesuai keinginan)
-  - **Region**: Pilih region yang sama/dekat dengan Supabase (contoh: `Singapore`)
-  - **Branch**: `main` (atau branch utama)
-  - **Root Directory**: `backend`
-  - **Runtime**: `Node`
-  - **Build Command**: `npm install && npx prisma generate && npm run build`
-  - **Start Command**: `npm run start`
-  - **Instance Type**: Free (atau sesuai kebutuhan)
+### D-2.1 Buat Project & Service di Railway
+- [x] Login ke [Railway Dashboard](https://railway.com/dashboard)
+- [x] Klik **New Project** → pilih **Deploy from GitHub repo**
+- [x] Hubungkan ke akun GitHub dan pilih repositori proyek
+- [x] Setelah project terbuat, klik service yang muncul lalu konfigurasi pengaturan di tab **Settings**:
+  - **Service Name**: `sougen-backend` (atau nama sesuai keinginan)
+  - **Region**: Pilih region yang sama/dekat dengan Supabase (contoh: `Asia Southeast (Singapore)` jika tersedia, atau `US West` sebagai fallback)
+  - **Source → Root Directory**: isi `backend`
+  - **Source → Branch**: `main` (atau branch utama)
+  - **Build → Build Command**: `npm install && npx prisma generate && npm run build`
+  - **Deploy → Start Command**: `npm run start`
 
-### D-2.2 Konfigurasi Environment Variables di Render
-- [ ] Buka tab **Environment** di Web Service yang baru dibuat
-- [ ] Tambahkan variabel berikut satu per satu:
+> **Catatan Railway:**
+> Railway secara otomatis men-detect Node.js dan menjalankan `npm install` saat build. Namun kita tetap perlu memastikan `prisma generate` dijalankan sebelum `tsc` agar Prisma Client ter-generate.
+
+### D-2.2 Konfigurasi Environment Variables di Railway
+- [x] Klik service backend → buka tab **Variables**
+- [x] Tambahkan variabel berikut satu per satu (klik **New Variable** atau gunakan **Raw Editor** untuk paste sekaligus):
 
 | Variabel | Nilai | Keterangan |
 | :--- | :--- | :--- |
 | `NODE_ENV` | `production` | Mengaktifkan cookie secure & sameSite none |
-| `PORT` | `4000` | Port server Express (Render juga men-set via `PORT` otomatis) |
+| `PORT` | `4000` | Port server Express (Railway juga menyediakan `PORT` otomatis) |
 | `DATABASE_URL` | `postgresql://...@...supabase.co:6543/postgres?pgbouncer=true` | URL pooler dari Supabase (port 6543) |
 | `DIRECT_URL` | `postgresql://...@...supabase.co:5432/postgres` | URL direct dari Supabase (port 5432) |
 | `SESSION_SECRET` | *(string acak min. 32 karakter)* | Untuk enkripsi session cookie admin |
@@ -109,38 +110,47 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 > ```
 > Salin string hash yang dihasilkan (format: `$2a$10$...`).
 
-### D-2.3 Deploy & Verifikasi Backend
-- [ ] Klik **Create Web Service** atau **Manual Deploy** untuk memulai proses build
-- [ ] Pantau log build di Render — pastikan `npm install`, `prisma generate`, dan `tsc` berjalan tanpa error
-- [ ] Setelah deploy selesai, catat URL backend yang diberikan Render (contoh: `https://sougen-backend.onrender.com`)
-- [ ] Akses endpoint health check: buka `https://URL-BACKEND.onrender.com/api/health` di browser — pastikan respons `{"status":"ok"}`
+### D-2.3 Generate Domain Publik di Railway
+- [x] Klik service backend → buka tab **Settings** → bagian **Networking**
+- [x] Klik **Generate Domain** untuk mendapatkan URL publik (contoh: `sougen-backend-production.up.railway.app`)
+- [x] Catat URL ini — akan digunakan sebagai `VITE_API_BASE_URL` di frontend
 
-### D-2.4 Jalankan Migrasi Database
-- [ ] Buka tab **Shell** di Web Service Render (atau gunakan fitur **Run Console**)
-- [ ] Jalankan perintah migrasi:
+### D-2.4 Deploy & Verifikasi Backend
+- [x] Setelah environment variables diisi, Railway akan otomatis memulai deployment (atau klik **Deploy** secara manual)
+- [x] Pantau log build di tab **Deployments** → klik deployment aktif → lihat **Build Logs** — pastikan `npm install`, `prisma generate`, dan `tsc` berjalan tanpa error
+- [x] Pantau **Deploy Logs** — pastikan server berhasil start dengan pesan `Server jalan di port ...`
+- [x] Akses endpoint health check: buka `https://URL-BACKEND.up.railway.app/api/health` di browser — pastikan respons `{"status":"ok"}`
+
+### D-2.5 Jalankan Migrasi Database
+- [x] Buka terminal lokal, pastikan `.env` di folder `backend/` sudah berisi `DATABASE_URL` dan `DIRECT_URL` production dari Supabase
+- [x] Jalankan perintah migrasi dari terminal lokal:
   ```bash
   npx prisma migrate deploy
   ```
-- [ ] Verifikasi output: pastikan semua migrasi berhasil dijalankan tanpa error
-- [ ] Verifikasi di Supabase: buka **Table Editor** dan pastikan semua tabel sudah terbuat (User, Event, Talent, Community, dll.)
+- [x] Verifikasi output: pastikan semua migrasi berhasil dijalankan tanpa error
+- [x] Verifikasi di Supabase: buka **Table Editor** dan pastikan semua tabel sudah terbuat (User, Event, Talent, Community, dll.)
 
-### D-2.5 Jalankan Seed Data Awal
-- [ ] Masih di Shell Render, jalankan seed script:
+> **Catatan:** Railway juga mendukung menjalankan command langsung via **Railway CLI** jika sudah di-install. Alternatif lain adalah menambahkan migrasi ke Build Command: `npm install && npx prisma generate && npx prisma migrate deploy && npm run build` — namun cara ini akan menjalankan migrasi setiap kali deploy, yang bisa berisiko.
+
+### D-2.6 Jalankan Seed Data Awal
+- [x] Masih dari terminal lokal (dengan `.env` production), jalankan seed script:
   ```bash
   npx tsx prisma/seed.ts
   ```
-- [ ] Verifikasi output: pastikan muncul pesan sukses (`✓ Admin user created`, `✓ FAQ items seeded`, `✓ Dummy event created`, `✓ About content seeded`)
-- [ ] Verifikasi di Supabase Table Editor: cek tabel `User` sudah memiliki 1 row admin, tabel `FAQItem` sudah memiliki data
+- [x] Verifikasi output: pastikan muncul pesan sukses (`✓ Admin user created`, `✓ FAQ items seeded`, `✓ Dummy event created`, `✓ About content seeded`)
+- [x] Verifikasi di Supabase Table Editor: cek tabel `User` sudah memiliki 1 row admin, tabel `FAQItem` sudah memiliki data
+
+> **⚠️ Penting:** Setelah selesai menjalankan migrasi dan seed, **kembalikan** isi `.env` lokal ke connection string development (bukan production) agar tidak secara tidak sengaja mengubah data production saat development.
 
 ---
 
 ## FASE D-3 — Deploy Frontend ke Vercel
 
 ### D-3.1 Buat Project di Vercel
-- [ ] Login ke [Vercel Dashboard](https://vercel.com/dashboard)
-- [ ] Klik **Add New → Project**
-- [ ] Hubungkan ke akun GitHub dan pilih repositori proyek yang sama
-- [ ] Konfigurasi pengaturan:
+- [x] Login ke [Vercel Dashboard](https://vercel.com/dashboard)
+- [x] Klik **Add New → Project**
+- [x] Hubungkan ke akun GitHub dan pilih repositori proyek yang sama
+- [x] Konfigurasi pengaturan:
   - **Framework Preset**: Vite
   - **Root Directory**: `frontend`
   - **Build Command**: *(biarkan default Vercel atau isi `npm run build`)*
@@ -148,11 +158,11 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
   - **Install Command**: *(biarkan default `npm install`)*
 
 ### D-3.2 Konfigurasi Environment Variables di Vercel
-- [ ] Tambahkan variabel berikut di tab **Environment Variables**:
+- [x] Tambahkan variabel berikut di tab **Environment Variables**:
 
 | Variabel | Nilai | Keterangan |
 | :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | `https://sougen-backend.onrender.com` | URL backend Render (tanpa `/` di akhir) |
+| `VITE_API_BASE_URL` | `https://sougen-backend-production.up.railway.app` | URL backend Railway (tanpa `/` di akhir) |
 | `VITE_FRONTEND_URL` | `https://sougen-website.vercel.app` | URL frontend sendiri (untuk SEO canonical & OG tags) |
 
 > **Penting:** Variabel dengan prefix `VITE_` akan di-*bundle* ke dalam kode frontend saat build. Pastikan nilainya benar **sebelum** melakukan deploy.
@@ -171,26 +181,26 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 - [ ] Commit dan push file ini ke GitHub sebelum deploy
 
 ### D-3.4 Deploy & Verifikasi Frontend
-- [ ] Klik **Deploy** di Vercel
-- [ ] Pantau log build — pastikan TypeScript compile dan Vite build berjalan tanpa error
-- [ ] Setelah deploy selesai, catat URL frontend yang diberikan Vercel (contoh: `https://sougen-website.vercel.app`)
-- [ ] Akses URL frontend di browser — pastikan halaman Home tampil dengan benar
-- [ ] Tes navigasi ke beberapa halaman: `/event`, `/lineup`, `/gallery`, `/about`, `/contact`
+- [x] Klik **Deploy** di Vercel
+- [x] Pantau log build — pastikan TypeScript compile dan Vite build berjalan tanpa error
+- [x] Setelah deploy selesai, catat URL frontend yang diberikan Vercel (contoh: `https://sougen-website.vercel.app`)
+- [x] Akses URL frontend di browser — pastikan halaman Home tampil dengan benar
+- [x] Tes navigasi ke beberapa halaman: `/event`, `/lineup`, `/gallery`, `/about`, `/contact`
 - [ ] Tes *deep-link refresh*: buka langsung URL `/faq` di browser baru → pastikan halaman tampil (bukan 404)
 
 ---
 
 ## FASE D-4 — Sinkronisasi & Koneksi Frontend ↔ Backend
 
-### D-4.1 Update `FRONTEND_URL` di Render
+### D-4.1 Update `FRONTEND_URL` di Railway
 - [ ] Salin URL frontend dari Vercel (contoh: `https://sougen-website.vercel.app`)
-- [ ] Buka dashboard Render → Web Service → tab **Environment**
+- [ ] Buka dashboard Railway → klik service backend → tab **Variables**
 - [ ] Perbarui nilai `FRONTEND_URL` dengan URL Vercel yang benar
-- [ ] Simpan perubahan — Render akan otomatis melakukan redeploy
+- [ ] Simpan perubahan — Railway akan otomatis melakukan redeploy
 
 ### D-4.2 Verifikasi CORS & Cookie Session
 - [ ] Buka frontend di browser → Inspect → tab **Network**
-- [ ] Pastikan request ke `/api/...` menuju URL backend Render dan mendapat respons `200 OK` (bukan error CORS)
+- [ ] Pastikan request ke `/api/...` menuju URL backend Railway dan mendapat respons `200 OK` (bukan error CORS)
 - [ ] Buka halaman publik yang memuat data dari API (Home, Event List, FAQ) — pastikan data tampil
 
 ### D-4.3 Verifikasi Login Admin
@@ -203,11 +213,11 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 ### D-4.4 Verifikasi Upload Gambar
 - [ ] Dari admin panel, coba upload 1 gambar (contoh: logo komunitas atau foto talent)
 - [ ] Pastikan gambar tersimpan dan bisa ditampilkan di halaman publik
-- [ ] Catat: gambar disimpan di disk lokal Render. Jika menggunakan *free tier* tanpa Persistent Disk, gambar akan hilang saat server restart/redeploy
+- [ ] Catat: gambar disimpan di disk lokal Railway. Jika menggunakan *free/hobby tier*, gambar akan hilang saat server restart/redeploy
 
-> **⚠️ Catatan Penting tentang Persistent Disk:**
-> Render *free tier* menggunakan *ephemeral disk* — file upload akan hilang setiap kali server restart. Untuk solusi permanen:
-> - **Opsi A**: Upgrade ke Render plan berbayar dan aktifkan [Persistent Disk](https://docs.render.com/disks) yang di-mount ke path `/opt/render/project/src/uploads`
+> **⚠️ Catatan Penting tentang Penyimpanan File di Railway:**
+> Railway menggunakan *ephemeral filesystem* — file yang ditulis ke disk (termasuk upload gambar) akan hilang setiap kali deployment baru terjadi. Untuk solusi permanen:
+> - **Opsi A**: Gunakan [Railway Volume](https://docs.railway.com/reference/volumes) — persistent storage yang bisa di-mount ke path `/app/uploads` (tersedia di plan berbayar)
 > - **Opsi B**: Migrasi penyimpanan gambar ke cloud storage (Supabase Storage, Cloudinary, dll.) — ini perlu perubahan kode di `imageProcessor.ts`
 > - **Opsi C**: Gunakan VPS (DigitalOcean, IDCloudHost) sebagai hosting backend yang memiliki disk permanen
 
@@ -224,7 +234,7 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 
   Sitemap: https://URL-BACKEND/sitemap.xml
   ```
-- [ ] Ganti `URL-BACKEND` dengan URL backend Render yang sebenarnya
+- [ ] Ganti `URL-BACKEND` dengan URL backend Railway yang sebenarnya
 - [ ] Commit, push, dan tunggu Vercel auto-redeploy
 - [ ] Verifikasi: akses `https://URL-FRONTEND/robots.txt` di browser — pastikan konten tampil
 
@@ -242,11 +252,11 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 ### D-5.4 Domain Kustom (Opsional)
 - [ ] Beli domain profesional (`.com`, `.id`, `.org`) jika diinginkan
 - [ ] **Vercel**: Tambahkan custom domain di pengaturan project → ikuti instruksi DNS
-- [ ] **Render**: Tambahkan custom domain di pengaturan Web Service → ikuti instruksi DNS
+- [ ] **Railway**: Tambahkan custom domain di service backend → tab **Settings** → **Networking** → **Custom Domain** → ikuti instruksi DNS (CNAME record)
 - [ ] Perbarui Environment Variables:
-  - Di Render: update `FRONTEND_URL` ke domain kustom
+  - Di Railway: update `FRONTEND_URL` ke domain kustom
   - Di Vercel: update `VITE_FRONTEND_URL` ke domain kustom, dan `VITE_API_BASE_URL` jika backend juga pakai domain kustom
-- [ ] Pastikan HTTPS aktif dan berjalan di semua domain kustom
+- [ ] Pastikan HTTPS aktif dan berjalan di semua domain kustom (Railway dan Vercel menyediakan SSL otomatis)
 - [ ] Update URL di `robots.txt` dan pastikan sitemap mengarah ke domain yang benar
 
 ---
