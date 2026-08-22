@@ -1,0 +1,8 @@
+# Robots.txt for Sougen Creative Management
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://sougen-backend-production.up.railway.app/sitemap.xml

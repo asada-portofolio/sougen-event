@@ -170,7 +170,7 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 ### D-3.3 Buat File `vercel.json` untuk SPA Routing
 > **Mengapa?** Website ini adalah Single Page Application (SPA). Tanpa konfigurasi rewrite, Vercel akan mengembalikan error 404 ketika user mengakses langsung URL seperti `/event/slug` atau me-*refresh* halaman.
 
-- [ ] Buat file `frontend/vercel.json` dengan isi:
+- [x] Buat file `frontend/vercel.json` dengan isi:
   ```json
   {
     "rewrites": [
@@ -178,7 +178,7 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
     ]
   }
   ```
-- [ ] Commit dan push file ini ke GitHub sebelum deploy
+- [x] Commit dan push file ini ke GitHub sebelum deploy
 
 ### D-3.4 Deploy & Verifikasi Frontend
 - [x] Klik **Deploy** di Vercel
@@ -186,34 +186,34 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 - [x] Setelah deploy selesai, catat URL frontend yang diberikan Vercel (contoh: `https://sougen-website.vercel.app`)
 - [x] Akses URL frontend di browser — pastikan halaman Home tampil dengan benar
 - [x] Tes navigasi ke beberapa halaman: `/event`, `/lineup`, `/gallery`, `/about`, `/contact`
-- [ ] Tes *deep-link refresh*: buka langsung URL `/faq` di browser baru → pastikan halaman tampil (bukan 404)
+- [x] Tes *deep-link refresh*: buka langsung URL `/faq` di browser baru → pastikan halaman tampil (bukan 404)
 
 ---
 
 ## FASE D-4 — Sinkronisasi & Koneksi Frontend ↔ Backend
 
 ### D-4.1 Update `FRONTEND_URL` di Railway
-- [ ] Salin URL frontend dari Vercel (contoh: `https://sougen-website.vercel.app`)
-- [ ] Buka dashboard Railway → klik service backend → tab **Variables**
-- [ ] Perbarui nilai `FRONTEND_URL` dengan URL Vercel yang benar
-- [ ] Simpan perubahan — Railway akan otomatis melakukan redeploy
+- [x] Salin URL frontend dari Vercel (contoh: `https://sougen-website.vercel.app`)
+- [x] Buka dashboard Railway → klik service backend → tab **Variables**
+- [x] Perbarui nilai `FRONTEND_URL` dengan URL Vercel yang benar
+- [x] Simpan perubahan — Railway akan otomatis melakukan redeploy
 
 ### D-4.2 Verifikasi CORS & Cookie Session
-- [ ] Buka frontend di browser → Inspect → tab **Network**
-- [ ] Pastikan request ke `/api/...` menuju URL backend Railway dan mendapat respons `200 OK` (bukan error CORS)
-- [ ] Buka halaman publik yang memuat data dari API (Home, Event List, FAQ) — pastikan data tampil
+- [x] Buka frontend di browser → Inspect → tab **Network**
+- [x] Pastikan request ke `/api/...` menuju URL backend Railway dan mendapat respons `200 OK` (bukan error CORS)
+- [x] Buka halaman publik yang memuat data dari API (Home, Event List, FAQ) — pastikan data tampil
 
 ### D-4.3 Verifikasi Login Admin
-- [ ] Buka `/admin/login` di frontend production
-- [ ] Login menggunakan `ADMIN_USERNAME` dan password asli (sebelum di-hash)
-- [ ] Pastikan login berhasil dan redirect ke dashboard admin
-- [ ] Periksa tab **Application → Cookies** di DevTools: pastikan cookie session tersimpan dengan atribut `Secure`, `HttpOnly`, `SameSite=None`
-- [ ] Tes navigasi admin panel: buka beberapa halaman admin (Event, Talent, FAQ) — pastikan data dimuat
+- [x] Buka `/admin/login` di frontend production
+- [x] Login menggunakan `ADMIN_USERNAME` dan password asli (sebelum di-hash)
+- [x] Pastikan login berhasil dan redirect ke dashboard admin
+- [x] Periksa tab **Application → Cookies** di DevTools: pastikan cookie session tersimpan dengan atribut `Secure`, `HttpOnly`, `SameSite=None`
+- [x] Tes navigasi admin panel: buka beberapa halaman admin (Event, Talent, FAQ) — pastikan data dimuat
 
 ### D-4.4 Verifikasi Upload Gambar
-- [ ] Dari admin panel, coba upload 1 gambar (contoh: logo komunitas atau foto talent)
-- [ ] Pastikan gambar tersimpan dan bisa ditampilkan di halaman publik
-- [ ] Catat: gambar disimpan di disk lokal Railway. Jika menggunakan *free/hobby tier*, gambar akan hilang saat server restart/redeploy
+- [x] Dari admin panel, coba upload 1 gambar (contoh: logo komunitas atau foto talent)
+- [x] Pastikan gambar tersimpan dan bisa ditampilkan di halaman publik
+- [x] Catat: gambar disimpan di disk lokal Railway. Jika menggunakan *free/hobby tier*, gambar akan hilang saat server restart/redeploy
 
 > **⚠️ Catatan Penting tentang Penyimpanan File di Railway:**
 > Railway menggunakan *ephemeral filesystem* — file yang ditulis ke disk (termasuk upload gambar) akan hilang setiap kali deployment baru terjadi. Untuk solusi permanen:
@@ -226,7 +226,7 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 ## FASE D-5 — Konfigurasi Post-Deployment
 
 ### D-5.1 File `robots.txt`
-- [ ] Buat file `frontend/public/robots.txt`:
+- [x] Buat file `frontend/public/robots.txt`:
   ```
   User-agent: *
   Allow: /
@@ -234,8 +234,8 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
 
   Sitemap: https://URL-BACKEND/sitemap.xml
   ```
-- [ ] Ganti `URL-BACKEND` dengan URL backend Railway yang sebenarnya
-- [ ] Commit, push, dan tunggu Vercel auto-redeploy
+- [x] Ganti `URL-BACKEND` dengan URL backend Railway yang sebenarnya
+- [x] Commit, push, dan tunggu Vercel auto-redeploy
 - [ ] Verifikasi: akses `https://URL-FRONTEND/robots.txt` di browser — pastikan konten tampil
 
 ### D-5.2 Verifikasi Sitemap
@@ -295,3 +295,4 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
   - Frontend: `___________________________`
   - Backend: `___________________________`
   - Sitemap: `___________________________`
+
