@@ -236,12 +236,12 @@ Dokumen ini adalah panduan persiapan dan eksekusi deployment yang mendetail. Set
   ```
 - [x] Ganti `URL-BACKEND` dengan URL backend Railway yang sebenarnya
 - [x] Commit, push, dan tunggu Vercel auto-redeploy
-- [ ] Verifikasi: akses `https://URL-FRONTEND/robots.txt` di browser — pastikan konten tampil
+- [x] Verifikasi: akses `https://URL-FRONTEND/robots.txt` di browser — pastikan konten tampil
 
 ### D-5.2 Verifikasi Sitemap
-- [ ] Akses `https://URL-BACKEND/sitemap.xml` di browser
-- [ ] Pastikan XML valid dan berisi semua rute publik (Home, About, Contact, FAQ, Event, Gallery, dll.)
-- [ ] Pastikan URL di dalam sitemap menggunakan domain frontend Vercel (bukan `localhost`)
+- [x] Akses `https://URL-BACKEND/sitemap.xml` di browser
+- [x] Pastikan XML valid dan berisi semua rute publik (Home, About, Contact, FAQ, Event, Gallery, dll.)
+- [x] Pastikan URL di dalam sitemap menggunakan domain frontend Vercel (bukan `localhost`)
 
 ### D-5.3 Submit ke Google Search Console (Opsional — Setelah Domain Kustom)
 - [ ] Daftarkan website di [Google Search Console](https://search.google.com/search-console)
