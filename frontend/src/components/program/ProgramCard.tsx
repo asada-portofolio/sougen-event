@@ -3,6 +3,7 @@ import type { Program } from '../../types/program';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 
 import { RulesModal } from './RulesModal';
+import { ProgramDetailModal } from './ProgramDetailModal';
 import { LayoutGrid, ScrollText, Ticket, ImageIcon } from 'lucide-react';
 import { getImageUrl } from '../../utils/getImageUrl';
 import Lightbox from 'yet-another-react-lightbox';
@@ -18,6 +19,7 @@ export interface ProgramCardProps {
 
 export function ProgramCard({ program, registrationUrl }: ProgramCardProps) {
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -29,124 +31,117 @@ export function ProgramCard({ program, registrationUrl }: ProgramCardProps) {
   return (
     <>
       <div 
-        className="bg-white border border-rpo-black/5 rounded-xl overflow-hidden flex flex-col hover:border-sougen-blue/30 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-sm cursor-pointer"
-        onClick={() => handleOpenLightbox(0)}
+        className="group relative rounded-2xl overflow-hidden aspect-[4/5] max-w-[260px] sm:max-w-[280px] md:max-w-[320px] w-full flex flex-col justify-between p-3.5 sm:p-4 md:p-5 bg-[#f0f0f0] shadow-md hover:shadow-[0_12px_36px_rgba(0,148,222,0.25)] transition-all duration-500 cursor-pointer mx-auto select-none"
+        onClick={() => setDetailOpen(true)}
       >
-        
-        {/* Cover Image */}
-        <div className="w-full aspect-[21/9] bg-[#e8e8e8] relative overflow-hidden group">
-          {program.coverImageUrl ? (
-            <ImageWithSkeleton 
-              src={program.coverImageUrl} 
-              alt={`Cover ${program.name}`} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-black/5">
-              <LayoutGrid className="w-12 h-12 text-rpo-black/20" />
-            </div>
+        {/* Background Image */}
+        {program.coverImageUrl ? (
+          <ImageWithSkeleton 
+            src={program.coverImageUrl} 
+            alt={`Cover ${program.name}`} 
+            containerClassName="absolute inset-0 w-full h-full"
+            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/5">
+            <LayoutGrid className="w-14 h-14 text-rpo-black/20" />
+          </div>
+        )}
+
+        {/* Feather Overlay — Multi-stop Light Gradient */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[65%] pointer-events-none"
+          style={{
+            background: 'linear-gradient(to top, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.85) 45%, rgba(255,255,255,0.45) 75%, rgba(255,255,255,0.1) 90%, transparent 100%)'
+          }}
+        />
+
+        {/* Top Badges (Category & Gallery Count) */}
+        <div className="relative z-10 flex items-center justify-between w-full">
+          {program.category ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md border border-sougen-blue/30 text-sougen-blue font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm">
+              <span className="text-sougen-blue font-black">#</span> {program.category}
+            </span>
+          ) : <span />}
+
+          {program.photos && program.photos.length > 0 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenLightbox(0);
+              }}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md border border-rpo-black/10 text-rpo-black/70 hover:text-sougen-blue font-inter text-[9px] sm:text-[10px] font-semibold shadow-sm transition-colors"
+            >
+              <ImageIcon className="w-3 h-3 text-sougen-blue" />
+              {program.photos.length} Foto
+            </button>
           )}
         </div>
 
-        {/* Content Section */}
-        <div className="p-6 flex flex-col flex-1">
-          {program.category && (
-            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-sougen-blue mb-2">
-              {program.category}
-            </span>
-          )}
-          {/* Crimson underline on title */}
-          <h3 className="font-poppins text-2xl font-bold text-rpo-black mb-4 border-b-4 border-sougen-blue pb-2 inline-block self-start">
+        {/* Bottom Content Overlay (Bright Text) */}
+        <div className="relative z-10 flex flex-col justify-end w-full pt-8 sm:pt-10">
+          {/* Title */}
+          <h3 className="font-poppins text-base sm:text-lg md:text-xl font-bold text-rpo-black group-hover:text-sougen-blue transition-colors leading-tight line-clamp-1">
             {program.name}
           </h3>
-          
-          {program.description && (
-            <p className="text-sm font-inter text-rpo-black/70 mb-6 flex-1 leading-relaxed">
-              {program.description}
-            </p>
-          )}
 
-          {/* Action Buttons */}
-          <div className="mt-auto">
-            <div className="flex flex-col gap-2 mb-6">
-              {program.rulesHtml && (
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setRulesOpen(true);
-                  }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#FAFAFA] hover:bg-sougen-blue text-rpo-black hover:text-white border border-rpo-black/10 hover:border-sougen-blue rounded-md transition-all duration-300 font-inter text-sm font-semibold group"
-                >
-                  <ScrollText className="w-4 h-4 text-rpo-black/60 group-hover:text-white transition-colors" />
-                  Baca Aturan Main
-                </button>
+          {/* Truncated Description with Read More */}
+          {program.description && (
+            <div className="mt-0.5 sm:mt-1">
+              <p className="text-[11px] sm:text-xs font-inter text-rpo-black/75 line-clamp-2 leading-relaxed">
+                {program.description}
+              </p>
+              {program.description.length > 60 && (
+                <span className="text-[10px] sm:text-[11px] font-inter font-bold text-sougen-blue group-hover:underline inline-flex items-center gap-0.5 mt-0.5">
+                  Baca selengkapnya ↗
+                </span>
               )}
             </div>
+          )}
 
-            {/* Registration Section */}
+          {/* Action Buttons Row */}
+          <div className="flex items-center gap-1.5 sm:gap-2 mt-2.5 sm:mt-3.5 pt-2.5 sm:pt-3 border-t border-rpo-black/10">
+            {program.rulesHtml && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setRulesOpen(true);
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-white hover:bg-sougen-blue text-rpo-black hover:text-white border border-rpo-black/15 hover:border-sougen-blue rounded-xl transition-all duration-300 font-inter text-[11px] sm:text-xs font-bold shadow-sm"
+              >
+                <ScrollText className="w-3.5 h-3.5 text-rpo-black/60 group-hover:text-white transition-colors" />
+                Aturan
+              </button>
+            )}
+
             {registrationUrl && (
-              <div>
-                <div className="h-[1px] w-full bg-rpo-black/5 mb-4" />
-                <h4 className="text-xs font-inter font-semibold text-rpo-black/40 uppercase tracking-wider mb-3">
-                  Pendaftaran
-                </h4>
-                
-                <a 
-                  href={registrationUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-sougen-blue hover:bg-sougen-green-dark text-white rounded-md transition-all duration-300 font-inter text-sm font-semibold shadow-sm hover:shadow-md"
-                >
-                  <Ticket className="w-4 h-4" />
-                  Daftar Sekarang
-                </a>
-              </div>
+              <a 
+                href={registrationUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-sougen-blue hover:bg-[#0082c4] text-white rounded-xl transition-all duration-300 font-inter text-[11px] sm:text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg"
+              >
+                <Ticket className="w-3.5 h-3.5" />
+                Daftar
+              </a>
             )}
           </div>
         </div>
 
-        {/* Photo Strip Section */}
-        {program.photos && program.photos.length > 0 && (
-          <div className="mt-auto p-4 md:p-6 pt-0">
-            <div className="h-[1px] w-full bg-rpo-black/10 mb-4" />
-            <h4 className="text-xs font-inter font-semibold text-rpo-black/50 uppercase tracking-wider mb-3">
-              Galeri Kegiatan
-            </h4>
-            
-            <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar snap-x">
-              {program.photos.slice(0, 3).map((photo, index) => {
-                const isLastAndMore = index === 2 && program.photos.length > 3;
-                const remaining = program.photos.length - 3;
-                
-                return (
-                  <button
-                    key={photo.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleOpenLightbox(index);
-                    }}
-                    className="relative shrink-0 snap-start h-20 w-24 sm:w-28 rounded-lg overflow-hidden border border-black/5 group/thumb focus:outline-none focus:ring-2 focus:ring-sougen-blue/50"
-                  >
-                    <ImageWithSkeleton 
-                      src={photo.imageUrlThumb} 
-                      alt={`Dokumentasi ${program.name}`}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover/thumb:scale-110"
-                    />
-                    
-                    {isLastAndMore && (
-                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white backdrop-blur-[2px]">
-                        <ImageIcon className="w-4 h-4 mb-1 opacity-80" />
-                        <span className="text-xs font-inter font-bold">+{remaining}</span>
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Signature Sougen Blue Outline Ring */}
+        <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl border-2 border-sougen-blue/60 group-hover:border-sougen-blue transition-colors duration-300" />
       </div>
+
+      {/* Program Detail Modal */}
+      <ProgramDetailModal
+        program={program}
+        registrationUrl={registrationUrl}
+        isOpen={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        onOpenRules={() => setRulesOpen(true)}
+        onOpenGallery={() => handleOpenLightbox(0)}
+      />
 
       {/* Rules Modal for Aturan Main */}
       {program.rulesHtml && (

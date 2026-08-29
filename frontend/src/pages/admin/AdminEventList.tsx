@@ -20,6 +20,7 @@ import type { EventBasic } from '../../hooks/useAdminEvents';
 import { useAdminEvents } from '../../hooks/useAdminEvents';
 import { formatDateShort } from '../../utils/date';
 import { getImageUrl } from '../../utils/getImageUrl';
+import { EventCompletenessBadge } from '../../components/admin/event/EventCompletenessBadge';
 
 const createSchema = z.object({
   name: z.string().min(3, 'Nama event minimal 3 karakter'),
@@ -134,10 +135,6 @@ export default function AdminEventList() {
       {filteredEvents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents.map(event => {
-            const isComplete = event._count 
-              ? event._count.eventTalents > 0 && event._count.galleryPhotos > 0 
-              : false;
-            
             return (
               <div key={event.id} className="bg-white border border-admin-border hover:border-sougen-blue/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
                 <div className="relative aspect-[4/3] bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -152,17 +149,13 @@ export default function AdminEventList() {
                   )}
                   
                   {/* Status Badges Overlay */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-2">
+                  <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5 z-20">
                     {event.isActive && (
                       <span className="inline-flex items-center px-2 py-1 rounded bg-sougen-blue text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
                         Event Aktif
                       </span>
                     )}
-                    {!isComplete && (
-                      <span className="inline-flex items-center px-2 py-1 rounded bg-yellow-400 text-yellow-900 text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                        Data Belum Lengkap
-                      </span>
-                    )}
+                    <EventCompletenessBadge event={event} />
                   </div>
                 </div>
 

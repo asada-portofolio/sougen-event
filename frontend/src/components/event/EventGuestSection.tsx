@@ -10,7 +10,7 @@ export function EventGuestSection({ guests }: EventGuestSectionProps) {
   if (!guests || guests.length === 0) return null;
 
   return (
-    <section className="relative w-full bg-[#FAFAFA] py-12 md:py-16 px-4 lg:px-8 overflow-hidden">
+    <section id="guests" className="relative w-full bg-[#FAFAFA] py-7 sm:py-8 md:py-10 lg:py-12 px-4 lg:px-8 overflow-hidden scroll-mt-16 md:scroll-mt-20">
       {/* Creative Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#0094DE 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
@@ -24,11 +24,11 @@ export function EventGuestSection({ guests }: EventGuestSectionProps) {
           title="Guest Stars"
           description="Bintang tamu spesial yang akan memeriahkan acara ini."
           align="center"
-          className="mb-12"
+          className="mb-5 sm:mb-6 md:mb-9 lg:mb-10"
         />
         
         {/* Responsive Grid for all guests without horizontal scrolling */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mx-auto max-w-[90%] lg:max-w-[85%]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mx-auto max-w-[92%] sm:max-w-[90%] lg:max-w-[85%]">
           {guests.map((et) => (
             <div key={et.id} className="w-full">
               <TalentCard
@@ -43,7 +43,7 @@ export function EventGuestSection({ guests }: EventGuestSectionProps) {
           ))}
         </div>
         
-        <div className="mt-12 lg:mt-16 w-full h-1.5 md:h-2 bg-sougen-blue rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
+        <div className="mt-6 sm:mt-7 md:mt-8 lg:mt-10 w-full h-1.5 md:h-2 bg-sougen-blue rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
       </div>
     </section>
   );

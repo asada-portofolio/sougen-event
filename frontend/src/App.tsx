@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PublicLayout from './layouts/PublicLayout'
 import AdminLayout from './layouts/AdminLayout'
 import ProtectedRoute from './components/ProtectedRoute'
+import { ScrollToTop } from './components/shared/ScrollToTop'
 
 const Home = lazy(() => import('./pages/Home'))
 const EventList = lazy(() => import('./pages/EventList'))
@@ -13,6 +14,7 @@ const Programs = lazy(() => import('./pages/Programs'))
 const GalleryOverview = lazy(() => import('./pages/GalleryOverview'))
 const GalleryDetail = lazy(() => import('./pages/GalleryDetail'))
 const FAQ = lazy(() => import('./pages/FAQ'))
+const News = lazy(() => import('./pages/News'))
 const Policies = lazy(() => import('./pages/Policies'))
 const Contact = lazy(() => import('./pages/Contact'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
@@ -43,6 +45,7 @@ const PageLoader = () => (
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route element={<PublicLayout />}>
@@ -55,6 +58,7 @@ export default function App() {
             <Route path="/gallery" element={<GalleryOverview />} />
             <Route path="/gallery/:slug" element={<GalleryDetail />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/news" element={<News />} />
             <Route path="/safety" element={<Policies />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<AboutUs />} />

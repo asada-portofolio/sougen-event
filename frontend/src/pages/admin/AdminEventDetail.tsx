@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import * as Tabs from '@radix-ui/react-tabs';
 import { 
   ArrowLeft,
@@ -36,11 +36,16 @@ const TABS = [
 export default function AdminEventDetail() {
   const { id } = useParams<{ id: string }>(); // Ini bisa slug atau id, kita sesuaikan dengan route
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   
   const [eventData, setEventData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   
+  const initialTab = searchParams.get('tab') || 'basic';
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [highlightedFieldId, setHighlightedFieldId] = useState<string | null>(searchParams.get('highlight'));
+
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(70);
   const [paddingOffset, setPaddingOffset] = useState(16);
@@ -56,6 +61,71 @@ export default function AdminEventDetail() {
     window.addEventListener('resize', measureHeader);
     return () => window.removeEventListener('resize', measureHeader);
   }, [eventData]);
+
+  // Sync tab & highlight from URL params
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab);
+    }
+    const hl = searchParams.get('highlight');
+    if (hl) {
+      setHighlightedFieldId(hl);
+    }
+  }, [searchParams]);
+
+  // Apply smooth scroll & highlight class when target is present
+  useEffect(() => {
+    if (!highlightedFieldId || loading) return;
+
+    const timer = setTimeout(() => {
+      const el = document.getElementById(highlightedFieldId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('animate-field-highlight');
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [highlightedFieldId, activeTab, loading]);
+
+  // Dismiss highlight when user interacts with / clicks / types into target element
+  useEffect(() => {
+    if (!highlightedFieldId) return;
+
+    const handleInteraction = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      const el = document.getElementById(highlightedFieldId);
+      if (el && (el.contains(target) || el === target)) {
+        el.classList.remove('animate-field-highlight');
+        setHighlightedFieldId(null);
+        
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('highlight');
+        setSearchParams(newParams, { replace: true });
+      }
+    };
+
+    document.addEventListener('click', handleInteraction, true);
+    document.addEventListener('focusin', handleInteraction, true);
+    document.addEventListener('keydown', handleInteraction, true);
+
+    return () => {
+      document.removeEventListener('click', handleInteraction, true);
+      document.removeEventListener('focusin', handleInteraction, true);
+      document.removeEventListener('keydown', handleInteraction, true);
+      const el = document.getElementById(highlightedFieldId);
+      if (el) el.classList.remove('animate-field-highlight');
+    };
+  }, [highlightedFieldId, searchParams, setSearchParams]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('tab', value);
+    newParams.delete('highlight');
+    setSearchParams(newParams);
+  };
   
   // Karena param bisa id atau slug, API getBySlug bisa dipakai untuk dua-duanya (tergantung backend)
   // Backend kita punya /api/events/:slug. 
@@ -126,7 +196,7 @@ export default function AdminEventDetail() {
         </div>
       </div>
 
-      <Tabs.Root defaultValue="basic" className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+      <Tabs.Root value={activeTab} onValueChange={handleTabChange} className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         {/* Navigation Sidebar */}
         <Tabs.List 
           style={{ top: `${headerHeight - paddingOffset}px` }}

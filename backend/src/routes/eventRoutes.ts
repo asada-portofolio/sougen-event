@@ -13,6 +13,7 @@ router.get('/:slug', eventController.getBySlug);
 // ── Admin (Auth Required) ──
 router.post('/', requireAuth, eventController.create);
 router.put('/:id', requireAuth, eventController.update);
+router.post('/:id/sync-days', requireAuth, eventController.syncDays);
 router.post('/:id/poster', requireAuth, uploadSingle, eventController.uploadPoster);
 router.post('/:id/hero', requireAuth, uploadSingle, eventController.uploadHero);
 router.delete('/:id', requireAuth, eventController.remove);

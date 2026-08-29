@@ -46,31 +46,38 @@ export function ActivitySection() {
     }
   };
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
     isDragging.current = true;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.add('cursor-grabbing');
       scrollContainerRef.current.classList.remove('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
       startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
       scrollLeft.current = scrollContainerRef.current.scrollLeft;
+      try {
+        scrollContainerRef.current.setPointerCapture(e.pointerId);
+      } catch {}
     }
   };
 
-  const onMouseLeaveOrUp = () => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.6;
+    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const onPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = false;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.remove('cursor-grabbing');
       scrollContainerRef.current.classList.add('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
-    }
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    if (scrollContainerRef.current) {
-      const x = e.pageX - scrollContainerRef.current.offsetLeft;
-      const walk = (x - startX.current) * 2;
-      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+      try {
+        if (scrollContainerRef.current.hasPointerCapture(e.pointerId)) {
+          scrollContainerRef.current.releasePointerCapture(e.pointerId);
+        }
+      } catch {}
     }
   };
 
@@ -128,11 +135,11 @@ export function ActivitySection() {
           ) : (
             <div 
               ref={scrollContainerRef}
-              onMouseDown={onMouseDown}
-              onMouseLeave={onMouseLeaveOrUp}
-              onMouseUp={onMouseLeaveOrUp}
-              onMouseMove={onMouseMove}
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 hide-scrollbar cursor-grab select-none"
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUpOrCancel}
+              onPointerCancel={onPointerUpOrCancel}
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 hide-scrollbar cursor-grab select-none touch-pan-x"
             >
               {items.map((item) => (
                 <div key={item.id} className="snap-start shrink-0 w-[280px]">

@@ -56,4 +56,42 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  @keyframes ticket-bounce-hint {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-8px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(-4px);
+    }
+  }
+
+  .animate-ticket-bounce {
+    animation: ticket-bounce-hint 1.4s ease-in-out infinite;
+  }
+
+  @keyframes field-pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 3px rgba(0, 148, 222, 0.6), 0 0 15px rgba(0, 148, 222, 0.35);
+      border-color: #0094DE !important;
+      background-color: rgba(0, 148, 222, 0.04);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(0, 148, 222, 0.3), 0 0 25px rgba(0, 148, 222, 0.5);
+      border-color: #0094DE !important;
+      background-color: rgba(0, 148, 222, 0.08);
+    }
+  }
+
+  .animate-field-highlight {
+    animation: field-pulse-glow 1.5s ease-in-out infinite !important;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
 }

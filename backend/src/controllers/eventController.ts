@@ -7,6 +7,7 @@ import * as eventService from '../services/eventService';
 const createEventSchema = z.object({
   name: z.string().min(1, 'Nama event wajib diisi'),
   theme: z.string().optional(),
+  description: z.string().optional(),
   startDate: z.string().min(1, 'Tanggal mulai wajib diisi'),
   endDate: z.string().min(1, 'Tanggal selesai wajib diisi'),
   location: z.string().min(1, 'Lokasi wajib diisi'),
@@ -17,12 +18,14 @@ const createEventSchema = z.object({
 const updateEventSchema = z.object({
   name: z.string().min(1).optional(),
   theme: z.string().optional(),
+  description: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   location: z.string().optional(),
   heroMode: z.enum(['TEMPLATE', 'POSTER']).optional(),
   googleDriveUrl: z.string().optional(),
   isActive: z.boolean().optional(),
+  selectedDates: z.array(z.string()).optional(),
 });
 
 // ── Controllers ──
@@ -131,6 +134,23 @@ export async function uploadHero(req: Request, res: Response, next: NextFunction
     }
 
     const event = await eventService.uploadEventHero(id, req.file.buffer);
+    res.json(event);
+  } catch (err) {
+    next(err);
+  }
+}
+
+/** POST /api/events/:id/sync-days [Auth] — Sinkronisasi EventDays dari tanggal event */
+export async function syncDays(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    if (isNaN(id)) {
+      res.status(400).json({ error: 'ID event tidak valid.' });
+      return;
+    }
+
+    const selectedDates = Array.isArray(req.body.selectedDates) ? req.body.selectedDates : undefined;
+    const event = await eventService.syncEventDays(id, selectedDates);
     res.json(event);
   } catch (err) {
     next(err);

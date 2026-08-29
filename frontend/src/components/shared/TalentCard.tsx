@@ -34,9 +34,10 @@ export function TalentCard({
   return (
     <div
       className={cn(
-        'group relative aspect-[3/4] rounded-2xl bg-[#f0f0f0] shadow-md transition-shadow duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_12px_36px_rgba(0,148,222,0.25)] will-change-[shadow]',
+        'group relative aspect-[3/4] rounded-2xl bg-[#f0f0f0] shadow-md transition-shadow duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_12px_36px_rgba(0,148,222,0.25)] will-change-[shadow] select-none',
         className
       )}
+      onDragStart={(e) => e.preventDefault()}
     >
       {/* Everything clipped inside rounded corners */}
       <div className="absolute inset-0 overflow-hidden rounded-xl">

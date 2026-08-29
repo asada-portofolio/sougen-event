@@ -16,6 +16,7 @@ export function ProgramCard({ imageUrl, title, className }: ProgramCardProps) {
         className
       )}
       draggable={false}
+      onDragStart={(e) => e.preventDefault()}
     >
       {/* Everything clipped inside rounded corners */}
       <div className="absolute inset-0 overflow-hidden rounded-xl">

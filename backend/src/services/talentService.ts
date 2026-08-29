@@ -46,7 +46,13 @@ export async function getAllTalents() {
     orderBy: { stageName: 'asc' },
     include: {
       eventTalents: {
-        select: { eventId: true, role: true },
+        select: { 
+          eventId: true, 
+          role: true,
+          event: {
+            select: { id: true, name: true, slug: true, startDate: true, endDate: true }
+          }
+        },
       },
     },
   });
@@ -59,7 +65,7 @@ export async function getTalentById(id: number) {
       eventTalents: {
         include: {
           event: {
-            select: { name: true, slug: true, isActive: true },
+            select: { id: true, name: true, slug: true, isActive: true, startDate: true, endDate: true, theme: true, location: true },
           },
         },
       },

@@ -10,6 +10,7 @@ import { HeroMode } from '../generated/prisma/client';
 interface CreateEventInput {
   name: string;
   theme?: string;
+  description?: string;
   startDate: string;
   endDate: string;
   location: string;
@@ -20,12 +21,14 @@ interface CreateEventInput {
 interface UpdateEventInput {
   name?: string;
   theme?: string;
+  description?: string;
   startDate?: string;
   endDate?: string;
   location?: string;
   heroMode?: HeroMode;
   googleDriveUrl?: string;
   isActive?: boolean;
+  selectedDates?: string[];
 }
 
 // ── Service Functions ──
@@ -78,11 +81,22 @@ export async function getAllEvents() {
       slug: true,
       name: true,
       theme: true,
+      description: true,
       startDate: true,
       endDate: true,
       location: true,
       posterImageUrl: true,
+      heroImageUrl: true,
+      heroMode: true,
       isActive: true,
+      _count: {
+        select: {
+          eventDays: true,
+          eventTalents: true,
+          eventPrograms: true,
+          galleryPhotos: true,
+        },
+      },
       galleryPhotos: {
         where: { isCover: true },
         select: { imageUrlThumb: true },
@@ -125,16 +139,27 @@ export async function getActiveEvent() {
         where: { isCover: true },
         take: 1,
       },
+      _count: {
+        select: {
+          eventDays: true,
+          eventTalents: true,
+          eventPrograms: true,
+          galleryPhotos: true,
+        },
+      },
     },
   });
 }
 
 /**
- * Ambil detail lengkap satu event berdasarkan slug.
+ * Ambil detail lengkap satu event berdasarkan slug atau ID.
  */
-export async function getEventBySlug(slug: string) {
-  const event = await prisma.event.findUnique({
-    where: { slug },
+export async function getEventBySlug(slugOrId: string) {
+  const numId = parseInt(slugOrId, 10);
+  const isNumeric = !isNaN(numId) && String(numId) === slugOrId;
+
+  const event = await prisma.event.findFirst({
+    where: isNumeric ? { OR: [{ id: numId }, { slug: slugOrId }] } : { slug: slugOrId },
     include: {
       eventDays: {
         orderBy: { dayNumber: 'asc' },
@@ -169,25 +194,40 @@ export async function getEventBySlug(slug: string) {
   return event;
 }
 
+function parseYMDToUTCDate(dateStr: string): Date {
+  const parts = dateStr.split('T')[0].split('-').map(Number);
+  return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], 0, 0, 0, 0));
+}
+
+function formatDateToYMD(date: Date): string {
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(date.getUTCDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 /**
- * Buat event baru. Auto-generate slug dari nama.
+ * Buat event baru beserta generate slug unik.
  */
 export async function createEvent(data: CreateEventInput) {
   let slug = slugify(data.name);
-
-  // Pastikan slug unik — tambahkan suffix angka jika duplikat
+  
   const existing = await prisma.event.findUnique({ where: { slug } });
   if (existing) {
     slug = `${slug}-${Date.now()}`;
   }
+
+  const startDate = parseYMDToUTCDate(data.startDate);
+  const endDate = parseYMDToUTCDate(data.endDate);
 
   const event = await prisma.event.create({
     data: {
       slug,
       name: data.name,
       theme: data.theme,
-      startDate: new Date(data.startDate),
-      endDate: new Date(data.endDate),
+      description: data.description,
+      startDate,
+      endDate,
       location: data.location,
       heroMode: data.heroMode ?? 'TEMPLATE',
       googleDriveUrl: data.googleDriveUrl,
@@ -195,36 +235,143 @@ export async function createEvent(data: CreateEventInput) {
   });
 
   // Auto-generate EventDays
-  const start = new Date(data.startDate);
-  const end = new Date(data.endDate);
-  
-  // Normalize dates to midnight to avoid time zone issues when calculating difference
-  const startNormalized = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const endNormalized = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-  
-  const daysDifference = Math.floor((endNormalized.getTime() - startNormalized.getTime()) / (1000 * 3600 * 24));
-  
-  if (daysDifference >= 0) {
-    const eventDays = [];
-    for (let i = 0; i <= daysDifference; i++) {
-      const currentDay = new Date(startNormalized);
-      currentDay.setDate(currentDay.getDate() + i);
-      
-      eventDays.push({
-        eventId: event.id,
-        dayNumber: i + 1,
-        date: currentDay,
-      });
+  await syncEventDays(event.id);
+
+  return prisma.event.findUnique({
+    where: { id: event.id },
+    include: {
+      eventDays: {
+        include: { rundownItems: true },
+        orderBy: { dayNumber: 'asc' },
+      },
+      eventTalents: { include: { talent: true } },
+      eventPrograms: { include: { program: true } },
+    },
+  });
+}
+
+/**
+ * Sinkronisasi EventDays otomatis dari startDate dan endDate event, atau daftar tanggal kustom.
+ */
+export async function syncEventDays(eventId: number, customDates?: string[]) {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+    include: {
+      eventDays: {
+        include: { rundownItems: true },
+        orderBy: { date: 'asc' },
+      },
+    },
+  });
+
+  if (!event) {
+    throw createHttpError(404, 'Event tidak ditemukan.');
+  }
+
+  let targetDates: Date[] = [];
+
+  if (customDates && customDates.length > 0) {
+    targetDates = customDates
+      .map(dStr => parseYMDToUTCDate(dStr))
+      .filter(d => !isNaN(d.getTime()))
+      .sort((a, b) => a.getTime() - b.getTime());
+  } else {
+    const start = parseYMDToUTCDate(event.startDate.toISOString());
+    const end = parseYMDToUTCDate(event.endDate.toISOString());
+
+    const daysDifference = Math.round((end.getTime() - start.getTime()) / (1000 * 3600 * 24));
+
+    if (daysDifference >= 0) {
+      for (let i = 0; i <= daysDifference; i++) {
+        const currentDay = new Date(start);
+        currentDay.setUTCDate(currentDay.getUTCDate() + i);
+        targetDates.push(currentDay);
+      }
     }
-    
-    if (eventDays.length > 0) {
-      await prisma.eventDay.createMany({
-        data: eventDays,
+  }
+
+  if (targetDates.length === 0) {
+    return prisma.event.findUnique({
+      where: { id: eventId },
+      include: {
+        eventDays: {
+          include: { rundownItems: true },
+          orderBy: { dayNumber: 'asc' },
+        },
+        eventTalents: { include: { talent: true } },
+        eventPrograms: { include: { program: true } },
+      },
+    });
+  }
+
+  const existingDays = event.eventDays;
+  const targetDateStrings = targetDates.map(d => formatDateToYMD(d));
+
+  // 1. Hapus EventDay yang tidak dipilih
+  for (const existingDay of existingDays) {
+    const existingDateStr = formatDateToYMD(existingDay.date);
+    if (!targetDateStrings.includes(existingDateStr)) {
+      await prisma.eventDay.delete({
+        where: { id: existingDay.id },
       });
     }
   }
-  
-  return event;
+
+  // 2. Buat hari baru jika ada tanggal target yang belum terdaftar
+  const remainingDays = await prisma.eventDay.findMany({
+    where: { eventId },
+  });
+
+  for (let i = 0; i < targetDates.length; i++) {
+    const targetDate = targetDates[i];
+    const targetDateStr = formatDateToYMD(targetDate);
+    const found = remainingDays.find(d => formatDateToYMD(d.date) === targetDateStr);
+
+    if (!found) {
+      const maxDayNum = remainingDays.reduce((max, d) => Math.max(max, d.dayNumber), 0);
+      const newDay = await prisma.eventDay.create({
+        data: {
+          eventId,
+          dayNumber: maxDayNum + i + 1,
+          date: targetDate,
+        },
+      });
+      remainingDays.push(newDay);
+    }
+  }
+
+  // 3. Urutkan semua hari yang ada secara kronologis & beri nomor hari berurutan (H1, H2, H3...)
+  const allDaysSorted = await prisma.eventDay.findMany({
+    where: { eventId },
+    orderBy: { date: 'asc' },
+  });
+
+  // Gunakan offset sementara untuk mencegah collision @@unique([eventId, dayNumber])
+  for (let i = 0; i < allDaysSorted.length; i++) {
+    await prisma.eventDay.update({
+      where: { id: allDaysSorted[i].id },
+      data: { dayNumber: 10000 + i },
+    });
+  }
+
+  for (let i = 0; i < allDaysSorted.length; i++) {
+    await prisma.eventDay.update({
+      where: { id: allDaysSorted[i].id },
+      data: { dayNumber: i + 1 },
+    });
+  }
+
+  return prisma.event.findUnique({
+    where: { id: eventId },
+    include: {
+      eventDays: {
+        include: { rundownItems: true },
+        orderBy: { dayNumber: 'asc' },
+      },
+      eventTalents: { include: { talent: true } },
+      eventPrograms: { include: { program: true } },
+    },
+  });
 }
 
 /**
@@ -248,18 +395,42 @@ export async function updateEvent(id: number, data: UpdateEventInput) {
     isForceDraftUpdate = false;
   }
 
-  return prisma.event.update({
+  await prisma.event.update({
     where: { id },
     data: {
       name: data.name,
       theme: data.theme,
-      startDate: data.startDate ? new Date(data.startDate) : undefined,
-      endDate: data.endDate ? new Date(data.endDate) : undefined,
+      description: data.description,
+      startDate: data.startDate ? parseYMDToUTCDate(data.startDate) : undefined,
+      endDate: data.endDate ? parseYMDToUTCDate(data.endDate) : undefined,
       location: data.location,
       heroMode: data.heroMode,
       googleDriveUrl: data.googleDriveUrl,
       isActive: data.isActive,
       ...(isForceDraftUpdate !== undefined && { isForceDraft: isForceDraftUpdate }),
+    },
+  });
+
+  // Jika tanggal atau hari kustom diubah, sinkronkan hari event secara otomatis
+  if (data.startDate || data.endDate || data.selectedDates !== undefined) {
+    await syncEventDays(id, data.selectedDates);
+  }
+
+  return prisma.event.findUnique({
+    where: { id },
+    include: {
+      eventDays: {
+        include: { rundownItems: true },
+        orderBy: { dayNumber: 'asc' },
+      },
+      eventTalents: {
+        include: { talent: true },
+        orderBy: { role: 'asc' },
+      },
+      eventPrograms: {
+        include: { program: true },
+      },
+      galleryPhotos: true,
     },
   });
 }

@@ -36,7 +36,7 @@ export function EventLineUpSection({ lineup }: EventLineUpSectionProps) {
   });
 
   return (
-    <section className="relative w-full bg-[#FAFAFA] pt-12 md:pt-16 pb-6 md:pb-8 px-4 lg:px-8 overflow-hidden">
+    <section id="lineup" className="relative w-full bg-[#FAFAFA] pt-7 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-6 md:pb-6 lg:pb-8 px-4 lg:px-8 overflow-hidden scroll-mt-16 md:scroll-mt-20">
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader 
           label="Let's Get To Know"
@@ -44,11 +44,11 @@ export function EventLineUpSection({ lineup }: EventLineUpSectionProps) {
           description="Saksikan penampilan spektakuler dari cosplayer, grup idol, hingga musisi lokal di acara ini."
           align="center"
           theme="light"
-          className="mb-12"
+          className="mb-5 sm:mb-6 md:mb-9 lg:mb-10"
         />
         
         {/* Responsive Grid for all performers without horizontal scrolling */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mx-auto w-full max-w-[85%] lg:max-w-[75%]">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-6 mx-auto w-full max-w-[92%] sm:max-w-[85%] lg:max-w-[75%]">
           {sortedLineup.map((et) => (
             <div key={et.id} className="w-full">
               {/* Mobile Card */}
@@ -75,7 +75,7 @@ export function EventLineUpSection({ lineup }: EventLineUpSectionProps) {
           ))}
         </div>
         
-        <div className="mt-12 lg:mt-16 w-full h-1.5 md:h-2 bg-sougen-blue rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
+        <div className="mt-6 sm:mt-7 md:mt-8 lg:mt-10 w-full h-1.5 md:h-2 bg-sougen-blue rounded-full mx-auto max-w-[85%] lg:max-w-[75%]" />
       </div>
     </section>
   );

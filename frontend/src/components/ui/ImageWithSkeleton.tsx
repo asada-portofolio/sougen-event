@@ -49,10 +49,12 @@ export function ImageWithSkeleton({
           width={width}
           height={height}
           loading="lazy"
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
           className={cn(
-            'h-full w-full object-cover transition-opacity duration-300',
+            'h-full w-full object-cover select-none transition-opacity duration-300 pointer-events-none',
             isLoaded ? 'opacity-100' : 'opacity-0',
             className
           )}

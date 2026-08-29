@@ -18,36 +18,43 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -234 : 234;
+      const scrollAmount = direction === 'left' ? -231 : 231;
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
     isDragging.current = true;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.add('cursor-grabbing');
       scrollContainerRef.current.classList.remove('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
       startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
       scrollLeft.current = scrollContainerRef.current.scrollLeft;
+      try {
+        scrollContainerRef.current.setPointerCapture(e.pointerId);
+      } catch {}
     }
   };
 
-  const onMouseLeaveOrUp = () => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.6;
+    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const onPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = false;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.remove('cursor-grabbing');
       scrollContainerRef.current.classList.add('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
-    }
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    if (scrollContainerRef.current) {
-      const x = e.pageX - scrollContainerRef.current.offsetLeft;
-      const walk = (x - startX.current) * 2;
-      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+      try {
+        if (scrollContainerRef.current.hasPointerCapture(e.pointerId)) {
+          scrollContainerRef.current.releasePointerCapture(e.pointerId);
+        }
+      } catch {}
     }
   };
 
@@ -91,7 +98,7 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
           {guests.length > 4 && eventSlug && (
             <div className="flex justify-end mt-6">
               <Link 
-                to={`/event/${eventSlug}`} 
+                to={`/event/${eventSlug}#lineup`} 
                 className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-sougen-blue hover:text-sougen-green-dark transition-colors duration-300"
               >
                 <span>Lihat selengkapnya</span>
@@ -105,14 +112,14 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
         <div className="hidden lg:block mx-auto max-w-[75%]">
           <div 
             ref={scrollContainerRef}
-            onMouseDown={onMouseDown}
-            onMouseLeave={onMouseLeaveOrUp}
-            onMouseUp={onMouseLeaveOrUp}
-            onMouseMove={onMouseMove}
-            className="flex mt-12 overflow-x-auto snap-x snap-mandatory pb-6 gap-6 no-scrollbar scroll-smooth cursor-grab select-none"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUpOrCancel}
+            onPointerCancel={onPointerUpOrCancel}
+            className="flex mt-8 overflow-x-auto snap-x snap-mandatory pb-2 gap-4 no-scrollbar scroll-smooth cursor-grab select-none touch-pan-x"
           >
             {guests.map((et) => (
-              <div key={et.id} className="snap-start shrink-0 w-[210px]">
+              <div key={et.id} className="snap-start shrink-0 w-[215px]">
                 <TalentCard
                   name={et.talent.stageName}
                   role={et.role}
@@ -125,10 +132,10 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
             ))}
           </div>
 
-          <div className="flex items-center justify-end gap-8 mt-6 pr-2">
+          <div className="flex items-center justify-end gap-6 mt-4 pr-1">
             {eventSlug && (
               <Link 
-                to={`/event/${eventSlug}`} 
+                to={`/event/${eventSlug}#lineup`} 
                 className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-sougen-blue transition-colors duration-300"
               >
                 <span>Lihat semua</span>
@@ -137,25 +144,25 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
             )}
 
             {guests.length > 4 && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <button 
                   onClick={() => scroll('left')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll left"
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={() => scroll('right')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll right"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             )}
           </div>
-          <div className="mt-12 w-full h-2 bg-sougen-blue rounded-full" />
+          <div className="mt-8 w-full h-2 bg-sougen-blue rounded-full" />
         </div>
 
         <div className="lg:hidden mt-10 w-full h-1.5 bg-sougen-blue rounded-full mx-auto max-w-[85%]" />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,6 +9,7 @@ import { getImageUrl } from '../../../utils/getImageUrl';
 const updateSchema = z.object({
   name: z.string().min(3, 'Nama event minimal 3 karakter'),
   theme: z.string().optional(),
+  description: z.string().optional(),
   startDate: z.string().min(1, 'Pilih tanggal mulai'),
   endDate: z.string().min(1, 'Pilih tanggal selesai'),
   location: z.string().min(3, 'Lokasi wajib diisi'),
@@ -21,20 +22,44 @@ interface TabBasicInfoProps {
   onUpdate: (data: any) => void;
 }
 
+function formatDDMMYY(dateStrOrObj: string | Date): string {
+  if (!dateStrOrObj) return '';
+  const d = new Date(dateStrOrObj);
+  if (isNaN(d.getTime())) return '';
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = String(d.getFullYear()).slice(-2);
+  return `${day}/${month}/${year}`;
+}
+
 export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
 
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<UpdateValues>({
+  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<UpdateValues>({
     resolver: zodResolver(updateSchema),
     defaultValues: {
-      name: eventData.name,
-      theme: eventData.theme || '',
-      startDate: eventData.startDate.split('T')[0],
-      endDate: eventData.endDate.split('T')[0],
-      location: eventData.location,
+      name: eventData?.name || '',
+      theme: eventData?.theme || '',
+      description: eventData?.description || '',
+      startDate: eventData?.startDate ? eventData.startDate.split('T')[0] : '',
+      endDate: eventData?.endDate ? eventData.endDate.split('T')[0] : '',
+      location: eventData?.location || '',
     }
   });
+
+  useEffect(() => {
+    if (eventData) {
+      reset({
+        name: eventData.name || '',
+        theme: eventData.theme || '',
+        description: eventData.description || '',
+        startDate: eventData.startDate ? eventData.startDate.split('T')[0] : '',
+        endDate: eventData.endDate ? eventData.endDate.split('T')[0] : '',
+        location: eventData.location || '',
+      });
+    }
+  }, [eventData, reset]);
 
   // Watch for live preview
   const wName = watch('name');
@@ -65,7 +90,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
       <div className="xl:col-span-2">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
+            <div id="field-name" className="md:col-span-2 p-2 rounded-xl transition-all">
               <label className="block text-sm font-medium text-admin-dark mb-1">
                 Nama Event <span className="text-red-500">*</span>
               </label>
@@ -77,7 +102,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
               {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
             </div>
 
-            <div className="md:col-span-2">
+            <div id="field-theme" className="md:col-span-2 p-2 rounded-xl transition-all">
               <label className="block text-sm font-medium text-admin-dark mb-1">
                 Tema / Tagline
               </label>
@@ -90,37 +115,52 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
               {errors.theme && <p className="mt-1 text-xs text-red-500">{errors.theme.message}</p>}
             </div>
 
-            <div>
+            <div id="field-description" className="md:col-span-2 p-2 rounded-xl transition-all">
               <label className="block text-sm font-medium text-admin-dark mb-1">
-                Tanggal Mulai <span className="text-red-500">*</span>
+                Deskripsi Event
               </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  {...register('startDate')}
-                  type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
-                />
-              </div>
-              {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
+              <textarea
+                {...register('description')}
+                rows={4}
+                placeholder="Tuliskan deskripsi lengkap atau gambaran umum mengenai event ini..."
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all resize-y"
+              />
+              {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-admin-dark mb-1">
-                Tanggal Selesai <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  {...register('endDate')}
-                  type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
-                />
+            <div id="field-dates" className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-2 rounded-xl transition-all">
+              <div>
+                <label className="block text-sm font-medium text-admin-dark mb-1">
+                  Tanggal Mulai <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    {...register('startDate')}
+                    type="date"
+                    className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+                  />
+                </div>
+                {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
               </div>
-              {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
+
+              <div>
+                <label className="block text-sm font-medium text-admin-dark mb-1">
+                  Tanggal Selesai <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    {...register('endDate')}
+                    type="date"
+                    className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+                  />
+                </div>
+                {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
+              </div>
             </div>
 
-            <div className="md:col-span-2">
+            <div id="field-location" className="md:col-span-2 p-2 rounded-xl transition-all">
               <label className="block text-sm font-medium text-admin-dark mb-1">
                 Lokasi <span className="text-red-500">*</span>
               </label>
@@ -182,8 +222,7 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 shrink-0" />
                 <span>
-                  {wStartDate ? new Date(wStartDate).toLocaleDateString('id-ID') : 'Mulai'} - 
-                  {wEndDate ? new Date(wEndDate).toLocaleDateString('id-ID') : 'Selesai'}
+                  {wStartDate ? formatDDMMYY(wStartDate) : 'Mulai'} - {wEndDate ? formatDDMMYY(wEndDate) : 'Selesai'}
                 </span>
               </div>
               <div className="flex items-center gap-2">

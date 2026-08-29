@@ -1,12 +1,15 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { SEO } from '../components/ui/SEO';
 import { useEventDetail } from '../hooks/useEventDetail';
 import { EventHero } from '../components/event/EventHero';
-import { EventInfoSection } from '../components/event/EventInfoSection';
+import { EventDescriptionSection } from '../components/event/EventDescriptionSection';
 import { EventGuestSection } from '../components/event/EventGuestSection';
 import { EventLineUpSection } from '../components/event/EventLineUpSection';
 import { EventProgramSection } from '../components/event/EventProgramSection';
 import { EventRundownSection } from '../components/event/EventRundownSection';
+import { EventLocationSection } from '../components/event/EventLocationSection';
+import { FaqContactSection } from '../components/home/FaqContactSection';
 import { Skeleton } from '../components/ui/Skeleton';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../components/ui/Button';
@@ -14,6 +17,34 @@ import { Button } from '../components/ui/Button';
 export default function EventDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { event, loading, error } = useEventDetail(slug);
+  const [selectedDayId, setSelectedDayId] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (event?.eventDays && event.eventDays.length > 0 && selectedDayId === undefined) {
+      setSelectedDayId(event.eventDays[0].id);
+    }
+  }, [event, selectedDayId]);
+
+  const handleSelectDay = (dayId: number) => {
+    setSelectedDayId(dayId);
+    const el = document.getElementById('rundown');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  useEffect(() => {
+    if (event && window.location.hash) {
+      const hashId = window.location.hash.replace('#', '');
+      const timer = setTimeout(() => {
+        const el = document.getElementById(hashId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [event]);
 
   if (error) {
     return (
@@ -58,7 +89,7 @@ export default function EventDetail() {
     "@context": "https://schema.org",
     "@type": "Event",
     "name": event.name,
-    "description": event.theme ? `${event.name} - ${event.theme}` : `Informasi lengkap event ${event.name} oleh Sougen Creative Management.`,
+    "description": event.description || (event.theme ? `${event.name} - ${event.theme}` : `Informasi lengkap event ${event.name} oleh Sougen Creative Management.`),
     "startDate": event.startDate,
     "endDate": event.endDate,
     "eventStatus": "https://schema.org/EventScheduled",
@@ -94,25 +125,43 @@ export default function EventDetail() {
     <div className="w-full bg-[#FAFAFA] min-h-screen">
       <SEO 
         title={`${event.name} | Sougen Creative Management`}
-        description={`Informasi lengkap event ${event.name}${event.theme ? ` (${event.theme})` : ''} oleh Sougen Creative Management. Lihat jadwal rundown, bintang tamu, dan lokasi acara.`}
+        description={event.description || `Informasi lengkap event ${event.name}${event.theme ? ` (${event.theme})` : ''} oleh Sougen Creative Management. Lihat jadwal rundown, bintang tamu, dan lokasi acara.`}
         ogImage={event.posterImageUrl || undefined}
         canonicalUrl={`/event/${event.slug}`}
         structuredData={eventStructuredData}
       />
 
-      {/* Hero Header */}
-      <EventHero event={event} />
+      {/* 1. Hero Header Section */}
+      <EventHero event={event} onSelectDay={handleSelectDay} />
 
-      {/* Date & Location Info (Per Day) */}
-      <EventInfoSection days={event.eventDays} defaultLocation={event.location} />
+      {/* 2. Deskripsi Event Section */}
+      <EventDescriptionSection 
+        description={event.description} 
+        eventName={event.name} 
+        theme={event.theme} 
+      />
 
-      {/* Main Content Sections */}
-      <div className="py-8">
-        <EventGuestSection guests={guests} />
-        <EventLineUpSection lineup={lineup} />
-        <EventProgramSection eventPrograms={event.eventPrograms} />
-        <EventRundownSection days={event.eventDays} />
-      </div>
+      {/* 3. Bintang Tamu (Guest Stars) Section */}
+      <EventGuestSection guests={guests} />
+
+      {/* 4. Penampil / Line-Up Section */}
+      <EventLineUpSection lineup={lineup} />
+
+      {/* 5. Program Acara Section */}
+      <EventProgramSection eventPrograms={event.eventPrograms} />
+
+      {/* 6. Rundown Acara Section */}
+      <EventRundownSection 
+        days={event.eventDays} 
+        activeDayId={selectedDayId} 
+        onDayChange={setSelectedDayId} 
+      />
+
+      {/* 7. Detail Lokasi & Peta Section */}
+      <EventLocationSection location={event.location} days={event.eventDays} />
+
+      {/* 8. FAQ dan Kontak Section */}
+      <FaqContactSection />
     </div>
   );
 }
