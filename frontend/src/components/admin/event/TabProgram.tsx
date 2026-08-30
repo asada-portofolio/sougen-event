@@ -198,7 +198,7 @@ export default function TabProgram({ eventData, onUpdate }: TabProgramProps) {
   const [showCustomCategory, setShowCustomCategory] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { register, handleSubmit, reset: resetForm, setValue, watch, formState: { errors } } = useForm<NewProgramValues>({
+  const { register, handleSubmit, reset: resetForm, setValue, formState: { errors } } = useForm<NewProgramValues>({
     resolver: zodResolver(newProgramSchema),
     defaultValues: {
       category: 'Kompetisi',
