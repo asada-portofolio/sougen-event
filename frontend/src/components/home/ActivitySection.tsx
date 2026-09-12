@@ -46,38 +46,31 @@ export function ActivitySection() {
     }
   };
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
+  const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.add('cursor-grabbing');
       scrollContainerRef.current.classList.remove('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
       startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
       scrollLeft.current = scrollContainerRef.current.scrollLeft;
-      try {
-        scrollContainerRef.current.setPointerCapture(e.pointerId);
-      } catch {}
     }
   };
 
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !scrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.6;
-    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
-  };
-
-  const onPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+  const onMouseLeaveOrUp = () => {
     isDragging.current = false;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.remove('cursor-grabbing');
       scrollContainerRef.current.classList.add('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
-      try {
-        if (scrollContainerRef.current.hasPointerCapture(e.pointerId)) {
-          scrollContainerRef.current.releasePointerCapture(e.pointerId);
-        }
-      } catch {}
+    }
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    if (scrollContainerRef.current) {
+      const x = e.pageX - scrollContainerRef.current.offsetLeft;
+      const walk = (x - startX.current) * 2;
+      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
     }
   };
 
@@ -94,63 +87,32 @@ export function ActivitySection() {
           theme="light"
         />
         
-        {/* Mobile View: Horizontal scroll for programs */}
-        <div className="lg:hidden mt-12 mx-auto max-w-[85%] overflow-hidden">
+        {/* Unified Responsive Carousel */}
+        <div className="mx-auto max-w-[85%] lg:max-w-[75%] mt-12 lg:mt-16">
           {items.length === 0 ? (
-            <div className="text-center py-10 text-rpo-black/50 font-inter italic border border-rpo-black/5 bg-[#FAFAFA] rounded-xl mx-4">Belum ada program/activity.</div>
-          ) : (
-            <div 
-              className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 hide-scrollbar cursor-grab active:cursor-grabbing"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {items.map((item) => (
-                <div key={item.id} className="snap-center shrink-0 w-[260px] md:w-[300px]">
-                  <ProgramCard {...item} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="flex justify-end pr-4 md:pr-8 mt-2">
-            <Link 
-              to="/programs" 
-              className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-sougen-blue transition-colors duration-300"
-            >
-              <span>Lihat semua</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-        </div>
-
-        {/* Mobile Divider (outside mobile wrapper) */}
-        <div className="lg:hidden mt-10 w-full h-1.5 bg-sougen-blue rounded-full mx-auto max-w-[85%]" />
-
-        {/* Desktop View: Constrained to match divider width */}
-        <div className="hidden lg:block mx-auto max-w-[75%] mt-16 relative group">
-          {items.length === 0 ? (
-            <div className="text-center py-12 text-rpo-black/50 font-inter italic border border-rpo-black/5 bg-[#FAFAFA] rounded-xl">
+            <div className="text-center py-10 lg:py-12 text-rpo-black/50 font-inter italic border border-rpo-black/5 bg-[#FAFAFA] rounded-xl">
               Belum ada program/activity.
             </div>
           ) : (
             <div 
               ref={scrollContainerRef}
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={onPointerUpOrCancel}
-              onPointerCancel={onPointerUpOrCancel}
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 hide-scrollbar cursor-grab select-none touch-pan-x"
+              onMouseDown={onMouseDown}
+              onMouseLeave={onMouseLeaveOrUp}
+              onMouseUp={onMouseLeaveOrUp}
+              onMouseMove={onMouseMove}
+              className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 hide-scrollbar cursor-grab active:cursor-grabbing select-none"
+              style={{ WebkitOverflowScrolling: 'touch' }}
             >
               {items.map((item) => (
-                <div key={item.id} className="snap-start shrink-0 w-[280px]">
+                <div key={item.id} className="snap-center lg:snap-start shrink-0 w-[260px] md:w-[280px]">
                   <ProgramCard {...item} />
                 </div>
               ))}
             </div>
           )}
 
-          {/* Navigation Controls (Desktop only) */}
-          <div className="flex items-center justify-end gap-8 mt-6 pr-2">
+          {/* Footer Controls / Links */}
+          <div className="flex items-center justify-end gap-8 mt-4 lg:mt-6 pr-2">
             <Link 
               to="/programs" 
               className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-sougen-blue transition-colors duration-300"
@@ -160,7 +122,7 @@ export function ActivitySection() {
             </Link>
 
             {items.length > 3 && (
-              <div className="flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-3">
                 <button 
                   onClick={() => scroll('left')}
                   className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
@@ -179,8 +141,8 @@ export function ActivitySection() {
             )}
           </div>
 
-          {/* Desktop Section Divider */}
-          <div className="mt-12 w-full h-2 bg-sougen-blue rounded-full" />
+          {/* Unified Section Divider */}
+          <div className="mt-10 lg:mt-12 w-full h-1.5 lg:h-2 bg-sougen-blue rounded-full" />
         </div>
 
       </div>

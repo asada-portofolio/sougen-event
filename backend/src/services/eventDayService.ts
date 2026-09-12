@@ -1,11 +1,10 @@
 import { prisma } from '../utils/prisma';
 import { createHttpError } from '../middlewares/errorHandler';
-import { syncEventDays } from './eventService';
 
 // ── EventDay ──
 
 interface CreateEventDayInput {
-  dayNumber?: number;
+  dayNumber: number;
   date: string;
   locationOverride?: string;
 }
@@ -17,41 +16,15 @@ interface UpdateEventDayInput {
 }
 
 export async function createEventDay(eventId: number, data: CreateEventDayInput) {
-  const event = await prisma.event.findUnique({ 
-    where: { id: eventId },
-    include: { eventDays: true }
-  });
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
   if (!event) throw createHttpError(404, 'Event tidak ditemukan.');
 
-  const inputDate = new Date(data.date);
-  const inputDateStr = inputDate.toISOString().split('T')[0];
-
-  // Cegah duplikasi tanggal hari pada event yang sama
-  const isDuplicate = event.eventDays.some(
-    d => d.date.toISOString().split('T')[0] === inputDateStr
-  );
-  if (isDuplicate) {
-    throw createHttpError(400, 'Hari dengan tanggal tersebut sudah terdaftar pada event ini.');
-  }
-
-  const maxDayNum = event.eventDays.reduce((max, d) => Math.max(max, d.dayNumber), 0);
-
-  await prisma.eventDay.create({
+  return prisma.eventDay.create({
     data: {
       eventId,
-      dayNumber: maxDayNum + 1,
-      date: inputDate,
+      dayNumber: data.dayNumber,
+      date: new Date(data.date),
       locationOverride: data.locationOverride,
-    },
-  });
-
-  // Sinkronkan kembali dan urutkan secara kronologis
-  await syncEventDays(eventId);
-
-  return prisma.eventDay.findFirst({
-    where: {
-      eventId,
-      date: inputDate,
     },
   });
 }
@@ -60,7 +33,7 @@ export async function updateEventDay(id: number, data: UpdateEventDayInput) {
   const day = await prisma.eventDay.findUnique({ where: { id } });
   if (!day) throw createHttpError(404, 'EventDay tidak ditemukan.');
 
-  const updated = await prisma.eventDay.update({
+  return prisma.eventDay.update({
     where: { id },
     data: {
       dayNumber: data.dayNumber,
@@ -68,23 +41,13 @@ export async function updateEventDay(id: number, data: UpdateEventDayInput) {
       locationOverride: data.locationOverride,
     },
   });
-
-  if (data.date) {
-    await syncEventDays(day.eventId);
-  }
-
-  return updated;
 }
 
 export async function deleteEventDay(id: number) {
   const day = await prisma.eventDay.findUnique({ where: { id } });
   if (!day) throw createHttpError(404, 'EventDay tidak ditemukan.');
 
-  const eventId = day.eventId;
   await prisma.eventDay.delete({ where: { id } });
-
-  // Re-index remaining days cleanly
-  await syncEventDays(eventId);
 }
 
 // ── RundownItem ──

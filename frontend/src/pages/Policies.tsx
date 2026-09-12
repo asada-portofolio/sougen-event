@@ -40,7 +40,7 @@ export default function Policies() {
 
         {error ? (
           <div className="text-center py-10">
-            <p className="text-sougen-blue font-inter text-lg">Gagal memuat data kebijakan. Silakan coba lagi nanti.</p>
+            <p className="text-sougen-blue-dark font-inter font-medium text-lg">Gagal memuat data kebijakan. Silakan coba lagi nanti.</p>
           </div>
         ) : loading ? (
           <div className="space-y-12 max-w-[70ch] mx-auto">

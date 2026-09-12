@@ -59,7 +59,6 @@ export interface ActiveEvent {
   slug: string;
   name: string;
   theme: string | null;
-  description: string | null;
   startDate: string;
   endDate: string;
   location: string;
@@ -82,19 +81,10 @@ export interface EventSummary {
   slug: string;
   name: string;
   theme: string | null;
-  description?: string | null;
   startDate: string;
   endDate: string;
   location: string;
   posterImageUrl: string | null;
-  heroImageUrl?: string | null;
-  heroMode?: HeroMode;
   isActive: boolean;
   galleryPhotos: GalleryPhoto[];
-  _count?: {
-    eventDays: number;
-    eventTalents: number;
-    eventPrograms: number;
-    galleryPhotos: number;
-  };
 }

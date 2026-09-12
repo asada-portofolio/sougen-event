@@ -1,0 +1,20 @@
+# Sougen Creative Management
+
+> Sougen Creative Management adalah event organizer dan manajemen kreatif terkemuka di Makassar yang berfokus pada festival budaya pop Jepang, anime expo, kompetisi cosplay, dan kolaborasi komunitas kreatif.
+
+## Halaman Utama & Panduan Publik
+
+- [Beranda](https://sougen-event.vercel.app/): Informasi event terkini, guest star, rundown jadwal, dan agenda terbaru.
+- [Daftar Event](https://sougen-event.vercel.app/event): Riwayat perjalanan event, agenda acara aktif, dan arsip festival.
+- [Line Up & Bintang Tamu](https://sougen-event.vercel.app/lineup): Profil lengkap guest star, talent cosplay, anison singer, idol group, dan performer.
+- [Program & Aktivitas](https://sougen-event.vercel.app/programs): Daftar kompetisi cosplay, anisong contest, workshop kreatif, gaming zone, dan bazaar booth.
+- [Mitra Komunitas](https://sougen-event.vercel.app/community): Direktori komunitas pop kultur Jepang, gaming, dan jejaring partner kreatif di Makassar.
+- [Galeri Dokumentasi](https://sougen-event.vercel.app/gallery): Dokumentasi visual, sorotan panggung, dan rekaman foto momen terbaik dari setiap acara.
+- [Tentang Kami](https://sougen-event.vercel.app/about): Visi, misi, sejarah perjalanan, dan tim di balik Sougen Creative Management.
+- [FAQ](https://sougen-event.vercel.app/faq): Tanya jawab lengkap seputar tiket, tata tertib pengunjung, pendaftaran lomba, dan informasi venue.
+- [Panduan Keamanan & Kebijakan](https://sougen-event.vercel.app/safety): Aturan properti cosplay, kode etik acara, panduan keselamatan, serta syarat & ketentuan.
+- [Kontak & Layanan Kerja Sama](https://sougen-event.vercel.app/contact): Saluran komunikasi resmi untuk kerja sama sponsor, media partner, talent booking, dan permohonan booth tenant.
+
+## Informasi Lengkap & Ekstra
+
+- [Dokumentasi Lengkap LLM](https://sougen-event.vercel.app/llms-full.txt): Ringkasan komprehensif seluruh konten, tata tertib keamanan, dan arsitektur informasi Sougen Creative Management.

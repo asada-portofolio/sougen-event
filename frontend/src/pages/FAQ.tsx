@@ -60,7 +60,7 @@ export default function FAQ() {
         {/* FAQ Accordion */}
         <div className="bg-white border border-rpo-black/10 shadow-sm rounded-xl p-4 md:p-8 mb-16 max-w-[70ch] mx-auto">
           {error ? (
-            <p className="text-center text-sougen-blue py-10 font-inter">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
+            <p className="text-center text-sougen-blue-dark py-10 font-inter font-medium">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
           ) : loading ? (
             <div className="space-y-4">
               {[1, 2, 3, 4, 5].map((i) => (

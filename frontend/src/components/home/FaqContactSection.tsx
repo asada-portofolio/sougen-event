@@ -3,9 +3,16 @@ import { useFaqs } from '../../hooks/useFaqs';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../ui/Accordion';
 import { Skeleton } from '../ui/Skeleton';
 import { ChevronRight } from 'lucide-react';
+import type { FaqItem } from '../../types/faq';
 
-export function FaqContactSection() {
-  const { faqs, loading, error } = useFaqs();
+export interface FaqContactSectionProps {
+  initialFaqs?: FaqItem[];
+}
+
+export function FaqContactSection({ initialFaqs }: FaqContactSectionProps = {}) {
+  const { faqs: fetchedFaqs, loading: fetchLoading, error } = useFaqs(!initialFaqs);
+  const faqs = initialFaqs ?? fetchedFaqs;
+  const loading = !initialFaqs && fetchLoading;
 
   // Membatasi FAQ yang tampil di halaman Home maksimal 5
   const homeFaqs = faqs.slice(0, 5);
@@ -19,7 +26,7 @@ export function FaqContactSection() {
           <div className="order-1 md:order-2">
             {/* Header FAQ */}
             <div className="mb-8">
-              <span className="block font-poppins font-bold text-sougen-blue text-sm uppercase tracking-wider mb-2 md:text-left text-center">
+              <span className="block font-poppins font-bold text-sougen-blue-dark text-sm uppercase tracking-wider mb-2 md:text-left text-center">
                 you have to know
               </span>
               <h2 className="font-poppins font-black text-3xl md:text-4xl text-rpo-black uppercase md:text-left text-center">
@@ -66,7 +73,7 @@ export function FaqContactSection() {
             
             {!loading && homeFaqs.length > 0 && (
               <div className="mt-6 text-center md:text-left">
-                <Link to="/faq" className="inline-block font-poppins font-bold text-sougen-blue text-sm hover:text-sougen-green-dark transition-colors duration-300">
+                <Link to="/faq" className="inline-block font-poppins font-bold text-sougen-blue-dark text-sm hover:text-sougen-blue transition-colors duration-300">
                   Lihat Semua FAQ &rarr;
                 </Link>
               </div>

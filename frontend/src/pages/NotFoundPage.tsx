@@ -21,7 +21,7 @@ export default function NotFoundPage() {
       <div className="min-h-[80vh] flex items-center justify-center pt-28 pb-16 md:pt-36 md:pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#ffffff]">
         <div className="max-w-3xl w-full text-center">
           {/* Badge & Decorative 404 Number */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sougen-blue/10 text-sougen-blue border border-sougen-blue/20 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sougen-blue/10 text-sougen-blue-dark border border-sougen-blue/30 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
             Error 404
           </div>
 
@@ -41,7 +41,7 @@ export default function NotFoundPage() {
             Halaman Tidak Ditemukan
           </h1>
 
-          <p className="max-w-xl mx-auto text-sm sm:text-base text-rpo-black/70 font-inter leading-relaxed mb-8">
+          <p className="max-w-xl mx-auto text-sm sm:text-base text-rpo-black/80 font-inter leading-relaxed mb-8">
             Tautan yang Anda tuju mungkin salah ketik, telah dipindahkan, atau sudah tidak tersedia lagi di website Sougen Creative Management.
           </p>
 
@@ -63,7 +63,7 @@ export default function NotFoundPage() {
 
           {/* Quick Links Suggestions */}
           <div className="pt-8 border-t border-rpo-black/10">
-            <p className="text-xs uppercase font-bold tracking-widest text-rpo-black/50 mb-6">
+            <p className="text-xs uppercase font-bold tracking-widest text-rpo-black/75 mb-6">
               Atau kunjungi halaman populer berikut
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
@@ -75,14 +75,14 @@ export default function NotFoundPage() {
                     to={item.to}
                     className="p-4 rounded-xl bg-white border border-rpo-black/10 hover:border-sougen-blue/40 hover:shadow-md transition-all duration-300 group flex items-start gap-4"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-sougen-blue/10 text-sougen-blue flex items-center justify-center shrink-0 group-hover:bg-sougen-blue group-hover:text-white transition-colors">
+                    <div className="w-10 h-10 rounded-lg bg-sougen-blue/10 text-sougen-blue-dark flex items-center justify-center shrink-0 group-hover:bg-sougen-blue group-hover:text-white transition-colors">
                       <IconComponent className="w-5 h-5" />
                     </div>
                     <div>
                       <h3 className="font-poppins font-bold text-sm text-rpo-black group-hover:text-sougen-blue transition-colors">
                         {item.label}
                       </h3>
-                      <p className="font-inter text-xs text-rpo-black/60 mt-0.5">
+                      <p className="font-inter text-xs text-rpo-black/75 mt-0.5">
                         {item.desc}
                       </p>
                     </div>

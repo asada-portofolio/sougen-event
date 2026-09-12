@@ -35,20 +35,6 @@ export async function updateSettings(req: Request, res: Response, next: NextFunc
   }
 }
 
-/** POST /api/settings/logo [Auth] */
-export async function uploadLogo(req: Request, res: Response, next: NextFunction): Promise<void> {
-  try {
-    if (!req.file) {
-      res.status(400).json({ error: 'File logo wajib diupload.' });
-      return;
-    }
-    const updated = await settingsService.uploadLogo(req.file.buffer);
-    res.json(updated);
-  } catch (err) {
-    next(err);
-  }
-}
-
 /** POST /api/settings/hero [Auth] */
 export async function uploadHeroImage(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {

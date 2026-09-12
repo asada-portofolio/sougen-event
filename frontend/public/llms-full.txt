@@ -1,0 +1,37 @@
+# Sougen Creative Management — Full Context & Knowledge Base
+
+## Tentang Kami
+Sougen Creative Management adalah organisasi manajemen acara dan agensi kreatif berbasis di Makassar, Sulawesi Selatan, Indonesia. Kami mengkhususkan diri dalam pengorganisasian festival budaya pop Jepang, anime convention, kompetisi cosplay tingkat regional dan nasional, pertunjukan musik anison/J-Pop, serta pemberdayaan kreator dan komunitas lokal.
+
+## Layanan & Aktivitas Utama
+1. **Event Organizing & Festival Production:** Perancangan, tata panggung, tata suara, dan operasional festival pop kultur Jepang dan anime expo berskala besar.
+2. **Talent & Guest Star Management:** Manajemen bintang tamu terkemuka (cosplayer nasional/internasional, seiyuu, anisong singer, DJ, dan performer idol).
+3. **Cosplay & Creative Competitions:** Penyelenggaraan kompetisi cosplay (Cosplay Walk, Cosplay Performance, Armor Crafting), anisong singing contest, dan turnamen esports/gaming.
+4. **Community & Creator Hub:** Menyediakan ruang eksibisi, pasar kreator (*Creator Market* / *Doujin Market*), dan panggung kolaborasi bagi puluhan komunitas kreatif di Sulawesi Selatan.
+5. **Brand Partnership & Sponsorship Activation:** Kolaborasi pemasaran kreatif dengan jenama/brand yang ingin menjangkau demografi generasi muda (Gen-Z & Millennial) penggemar budaya populer Jepang.
+
+## Panduan Keamanan & Kebijakan Acara (Safety & Cosplay Rules)
+- **Aturan Properti Cosplay (Props Policy):**
+  - Senjata tajam dari logam, bilah berujung runcing asli, senjata api sungguhan, atau bahan peledak/kembang api dilarang keras memasuki area acara.
+  - Properti harus terbuat dari bahan aman seperti busa EVA, kayu ringan tanpa tepi tajam, plastik PVC, atau resin cetak 3D.
+  - Properti replika senjata api harus memiliki ujung berwarna oranye terang (*orange tip*).
+- **Etika Pengunjung (Code of Conduct):**
+  - *Cosplay is Not Consent:* Dilarang mengambil foto, merekam, atau menyentuh cosplayer tanpa izin langsung dari yang bersangkutan.
+  - Segala bentuk pelecehan, intimidasi, atau perilaku diskriminatif akan ditindak tegas dengan pengusiran dari venue dan pelaporan ke pihak berwajib.
+
+## Direktori Halaman Web & Navigasi
+- **Beranda (Home):** https://sougen-event.vercel.app/
+- **Arsip & Jadwal Event (Event List):** https://sougen-event.vercel.app/event
+- **Line Up Bintang Tamu (Line Up):** https://sougen-event.vercel.app/lineup
+- **Program & Kompetisi (Programs):** https://sougen-event.vercel.app/programs
+- **Mitra Komunitas (Community):** https://sougen-event.vercel.app/community
+- **Galeri Dokumentasi (Gallery):** https://sougen-event.vercel.app/gallery
+- **Tentang Kami (About Us):** https://sougen-event.vercel.app/about
+- **Tanya Jawab (FAQ):** https://sougen-event.vercel.app/faq
+- **Keamanan & Regulasi (Policies):** https://sougen-event.vercel.app/safety
+- **Kontak Resmi (Contact):** https://sougen-event.vercel.app/contact
+
+## Saluran Kontak Resmi
+- **Lokasi:** Makassar, Sulawesi Selatan, Indonesia
+- **Email:** contact@sougen-event.com
+- **Instagram:** @sougen_creative

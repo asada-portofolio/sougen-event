@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Save, Loader2, Globe, LayoutTemplate, Upload, Image as ImageIcon } from 'lucide-react';
+import { Save, Loader2, Globe, LayoutTemplate, Image as ImageIcon } from 'lucide-react';
 import * as Tabs from '@radix-ui/react-tabs';
 import { api } from '../../services/api';
 import { getImageUrl } from '../../utils/getImageUrl';
@@ -7,14 +7,11 @@ import { getImageUrl } from '../../utils/getImageUrl';
 export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [isUploadingHero, setIsUploadingHero] = useState(false);
 
-  const logoInputRef = useRef<HTMLInputElement>(null);
   const heroInputRef = useRef<HTMLInputElement>(null);
 
   const [settings, setSettings] = useState({
-    logoUrl: '',
     heroImageUrl: '',
     siteTitle: 'Sougen',
     siteDescription: 'Platform kreatif dan event pop culture di Makassar.',
@@ -53,27 +50,6 @@ export default function AdminSettings() {
       alert('Gagal menyimpan pengaturan.');
     } finally {
       setIsSaving(false);
-    }
-  };
-
-  const handleUploadLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-    setIsUploadingLogo(true);
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-
-    try {
-      const { data } = await api.post('/api/settings/logo', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setSettings(prev => ({ ...prev, logoUrl: data.logoUrl }));
-      alert('Logo berhasil diunggah!');
-    } catch (error) {
-      console.error(error);
-      alert('Gagal mengunggah logo.');
-    } finally {
-      setIsUploadingLogo(false);
-      if (logoInputRef.current) logoInputRef.current.value = '';
     }
   };
 
@@ -135,36 +111,10 @@ export default function AdminSettings() {
         <Tabs.Content value="general" className="outline-none space-y-6">
           <div className="bg-white rounded-xl shadow-sm border border-admin-border p-6 max-w-3xl">
             <h2 className="text-lg font-poppins font-bold text-admin-dark mb-4 border-b border-admin-border pb-2">Gambar & Media Global</h2>
-            <p className="text-sm text-admin-secondary mb-6">Unggah Logo dan Gambar Latar Hero (beranda).</p>
+            <p className="text-sm text-admin-secondary mb-6">Unggah Gambar Latar Hero (beranda).</p>
             
             <div className="space-y-6">
               <div className="flex items-start justify-between">
-                <div>
-                  <label className="block text-sm font-medium text-admin-dark mb-1">Logo Publik</label>
-                  <p className="text-xs text-admin-secondary">Logo resmi brand Sougen di website publik.</p>
-                  
-                  {settings.logoUrl && (
-                    <div className="mt-2 h-16 bg-gray-100 border border-gray-200 rounded p-2 inline-flex items-center">
-                      <img src={getImageUrl(settings.logoUrl)} alt="Logo" className="h-full object-contain" />
-                    </div>
-                  )}
-                  
-                  <div className="mt-3">
-                    <input type="file" accept="image/*" className="hidden" ref={logoInputRef} onChange={handleUploadLogo} />
-                    <button 
-                      type="button" 
-                      onClick={() => logoInputRef.current?.click()}
-                      disabled={isUploadingLogo}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm font-medium text-admin-dark border border-gray-300 rounded transition-colors"
-                    >
-                      {isUploadingLogo ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                      {settings.logoUrl ? 'Ganti Logo' : 'Unggah Logo'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-admin-border pt-6 flex items-start justify-between">
                 <div className="w-full">
                   <label className="block text-sm font-medium text-admin-dark mb-1">Hero Image (Beranda)</label>
                   <p className="text-xs text-admin-secondary">Latar belakang saat tidak ada event aktif (Template Mode).</p>

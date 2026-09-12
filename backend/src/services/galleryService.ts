@@ -51,21 +51,7 @@ export async function getAlbums() {
 export async function getPhotosByEventSlug(slug: string, cursor?: number, limit = 20) {
   const event = await prisma.event.findUnique({
     where: { slug },
-    select: { 
-      id: true, 
-      name: true, 
-      slug: true,
-      theme: true,
-      startDate: true,
-      endDate: true,
-      location: true,
-      googleDriveUrl: true,
-      posterImageUrl: true,
-      heroImageUrl: true,
-      _count: {
-        select: { galleryPhotos: true }
-      }
-    },
+    select: { id: true, name: true, slug: true },
   });
 
   if (!event) {

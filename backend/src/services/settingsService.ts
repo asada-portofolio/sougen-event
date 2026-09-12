@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { prisma } from '../utils/prisma';
 import { processAndSaveImage, deleteImageFile } from '../utils/imageProcessor';
 
@@ -25,6 +27,16 @@ export async function getSettings() {
       },
     });
   }
+
+  // Auto-sanitize: Jika file gambar hero di lokal disk hilang (misal akibat ephemeral container reset),
+  // set nilainya ke null agar frontend tidak melakukan request 404 ke resource yang tidak ada.
+  if (settings && settings.heroImageUrl && settings.heroImageUrl.startsWith('/uploads/')) {
+    const localPath = path.join(process.cwd(), settings.heroImageUrl);
+    if (!fs.existsSync(localPath)) {
+      settings.heroImageUrl = null;
+    }
+  }
+
   return settings;
 }
 
@@ -36,25 +48,6 @@ export async function updateSettings(data: UpdateSettingsData) {
       id: 1,
       ...data,
     },
-  });
-}
-
-export async function uploadLogo(fileBuffer: Buffer) {
-  const current = await getSettings();
-
-  const { url } = await processAndSaveImage(fileBuffer, 'settings', {
-    generateThumb: false,
-    fullMaxWidth: 400, // Logo shouldn't be too large
-    quality: 90,
-  });
-
-  if (current.logoUrl) {
-    await deleteImageFile(current.logoUrl);
-  }
-
-  return await prisma.siteSettings.update({
-    where: { id: 1 },
-    data: { logoUrl: url },
   });
 }
 

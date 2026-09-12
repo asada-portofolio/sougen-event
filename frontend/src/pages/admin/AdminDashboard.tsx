@@ -13,7 +13,6 @@ import {
   Settings
 } from 'lucide-react';
 import { formatDateShort } from '../../utils/date';
-import { EventCompletenessBadge } from '../../components/admin/event/EventCompletenessBadge';
 
 export default function AdminDashboard() {
   const { data, loading, error } = useDashboard();
@@ -40,6 +39,11 @@ export default function AdminDashboard() {
 
   const { activeEvent, stats, unreadMessagesCount, recentMessages } = data;
 
+  // Cek kelengkapan data event
+  const isEventComplete = activeEvent
+    ? activeEvent.eventTalents.length > 0 && activeEvent.galleryPhotos.length > 0
+    : false;
+
   return (
     <div className="space-y-6">
       <div className="mb-8">
@@ -60,7 +64,11 @@ export default function AdminDashboard() {
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                   Event Aktif
                 </span>
-                <EventCompletenessBadge event={activeEvent} />
+                {!isEventComplete && (
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-50 text-yellow-700 border border-yellow-200">
+                    Data Belum Lengkap
+                  </span>
+                )}
               </div>
               <h2 className="text-xl font-poppins font-bold text-admin-dark">
                 {activeEvent.name}

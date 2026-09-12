@@ -10,13 +10,6 @@ router.get('/', settingsController.getSettings);
 router.put('/', requireAuth, settingsController.updateSettings);
 
 router.post(
-  '/logo',
-  requireAuth,
-  upload.single('image'),
-  settingsController.uploadLogo
-);
-
-router.post(
   '/hero',
   requireAuth,
   upload.single('image'),

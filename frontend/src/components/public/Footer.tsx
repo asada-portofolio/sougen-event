@@ -5,7 +5,8 @@ import { Mail, MessageCircle, Phone } from 'lucide-react';
 import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter, FaTiktok } from 'react-icons/fa6';
 
 export function Footer() {
-  const { channels, loading } = useContactChannels();
+  const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+  const { channels, loading } = useContactChannels(isDesktop);
 
   // Filter channels
   const socialTypes = ['INSTAGRAM', 'FACEBOOK', 'TIKTOK', 'TWITTER', 'YOUTUBE'];
@@ -37,7 +38,15 @@ export function Footer() {
           <div className="flex flex-col space-y-4">
             <div>
               <Link to="/" className="inline-block">
-                <img src="/images/main-logo.png" alt="Sougen Logo" className="h-8 w-auto object-contain" />
+                <img 
+                  src="/images/main-logo.png" 
+                  alt="Sougen Logo" 
+                  width="43"
+                  height="32"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-8 w-auto object-contain" 
+                />
               </Link>
               <p className="text-xs font-poppins text-white/70 mt-1.5 uppercase tracking-wider">
                 Sougen Creative Management
@@ -149,7 +158,7 @@ export function Footer() {
 
         {/* Bottom Copyright */}
         <div className="mt-8 pt-4 border-t border-white/10 flex justify-center items-center">
-          <p className="text-[11px] text-white/40">&copy; {new Date().getFullYear()} Sougen Creative Management. All rights reserved.</p>
+          <p className="text-xs text-white/70">&copy; {new Date().getFullYear()} Sougen Creative Management. All rights reserved.</p>
         </div>
       </div>
     </footer>

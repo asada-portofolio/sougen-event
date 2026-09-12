@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 
 export interface SiteSettings {
-  logoUrl?: string;
   heroImageUrl?: string;
   siteTitle?: string;
   siteDescription?: string;

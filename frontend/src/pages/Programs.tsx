@@ -15,7 +15,7 @@ export default function Programs() {
   if (error) {
     return (
       <div className="w-full min-h-[70vh] bg-[#FAFAFA] flex items-center justify-center pt-24">
-        <p className="text-sougen-blue font-inter text-lg">Gagal memuat daftar program. Silakan coba lagi nanti.</p>
+        <p className="text-sougen-blue-dark font-inter font-medium text-lg">Gagal memuat daftar program. Silakan coba lagi nanti.</p>
       </div>
     );
   }

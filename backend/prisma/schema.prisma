@@ -62,7 +62,6 @@ model Event {
   slug            String    @unique
   name            String
   theme           String?
-  description     String?   @db.Text
   startDate       DateTime
   endDate         DateTime
   location        String

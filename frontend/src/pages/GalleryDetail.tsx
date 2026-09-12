@@ -1,295 +1,137 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { SEO } from '../components/ui/SEO';
-import { 
-  ChevronLeft, 
-  Loader2, 
-  Calendar, 
-  MapPin, 
-  FolderArchive, 
-  Sparkles, 
-  Maximize2, 
-  Images, 
-  ExternalLink,
-  Info
-} from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
+import PhotoAlbum from 'react-photo-album';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
-import Counter from 'yet-another-react-lightbox/plugins/counter';
-import Captions from 'yet-another-react-lightbox/plugins/captions';
-
 import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/thumbnails.css';
-import 'yet-another-react-lightbox/plugins/counter.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
 
 import { useGalleryDetail } from '../hooks/useGalleryDetail';
 import { ImageWithSkeleton } from '../components/ui/ImageWithSkeleton';
-import { getImageUrl } from '../utils/getImageUrl';
-import { Button } from '../components/ui/Button';
 
 export default function GalleryDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { eventData, photos, loading, loadingMore, error, hasMore, loadMore } = useGalleryDetail(slug);
-  const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [index, setIndex] = useState(-1);
 
-  const formatNumericDate = (dateStr?: string | null) => {
-    if (!dateStr) return '';
-    try {
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const year = d.getFullYear();
-      return `${day} ${month} ${year}`;
-    } catch {
-      return dateStr;
-    }
-  };
+  const renderImage = useCallback(
+    (props: React.ComponentPropsWithoutRef<'img'>) => (
+      <ImageWithSkeleton
+        {...props}
+        className={`${props.className || ''} cursor-pointer hover:opacity-90 transition-opacity`}
+      />
+    ),
+    []
+  );
 
   if (error) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center pt-24 text-center px-4">
-        <div className="w-16 h-16 rounded-full bg-sougen-blue/10 flex items-center justify-center text-sougen-blue mb-4">
-          <Info className="w-8 h-8" />
-        </div>
-        <h2 className="font-poppins font-black text-2xl text-rpo-black mb-2">Album Galeri Tidak Ditemukan</h2>
-        <p className="text-rpo-black/60 font-inter text-sm mb-6 max-w-md">
-          Event ini belum memiliki album dokumentasi atau tautan yang Anda tuju telah dipindahkan.
-        </p>
-        <Button asChild variant="primary">
-          <Link to="/gallery">
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Kembali ke Semua Album
-          </Link>
-        </Button>
+        <p className="text-sougen-blue-dark font-inter font-medium text-lg mb-4">Gagal memuat detail galeri.</p>
+        <Link to="/gallery" className="text-rpo-black/75 hover:text-rpo-black underline font-inter">
+          Kembali ke Galeri
+        </Link>
       </div>
     );
   }
 
-  // Format slides for Lightbox
-  const lightboxSlides = photos.map(p => ({
-    src: getImageUrl(p.imageUrlFull),
-    title: p.caption || (eventData?.name ? `Dokumentasi ${eventData.name}` : undefined),
-    description: p.caption ? `Foto dokumentasi resmi ${eventData?.name || ''}` : undefined,
+  // Format photos for react-photo-album and Lightbox
+  const formattedPhotos = photos.map(p => ({
+    src: p.imageUrlFull,
+    width: p.width,
+    height: p.height,
+    alt: p.caption || `Foto dari event ${eventData?.name || ''}`,
+    title: p.caption || undefined,
   }));
-
-  const totalPhotosCount = eventData?._count?.galleryPhotos || photos.length;
-
   return (
-    <div className="w-full min-h-screen bg-[#FAFAFA] text-rpo-black pt-20 sm:pt-24 md:pt-28 pb-20">
+    <div className="w-full min-h-screen bg-[#FAFAFA] pt-24 md:pt-32 pb-16">
       <SEO 
-        title={eventData ? `Galeri ${eventData.name} | Sougen Creative Management` : 'Memuat Galeri...'}
+        title={eventData ? `${eventData.name} - Galeri | Sougen Creative Management` : 'Memuat Galeri... | Sougen Creative Management'}
         description={eventData ? `Koleksi foto dan dokumentasi eksklusif dari event ${eventData.name}. Lihat keseruan momen panggung, bintang tamu, cosplayer, dan pengunjung Sougen.` : 'Memuat Galeri...'}
-        ogImage={photos[0]?.imageUrlFull ? getImageUrl(photos[0].imageUrlFull) : undefined}
+        ogImage={photos[0]?.imageUrlFull || undefined}
         canonicalUrl={eventData ? `/gallery/${eventData.slug}` : undefined}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* ── TOP BREADCRUMB & ACTION BAR ── */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-black/5">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        {/* Header */}
+        <div className="mb-8 border-b-4 border-sougen-blue pb-6">
           <Link 
             to="/gallery" 
-            className="inline-flex items-center gap-1.5 text-rpo-black/60 hover:text-sougen-blue font-inter font-bold text-xs sm:text-sm transition-colors group"
+            className="inline-flex items-center gap-2 text-rpo-black/50 hover:text-rpo-black font-inter text-sm mb-4 transition-colors"
           >
-            <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-sougen-blue" />
-            <span>Kembali ke Semua Album</span>
+            <ChevronLeft className="w-4 h-4" />
+            Kembali ke Album List
           </Link>
-
-          {eventData?.slug && (
-            <Link
-              to={`/events/${eventData.slug}`}
-              className="inline-flex items-center gap-1.5 text-sougen-blue hover:underline font-inter font-bold text-xs sm:text-sm"
-            >
-              <span>Lihat Detail Event</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
+          
+          {loading ? (
+            <div className="h-10 w-2/3 bg-black/5 animate-pulse rounded-sm" />
+          ) : (
+            <h1 className="font-poppins text-3xl md:text-4xl font-black text-rpo-black">
+              {eventData?.name}
+            </h1>
           )}
         </div>
 
-        {/* ── ALBUM HERO HEADER CARD ── */}
-        <div className="relative bg-white border border-rpo-black/10 rounded-2xl md:rounded-3xl p-5 sm:p-7 md:p-9 shadow-sm overflow-hidden mb-8 md:mb-10">
-          {/* Subtle Creative Background Accent */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-sougen-blue/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-0 left-0 h-1.5 w-full bg-sougen-blue" />
-
-          <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl space-y-3">
-              {/* Badge Total Foto & Status */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sougen-blue/10 text-sougen-blue font-inter font-bold text-xs uppercase tracking-wider">
-                  <Images className="w-3.5 h-3.5" />
-                  <span>{totalPhotosCount} Foto Dokumentasi</span>
-                </span>
-                
-                {eventData?.theme && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/5 text-rpo-black/70 font-mono text-xs font-bold uppercase tracking-wider">
-                    #{eventData.theme}
-                  </span>
-                )}
-              </div>
-
-              {/* Title */}
-              {loading && !eventData ? (
-                <div className="h-10 w-3/4 bg-black/5 animate-pulse rounded-lg" />
-              ) : (
-                <h1 className="font-poppins font-black text-2xl sm:text-3xl md:text-4xl text-rpo-black tracking-tight leading-tight">
-                  {eventData?.name}
-                </h1>
-              )}
-
-              {/* Event Metadata (Date & Venue) */}
-              {eventData && (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-xs sm:text-sm font-inter text-rpo-black/70">
-                  {eventData.startDate && (
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-sougen-blue shrink-0" />
-                      <span className="font-medium">
-                        {formatNumericDate(eventData.startDate)}
-                        {eventData.endDate && eventData.endDate !== eventData.startDate && ` - ${formatNumericDate(eventData.endDate)}`}
-                      </span>
-                    </div>
-                  )}
-
-                  {eventData.location && (
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
-                      <span className="font-medium">{eventData.location}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* CTA Buttons (GDrive Archive & Event Page) */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              {eventData?.googleDriveUrl && (
-                <Button asChild size="lg" variant="primary" className="w-full sm:w-auto font-inter font-bold text-xs uppercase tracking-wider gap-2 shadow-sm">
-                  <a href={eventData.googleDriveUrl} target="_blank" rel="noopener noreferrer">
-                    <FolderArchive className="w-4 h-4" />
-                    <span>Arsip Lengkap GDrive</span>
-                    <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-                  </a>
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* ── STRUCTURED PHOTO GRID ── */}
+        {/* Loading Initial */}
         {loading && photos.length === 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-              <div key={i} className="w-full aspect-[4/3] rounded-2xl bg-black/5 animate-pulse border border-black/5" />
-            ))}
+          <div className="flex justify-center items-center py-32">
+            <Loader2 className="w-8 h-8 text-sougen-blue animate-spin" />
           </div>
         ) : photos.length === 0 ? (
-          <div className="text-center py-20 bg-white border border-rpo-black/10 rounded-2xl shadow-sm p-6 max-w-lg mx-auto">
-            <div className="w-14 h-14 rounded-full bg-sougen-blue/10 flex items-center justify-center text-sougen-blue mx-auto mb-3">
-              <Sparkles className="w-7 h-7" />
-            </div>
-            <h3 className="font-poppins font-bold text-lg text-rpo-black mb-1">Album Masih Kosong</h3>
-            <p className="text-rpo-black/60 font-inter text-xs sm:text-sm mb-5">
-              Dokumentasi foto untuk event ini sedang dalam proses kurasi oleh tim media Sougen.
-            </p>
-            <Button asChild variant="outlined" size="sm">
-              <Link to="/gallery">Kembali ke Daftar Album</Link>
-            </Button>
+          <div className="text-center py-20 bg-white border border-black/10 rounded-xl shadow-sm">
+            <p className="text-rpo-black/50 font-inter text-lg">Album ini masih kosong.</p>
           </div>
         ) : (
-          <div className="space-y-10">
-            {/* Photo Grid with Controlled Proportions */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-              {photos.map((photo, idx) => (
-                <div
-                  key={photo.id || idx}
-                  onClick={() => setLightboxIndex(idx)}
-                  className="group relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-gray-100 border border-rpo-black/10 hover:border-sougen-blue/60 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer select-none"
-                >
-                  {/* Photo Thumbnail with Skeleton */}
-                  <ImageWithSkeleton 
-                    src={photo.imageUrlThumb || photo.imageUrlFull}
-                    alt={photo.caption || `Foto dokumentasi ${idx + 1} - ${eventData?.name || ''}`}
-                    containerClassName="w-full h-full"
-                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                  />
+          <div className="space-y-8">
+            <PhotoAlbum
+              layout="masonry"
+              photos={formattedPhotos}
+              render={{ image: renderImage }}
+              onClick={({ index }) => setIndex(index)}
+              columns={(containerWidth) => {
+                if (containerWidth < 640) return 2;
+                if (containerWidth < 1024) return 3;
+                return 4;
+              }}
+              spacing={16}
+            />
 
-                  {/* Dark Vignette Overlay on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3 sm:p-4">
-                    {/* Top Right Quick Action Icon */}
-                    <div className="flex justify-end">
-                      <div className="w-8 h-8 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center text-white shadow-sm transform translate-y-1 group-hover:translate-y-0 transition-transform">
-                        <Maximize2 className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    {/* Bottom Caption / Photo Number */}
-                    <div>
-                      {photo.caption ? (
-                        <p className="text-white font-inter text-xs font-medium line-clamp-2 drop-shadow-sm">
-                          {photo.caption}
-                        </p>
-                      ) : (
-                        <span className="text-white/80 font-mono text-[10px] uppercase tracking-wider font-bold">
-                          Foto #{idx + 1}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Cover Badge Indicator */}
-                  {photo.isCover && (
-                    <div className="absolute top-2 left-2 z-10">
-                      <span className="px-2 py-0.5 rounded-md bg-sougen-blue/90 text-white font-inter font-bold text-[9px] uppercase tracking-wider shadow-sm">
-                        Cover
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* ── LOAD MORE BUTTON ── */}
+            {/* Load More Button */}
             {hasMore && (
-              <div className="flex justify-center pt-4">
-                <Button
+              <div className="flex justify-center pt-8">
+                <button
                   onClick={loadMore}
                   disabled={loadingMore}
-                  variant="outlined"
-                  size="lg"
-                  className="px-8 py-3 rounded-xl font-inter font-bold text-xs uppercase tracking-wider gap-2 shadow-sm hover:shadow-md transition-all"
+                  className="bg-white border-2 border-sougen-blue text-sougen-blue hover:bg-sougen-blue hover:text-white px-8 py-3 rounded-sm font-inter font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {loadingMore ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-sougen-blue" />
-                      <span>Memuat Foto Berikutnya...</span>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Memuat...
                     </>
                   ) : (
-                    <>
-                      <Images className="w-4 h-4" />
-                      <span>Muat Foto Lainnya</span>
-                    </>
+                    'Muat Lebih Banyak'
                   )}
-                </Button>
+                </button>
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* ── PRO LIGHTBOX VIEWER ── */}
+      {/* Lightbox */}
       <Lightbox
-        open={lightboxIndex >= 0}
-        index={lightboxIndex}
-        close={() => setLightboxIndex(-1)}
-        slides={lightboxSlides}
-        plugins={[Zoom, Thumbnails, Counter, Captions]}
-        carousel={{ padding: 0, spacing: 0, imageFit: 'contain' }}
-        animation={{ fade: 250, swipe: 250 }}
+        open={index >= 0}
+        index={index}
+        close={() => setIndex(-1)}
+        slides={formattedPhotos}
+        plugins={[Zoom]}
         styles={{
-          container: { backgroundColor: 'rgba(5, 11, 20, 0.96)' },
-          thumbnail: { borderColor: 'rgba(255, 255, 255, 0.25)' },
+          container: { backgroundColor: 'rgba(26, 26, 26, 0.98)' }
+        }}
+        render={{
+          iconClose: () => <span className="text-white text-3xl">&times;</span>,
         }}
       />
     </div>

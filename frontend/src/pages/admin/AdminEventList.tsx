@@ -20,7 +20,6 @@ import type { EventBasic } from '../../hooks/useAdminEvents';
 import { useAdminEvents } from '../../hooks/useAdminEvents';
 import { formatDateShort } from '../../utils/date';
 import { getImageUrl } from '../../utils/getImageUrl';
-import { EventCompletenessBadge } from '../../components/admin/event/EventCompletenessBadge';
 
 const createSchema = z.object({
   name: z.string().min(3, 'Nama event minimal 3 karakter'),
@@ -133,10 +132,18 @@ export default function AdminEventList() {
 
       {/* Event Grid */}
       {filteredEvents.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {filteredEvents.map(event => {
+            const isComplete = event._count 
+              ? event._count.eventTalents > 0 && event._count.galleryPhotos > 0 
+              : false;
+            
             return (
-              <div key={event.id} className="bg-white border border-admin-border hover:border-sougen-blue/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+              <div 
+                key={event.id} 
+                className="bg-white border border-admin-border hover:border-sougen-blue/40 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 group flex flex-col"
+              >
+                {/* Poster Image Area */}
                 <div className="relative aspect-[4/3] bg-gray-100 flex items-center justify-center overflow-hidden">
                   {event.posterImageUrl ? (
                     <img 
@@ -145,56 +152,65 @@ export default function AdminEventList() {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <ImageIcon className="w-12 h-12 text-gray-300" />
+                    <ImageIcon className="w-8 h-8 sm:w-12 sm:h-12 text-gray-300" />
                   )}
                   
                   {/* Status Badges Overlay */}
-                  <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5 z-20">
+                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1 sm:gap-1.5 z-10 max-w-[90%]">
                     {event.isActive && (
-                      <span className="inline-flex items-center px-2 py-1 rounded bg-sougen-blue text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                        Event Aktif
+                      <span className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-sougen-blue text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse shrink-0" />
+                        <span className="truncate">Event Aktif</span>
                       </span>
                     )}
-                    <EventCompletenessBadge event={event} />
+                    {!isComplete && (
+                      <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded bg-yellow-400/95 text-yellow-950 text-[8px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-xs truncate">
+                        Belum Lengkap
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div className="p-5 flex-1 flex flex-col">
-                  <h3 className="font-poppins font-bold text-lg text-admin-dark mb-1 line-clamp-1">
-                    {event.name}
-                  </h3>
-                  <p className="text-sm text-admin-secondary mb-4 line-clamp-1">
-                    {event.theme || 'Tidak ada tema'}
-                  </p>
+                {/* Card Body */}
+                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-poppins font-bold text-xs sm:text-base md:text-lg text-admin-dark line-clamp-1 group-hover:text-sougen-blue transition-colors" title={event.name}>
+                      {event.name}
+                    </h3>
+                    <p className="text-[11px] sm:text-sm text-admin-secondary mb-2.5 sm:mb-4 line-clamp-1" title={event.theme || undefined}>
+                      {event.theme || 'Tidak ada tema'}
+                    </p>
 
-                  <div className="space-y-2 mt-auto mb-5 text-sm text-admin-secondary">
-                    <div className="flex items-center gap-2">
-                      <CalendarDays className="w-4 h-4 shrink-0" />
-                      <span>{formatDateShort(event.startDate)} - {formatDateShort(event.endDate)}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 shrink-0" />
-                      <span className="line-clamp-1">{event.location}</span>
+                    <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-5 text-[10px] sm:text-sm text-admin-secondary">
+                      <div className="flex items-center gap-1.5">
+                        <CalendarDays className="w-3 h-3 sm:w-4 sm:h-4 text-sougen-blue shrink-0" />
+                        <span className="truncate">{formatDateShort(event.startDate)} - {formatDateShort(event.endDate)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-sougen-blue shrink-0" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-admin-border mt-auto">
-                    <div className="flex items-center gap-3">
+                  {/* Card Footer: Status Switch & Kelola Button */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2.5 sm:pt-4 border-t border-admin-border/80 mt-auto">
+                    <div className="flex items-center justify-between sm:justify-start gap-2">
                       <Switch.Root 
                         checked={event.isActive}
                         onCheckedChange={(c) => handleToggleActive(event, c)}
-                        className={`w-9 h-5 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-sougen-blue/50 focus:ring-offset-1 ${event.isActive ? 'bg-sougen-blue' : 'bg-gray-300'}`}
+                        className={`w-8 sm:w-9 h-4 sm:h-5 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-sougen-blue/50 focus:ring-offset-1 shrink-0 ${event.isActive ? 'bg-sougen-blue' : 'bg-gray-300'}`}
                       >
-                        <Switch.Thumb className={`block w-3.5 h-3.5 bg-white rounded-full transition-transform duration-200 translate-y-[2px] ${event.isActive ? 'translate-x-[20px]' : 'translate-x-[3px]'}`} />
+                        <Switch.Thumb className={`block w-3 sm:w-3.5 h-3 sm:h-3.5 bg-white rounded-full transition-transform duration-200 translate-y-[2px] sm:translate-y-[3px] ${event.isActive ? 'translate-x-[18px] sm:translate-x-[20px]' : 'translate-x-[2px] sm:translate-x-[3px]'}`} />
                       </Switch.Root>
-                      <span className="text-xs font-medium text-admin-secondary">
+                      <span className="text-[10px] sm:text-xs font-semibold text-admin-secondary">
                         {event.isActive ? 'Publik' : 'Draft'}
                       </span>
                     </div>
                     
                     <Link
                       to={`/admin/event/${event.slug}`}
-                      className="text-sm font-medium text-sougen-blue hover:text-sougen-blue/80 transition-colors"
+                      className="inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-sm font-semibold text-sougen-blue bg-sougen-blue/10 hover:bg-sougen-blue hover:text-white transition-all duration-200 text-center"
                     >
                       Kelola Event
                     </Link>

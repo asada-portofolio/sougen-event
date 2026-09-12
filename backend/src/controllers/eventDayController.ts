@@ -5,7 +5,7 @@ import * as eventDayService from '../services/eventDayService';
 // ── Zod Schemas ──
 
 const createDaySchema = z.object({
-  dayNumber: z.number().int().positive().optional(),
+  dayNumber: z.number().int().positive(),
   date: z.string().min(1),
   locationOverride: z.string().optional(),
 });

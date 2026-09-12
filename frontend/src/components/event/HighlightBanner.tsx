@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import type { ActiveEvent } from '../../types/event';
 import { Button } from '../ui/Button';
-import { Calendar, MapPin, ArrowRight, Sparkles } from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
 import { getImageUrl } from '../../utils/getImageUrl';
+
 
 export interface HighlightBannerProps {
   event: ActiveEvent | null;
@@ -24,100 +25,66 @@ export function HighlightBanner({ event }: HighlightBannerProps) {
   const bannerImage = event.heroImageUrl || event.posterImageUrl;
 
   return (
-    <div className="w-full relative min-h-[480px] md:min-h-[540px] lg:h-[68vh] max-h-[680px] bg-[#050B14] flex flex-col justify-end overflow-hidden border-b border-black/10">
+    <div className="w-full relative bg-rpo-black border-b border-sougen-blue/30 overflow-hidden h-[70vh] min-h-[500px] flex flex-col justify-end">
       
-      {/* 1. Immersive Background Poster Art with Subtle Cinematic Blur */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Cinematic Full Background */}
+      <div className="absolute inset-0 z-0">
         {bannerImage ? (
           <img
             src={getImageUrl(bannerImage)}
             alt={event.name}
-            className="w-full h-full object-cover object-center blur-[3px] scale-105 transition-transform duration-700"
+            width="1920"
+            height="1080"
+            decoding="async"
+            className="w-full h-full object-cover opacity-60"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white/40 text-sm font-inter bg-slate-900">
+          <div className="w-full h-full flex items-center justify-center text-white/20 text-sm font-inter bg-rpo-surface">
             Poster Event Belum Tersedia
           </div>
         )}
       </div>
 
-      {/* 2. Top Navbar Canopy (Soft Natural Fade for Clear Navbar) */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/70 via-black/25 to-transparent pointer-events-none z-10" />
+      {/* Dark Gradient Overlay for Cinematic Effect */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent pointer-events-none"></div>
 
-      {/* 3. Dark Cinematic Overlays (Efek Gelap Halus & Elegan) */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-black/45 via-50% to-transparent pointer-events-none" />
-      <div className="hidden md:block absolute inset-0 z-10 bg-gradient-to-r from-black/80 via-black/35 via-55% to-transparent pointer-events-none" />
-
-      {/* 4. Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 pt-28">
-        <div className="max-w-3xl">
-          
-          {/* Status Badge in Soft Dark/White Glass */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2.5 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-sougen-blue animate-pulse" />
-            <Sparkles className="w-3 h-3 text-white" />
-            <span>Sedang Berlangsung</span>
-          </div>
-
-          {/* Event Title */}
-          <h1 className="font-poppins text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1.5">
+      {/* Content */}
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 lg:px-8 pb-12 md:pb-16 pt-32 text-center md:text-left">
+        <div className="inline-block bg-sougen-blue text-white px-3 py-1 text-xs font-bold font-inter uppercase tracking-wider rounded-md mb-4 md:mb-6 shadow-md">
+          Sedang Berlangsung
+        </div>
+        
+        <div className="space-y-3 md:w-2/3 lg:w-3/5 mx-auto md:mx-0">
+          <h1 className="font-poppins text-4xl md:text-5xl lg:text-7xl font-extrabold text-rpo-white tracking-tight leading-tight drop-shadow-lg">
             {event.name}
           </h1>
-
-          {/* Event Theme */}
           {event.theme && (
-            <p className="text-sm sm:text-base md:text-lg text-sougen-blue font-inter font-bold drop-shadow mb-2.5">
-              #{event.theme}
+            <p className="text-lg md:text-xl lg:text-2xl text-white/80 font-inter drop-shadow-md">
+              {event.theme}
             </p>
           )}
-
-          {/* Date & Venue: Clean transparent layout without container background, with soft text weight */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 py-2.5 my-3 border-y border-white/15 max-w-xl">
-            {/* Tanggal */}
-            <div className="flex items-center gap-2.5">
-              <Calendar className="w-4 h-4 text-sougen-blue shrink-0" />
-              <div className="flex flex-col text-left">
-                <span className="font-mono text-[9px] text-white/50 uppercase tracking-widest leading-none">
-                  DATE
-                </span>
-                <span className="font-inter font-medium text-xs sm:text-sm text-white/90 mt-0.5">
-                  {formatDate(event.startDate, event.endDate)}
-                </span>
-              </div>
+          
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6 text-rpo-near-white font-medium py-3 md:py-5 drop-shadow">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5 text-sougen-blue" />
+              <span className="text-sm md:text-base">{formatDate(event.startDate, event.endDate)}</span>
             </div>
-
-            {/* Divider Vertikal */}
-            <div className="hidden sm:block h-6 w-[1px] bg-white/20" />
-
-            {/* Lokasi */}
-            <div className="flex items-center gap-2.5">
-              <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
-              <div className="flex flex-col text-left">
-                <span className="font-mono text-[9px] text-white/50 uppercase tracking-widest leading-none">
-                  VENUE
-                </span>
-                <span className="font-inter font-medium text-xs sm:text-sm text-white/90 mt-0.5 line-clamp-1">
-                  {event.location}
-                </span>
-              </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 text-sougen-blue" />
+              <span className="text-sm md:text-base line-clamp-1">{event.location}</span>
             </div>
           </div>
 
-          {/* Action CTA Buttons (Clean, without neon glow shadow) */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
-            <Button asChild size="lg" variant="primary" className="font-bold font-inter text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl gap-2 shadow-md transition-colors">
-              <Link to={`/event/${event.slug}`}>
-                <span>Lihat Detail Acara</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-4 pt-2">
+            <Button asChild size="lg" variant="primary-on-dark" className="shadow-lg shadow-sougen-blue/20 font-bold">
+              <Link to={`/event/${event.slug}`}>Lihat Detail Acara</Link>
             </Button>
             {event.registrationUrl && (
-              <Button asChild size="lg" variant="outlined-on-dark" className="bg-white/10 hover:bg-white/20 border-white/25 text-white hover:text-white font-bold font-inter text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl transition-colors">
+              <Button asChild size="lg" variant="outlined" className="bg-black/30 backdrop-blur-md hover:bg-black/50 border-white/20 text-white hover:text-white transition-all font-bold">
                 <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer">Beli Tiket</a>
               </Button>
             )}
           </div>
-
         </div>
       </div>
     </div>

@@ -129,7 +129,7 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {/* Upload Poster */}
-        <div id="field-poster" className="p-3 rounded-2xl transition-all">
+        <div>
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-poppins font-semibold text-admin-dark">Poster Image (Utama)</h3>
@@ -177,7 +177,7 @@ export default function TabVisual({ eventData, onUpdate }: TabVisualProps) {
         </div>
 
         {/* Upload Hero */}
-        <div id="field-hero" className="p-3 rounded-2xl transition-all">
+        <div>
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-poppins font-semibold text-admin-dark">Hero Image</h3>

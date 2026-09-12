@@ -1,11 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { SEO } from '../components/ui/SEO';
-import { useActiveEvent } from '../hooks/useActiveEvent';
 import { Skeleton } from '../components/ui/Skeleton';
-import { useSiteSettings } from '../hooks/useSiteSettings';
-import { useTalents } from '../hooks/useTalents';
+import { useHomeBootstrap } from '../hooks/useHomeBootstrap';
 
-const HeroSection = lazy(() => import('../components/home/HeroSection').then(m => ({ default: m.HeroSection })));
+import { HeroSection } from '../components/home/HeroSection';
 const GuestSection = lazy(() => import('../components/home/GuestSection').then(m => ({ default: m.GuestSection })));
 const LineUpSection = lazy(() => import('../components/home/LineUpSection').then(m => ({ default: m.LineUpSection })));
 const ActivitySection = lazy(() => import('../components/home/ActivitySection').then(m => ({ default: m.ActivitySection })));
@@ -13,9 +11,12 @@ const ProgramRundownSection = lazy(() => import('../components/home/ProgramRundo
 const FaqContactSection = lazy(() => import('../components/home/FaqContactSection').then(m => ({ default: m.FaqContactSection })));
 
 export default function Home() {
-  const { event, loading: eventLoading } = useActiveEvent();
-  const { settings } = useSiteSettings();
-  const { talents, loading: talentsLoading } = useTalents();
+  const { data, loading } = useHomeBootstrap();
+
+  const event = data?.activeEvent ?? null;
+  const settings = data?.settings ?? null;
+  const talents = data?.talents ?? [];
+  const faqs = data?.faqs ?? [];
 
   // Menggabungkan Guest dan Performer menjadi satu kesatuan (Talents)
   const eventTalents = event?.eventTalents || [];
@@ -23,7 +24,7 @@ export default function Home() {
   // Poin 29 & 30: Cek apakah admin sudah menginput jadwal/rundown untuk event ini
   const hasRundown = event && event.eventDays && event.eventDays.length > 0;
 
-  if (eventLoading || (talentsLoading && !event)) {
+  if (loading) {
     return (
       <div className="w-full min-h-screen bg-[#FAFAFA]">
         <SEO title="Memuat... | Sougen Creative Management" description="Memuat data..." />
@@ -64,10 +65,8 @@ export default function Home() {
         }}
       />
 
-      {/* 1. Hero Section (Always rendered, adapts based on active event) */}
-      <Suspense fallback={<Skeleton className="w-full h-[85vh] min-h-[600px] rounded-none bg-rpo-black/10" />}>
-        <HeroSection event={event} settings={settings} />
-      </Suspense>
+      {/* 1. Hero Section (Directly rendered above-the-fold for optimal LCP) */}
+      <HeroSection event={event} settings={settings} />
 
       {/* 2. Lineup/Guest Section (Semua Talent Event Aktif) */}
       {event && (
@@ -102,7 +101,7 @@ export default function Home() {
 
       {/* 6. FAQ & Contact Section */}
       <Suspense fallback={<Skeleton className="w-full h-96 bg-[#FAFAFA]" />}>
-        <FaqContactSection />
+        <FaqContactSection initialFaqs={faqs} />
       </Suspense>
     </div>
   );

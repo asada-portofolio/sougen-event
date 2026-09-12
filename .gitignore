@@ -1,7 +1,37 @@
+# Dependencies
 node_modules/
-.env
-.env.local
+*/node_modules/
+
+# Production build outputs
 dist/
+*/dist/
 build/
-.DS_Store
+*/build/
+dist-ssr/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Database & Uploads
+uploads/
+backend/uploads/
+/src/generated/prisma
+*.db
+*.sqlite
+
+# Logs
+logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

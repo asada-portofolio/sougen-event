@@ -4,6 +4,8 @@ import { getImageUrl } from '../../utils/getImageUrl';
 export interface LightboxPhoto {
   imageUrlFull: string;
   caption?: string | null;
+  width?: number;
+  height?: number;
 }
 
 export interface LightboxModalProps {
@@ -72,6 +74,9 @@ export function LightboxModal({ photos, currentIndex, isOpen, onClose, onNavigat
         <img 
           src={getImageUrl(currentPhoto.imageUrlFull)} 
           alt={currentPhoto.caption || 'Foto Komunitas'}
+          width={currentPhoto.width || 1200}
+          height={currentPhoto.height || 800}
+          decoding="async"
           className="max-w-full max-h-full object-contain select-none drop-shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         />

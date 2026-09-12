@@ -1,0 +1,24 @@
+/* Admin Theme override styles - Loaded on-demand only when admin route is active */
+.admin-theme input,
+.admin-theme textarea,
+.admin-theme select,
+.admin-theme .ql-editor,
+.admin-theme [type='text'],
+.admin-theme [type='number'],
+.admin-theme [type='date'],
+.admin-theme [type='time'],
+[role="dialog"] input,
+[role="dialog"] textarea,
+[role="dialog"] select {
+  color: #000000 !important;
+}
+
+.admin-theme {
+  --bg-base: #F8F9FA;
+  --bg-surface: #FFFFFF;
+  --text-base: #1A1A2E;
+  --text-muted: #6B7280;
+  
+  background-color: var(--bg-base);
+  color: var(--text-base);
+}

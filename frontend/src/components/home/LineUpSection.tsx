@@ -17,43 +17,36 @@ export function LineUpSection({ performers }: LineUpSectionProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -231 : 231;
+      const scrollAmount = direction === 'left' ? -234 : 234;
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
+  const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.add('cursor-grabbing');
       scrollContainerRef.current.classList.remove('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
       startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
       scrollLeft.current = scrollContainerRef.current.scrollLeft;
-      try {
-        scrollContainerRef.current.setPointerCapture(e.pointerId);
-      } catch {}
     }
   };
 
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !scrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.6;
-    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
-  };
-
-  const onPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+  const onMouseLeaveOrUp = () => {
     isDragging.current = false;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.remove('cursor-grabbing');
       scrollContainerRef.current.classList.add('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
-      try {
-        if (scrollContainerRef.current.hasPointerCapture(e.pointerId)) {
-          scrollContainerRef.current.releasePointerCapture(e.pointerId);
-        }
-      } catch {}
+    }
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    if (scrollContainerRef.current) {
+      const x = e.pageX - scrollContainerRef.current.offsetLeft;
+      const walk = (x - startX.current) * 2;
+      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
     }
   };
 
@@ -71,11 +64,22 @@ export function LineUpSection({ performers }: LineUpSectionProps) {
           className="mb-12"
         />
         
-        {/* Mobile View: Grid 2x2 */}
-        <div className="lg:hidden mt-8 mx-auto max-w-[85%]">
-          <div className="grid grid-cols-2 gap-4">
-            {performers.slice(0, 4).map((talent) => (
-              <div key={talent.id}>
+        {/* Unified Responsive Cards Container */}
+        <div className="mx-auto max-w-[85%] lg:max-w-[75%]">
+          {/* Horizontal scroll on desktop, 2x2 grid on mobile */}
+          <div 
+            ref={scrollContainerRef}
+            onMouseDown={onMouseDown}
+            onMouseLeave={onMouseLeaveOrUp}
+            onMouseUp={onMouseLeaveOrUp}
+            onMouseMove={onMouseMove}
+            className="grid grid-cols-2 gap-4 lg:flex lg:overflow-x-auto lg:snap-x lg:snap-mandatory lg:pb-6 lg:gap-6 lg:no-scrollbar lg:scroll-smooth lg:cursor-grab lg:select-none"
+          >
+            {performers.map((talent, idx) => (
+              <div 
+                key={talent.id} 
+                className={`shrink-0 w-full lg:w-[210px] lg:snap-start ${idx >= 4 ? 'hidden lg:block' : ''}`}
+              >
                 <TalentCard
                   name={talent.stageName}
                   role="PERFORMER"
@@ -87,48 +91,22 @@ export function LineUpSection({ performers }: LineUpSectionProps) {
               </div>
             ))}
           </div>
-          
-          {/* Tombol "lihat selengkapnya" di sudut kanan bawah jika lebih dari 4 */}
+
+          {/* Mobile Footer */}
           {performers.length > 4 && (
-            <div className="flex justify-end mt-6">
+            <div className="flex justify-end mt-6 lg:hidden">
               <Link 
                 to="/talents" 
-                className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-sougen-blue hover:text-sougen-green-dark transition-colors duration-300"
+                className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-sougen-blue-dark hover:text-sougen-blue transition-colors duration-300"
               >
                 <span>Lihat selengkapnya</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           )}
-        </div>
 
-        {/* Desktop View: Constrained to match divider width */}
-        <div className="hidden lg:block mx-auto max-w-[75%]">
-          {/* Horizontal scroll for performers */}
-          <div 
-            ref={scrollContainerRef}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUpOrCancel}
-            onPointerCancel={onPointerUpOrCancel}
-            className="flex mt-8 overflow-x-auto snap-x snap-mandatory pb-2 gap-4 no-scrollbar scroll-smooth cursor-grab select-none touch-pan-x"
-          >
-            {performers.map((talent) => (
-              <div key={talent.id} className="snap-start shrink-0 w-[215px]">
-                <TalentCard
-                  name={talent.stageName}
-                  role="PERFORMER"
-                  imageUrl={talent.profileImageUrl || ''}
-                  instagramUrl={talent.instagramUrl || ''}
-                  followerCount={talent.followerCount}
-                  postCount={talent.postCount}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Footer (Arrows & Link) */}
-          <div className="flex items-center justify-end gap-6 mt-4 pr-1">
+          {/* Desktop Footer (Arrows & Link) */}
+          <div className="hidden lg:flex items-center justify-end gap-8 mt-6 pr-2">
             {/* "Lihat semua" link */}
             <Link 
               to="/talents" 
@@ -140,29 +118,28 @@ export function LineUpSection({ performers }: LineUpSectionProps) {
 
             {/* Arrow Buttons */}
             {performers.length > 4 && (
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <button 
                   onClick={() => scroll('left')}
-                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll left"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={() => scroll('right')}
-                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll right"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
             )}
           </div>
 
-          <div className="mt-8 w-full h-2 bg-sougen-blue rounded-full" />
+          {/* Unified Section Divider */}
+          <div className="mt-10 lg:mt-12 w-full h-1.5 lg:h-2 bg-sougen-blue rounded-full" />
         </div>
-
-        <div className="lg:hidden mt-10 w-full h-1.5 bg-sougen-blue rounded-full mx-auto max-w-[85%]" />
       </div>
     </section>
   );

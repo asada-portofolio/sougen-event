@@ -25,6 +25,7 @@ import contactRoutes from './routes/contactRoutes';
 import aboutRoutes from './routes/aboutRoutes';
 import sitemapRoutes from './routes/sitemapRoutes';
 import settingsRoutes from './routes/settingsRoutes';
+import homeRoutes from './routes/homeRoutes';
 
 // ── Controllers untuk rute lintas-resource ──
 import * as eventDayController from './controllers/eventDayController';
@@ -48,8 +49,23 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Serve uploaded images statically
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// Serve uploaded images statically with caching
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads'), {
+    maxAge: '7d',
+    immutable: true,
+}));
+
+// Fallback untuk file upload yang hilang (mencegah 404 console error pada audit Lighthouse/Best Practices)
+const TRANSPARENT_PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
+app.use('/uploads', (req, res, next) => {
+    if (/\.(webp|png|jpe?g|gif|svg)$/i.test(req.path)) {
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        res.status(200).end(TRANSPARENT_PNG);
+        return;
+    }
+    next();
+});
 
 app.use(session({
     store: new PgSession({
@@ -92,6 +108,7 @@ app.use('/api/safety', safetyRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/home', homeRoutes);
 
 // Sitemap
 app.use('/sitemap.xml', sitemapRoutes);

@@ -46,13 +46,7 @@ export async function getAllTalents() {
     orderBy: { stageName: 'asc' },
     include: {
       eventTalents: {
-        select: { 
-          eventId: true, 
-          role: true,
-          event: {
-            select: { id: true, name: true, slug: true, startDate: true, endDate: true }
-          }
-        },
+        select: { eventId: true, role: true },
       },
     },
   });
@@ -65,7 +59,7 @@ export async function getTalentById(id: number) {
       eventTalents: {
         include: {
           event: {
-            select: { id: true, name: true, slug: true, isActive: true, startDate: true, endDate: true, theme: true, location: true },
+            select: { name: true, slug: true, isActive: true },
           },
         },
       },
@@ -120,7 +114,8 @@ export async function uploadTalentPhoto(id: number, fileBuffer: Buffer) {
 
   const result = await processAndSaveImage(fileBuffer, 'talents', {
     generateThumb: false,
-    fullMaxWidth: 800,
+    fullMaxWidth: 600,
+    quality: 80,
   });
 
   return prisma.talent.update({

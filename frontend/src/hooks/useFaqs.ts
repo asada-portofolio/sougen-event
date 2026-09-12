@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { FaqItem } from '../types/faq';
 
-export function useFaqs() {
+export function useFaqs(enabled: boolean = true) {
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
     let isMounted = true;
     const fetchFaqs = async () => {
       try {
@@ -29,7 +30,7 @@ export function useFaqs() {
 
     fetchFaqs();
     return () => { isMounted = false; };
-  }, []);
+  }, [enabled]);
 
   return { faqs, loading, error };
 }

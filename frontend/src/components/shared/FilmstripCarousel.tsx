@@ -145,9 +145,9 @@ export function FilmstripCarousel({ items, className }: FilmstripCarouselProps) 
               {(item.title || item.caption) && (
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-16">
                   {item.title && (
-                    <h4 className="font-poppins text-sm font-bold text-white leading-tight">
+                    <h3 className="font-poppins text-sm font-bold text-white leading-tight">
                       {item.title}
-                    </h4>
+                    </h3>
                   )}
                   {item.caption && (
                     <p className="mt-1 text-xs text-white/70 leading-relaxed line-clamp-2">

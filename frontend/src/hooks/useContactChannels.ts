@@ -11,12 +11,17 @@ export interface ContactChannel {
   displayOrder: number;
 }
 
-export function useContactChannels() {
+export function useContactChannels(enabled: boolean = true) {
   const [channels, setChannels] = useState<ContactChannel[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+
     const fetchChannels = async () => {
       try {
         setLoading(true);
@@ -33,7 +38,7 @@ export function useContactChannels() {
     };
 
     fetchChannels();
-  }, []);
+  }, [enabled]);
 
   return { channels, loading, error };
 }
