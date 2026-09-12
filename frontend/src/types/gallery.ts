@@ -27,6 +27,14 @@ export interface GalleryDetailResponse {
     id: number;
     name: string;
     slug: string;
+    theme?: string | null;
+    startDate?: string | null;
+    endDate?: string | null;
+    location?: string | null;
+    googleDriveUrl?: string | null;
+    _count?: {
+      galleryPhotos: number;
+    };
   };
   photos: GalleryPhoto[];
   nextCursor: number | null;
