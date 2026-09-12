@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { getImageUrl } from '../../utils/getImageUrl';
+import { downloadImage } from '../../utils/downloadImage';
+
 export interface LightboxPhoto {
   imageUrlFull: string;
+  imageUrlThumb?: string;
   caption?: string | null;
   width?: number;
   height?: number;
@@ -60,13 +63,24 @@ export function LightboxModal({ photos, currentIndex, isOpen, onClose, onNavigat
         <span className="text-white/70 font-inter text-sm font-medium px-4">
           {currentIndex + 1} / {photos.length}
         </span>
-        <button 
-          onClick={onClose}
-          className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-          aria-label="Tutup Galeri"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => downloadImage(getImageUrl(currentPhoto.imageUrlFull), `community-photo-${currentIndex + 1}.webp`)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/15 hover:bg-sougen-blue text-white rounded-lg text-xs font-inter font-bold transition-all backdrop-blur-md"
+            title="Unduh Foto Resolusi Penuh"
+            aria-label="Unduh Foto"
+          >
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Unduh</span>
+          </button>
+          <button 
+            onClick={onClose}
+            className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+            aria-label="Tutup Galeri"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
       </div>
 
       {/* Main Image Container */}

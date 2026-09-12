@@ -47,20 +47,20 @@ export default function FAQ() {
 
         {/* Search Bar */}
         <div className="relative mb-12 max-w-2xl mx-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-rpo-black/40" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
           <Input 
             type="text"
             placeholder="Cari pertanyaan Anda..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 py-6 bg-white border-rpo-black/10 focus-visible:ring-sougen-blue focus-visible:border-sougen-blue text-lg text-rpo-black rounded-sm shadow-sm placeholder:text-rpo-black/30"
+            className="w-full pl-12 py-6 bg-white border-rpo-black/10 focus-visible:ring-sougen-blue-dark focus-visible:border-sougen-blue-dark text-lg text-rpo-black rounded-sm shadow-sm placeholder:text-gray-500"
           />
         </div>
 
         {/* FAQ Accordion */}
         <div className="bg-white border border-rpo-black/10 shadow-sm rounded-xl p-4 md:p-8 mb-16 max-w-[70ch] mx-auto">
           {error ? (
-            <p className="text-center text-sougen-blue-dark py-10 font-inter font-medium">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
+            <p className="text-center text-rpo-negative py-10 font-inter">Gagal memuat pertanyaan. Silakan coba lagi nanti.</p>
           ) : loading ? (
             <div className="space-y-4">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -75,8 +75,8 @@ export default function FAQ() {
             <Accordion type="single" collapsible className="w-full">
               {filteredFaqs.map((faq, index) => (
                 <AccordionItem key={faq.id} value={`faq-${faq.id}`} className="border-b border-black/5 last:border-0">
-                  <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue text-lg py-5 flex items-start gap-4">
-                    <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-sougen-blue text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
+                  <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue-dark text-lg py-5 flex items-start gap-4">
+                    <span className="shrink-0 flex items-center justify-center w-6 h-6 bg-sougen-blue-dark text-white text-xs font-black rounded-sm shadow-sm mt-0.5">
                       {index + 1}
                     </span>
                     <span className="flex-1">{faq.question}</span>

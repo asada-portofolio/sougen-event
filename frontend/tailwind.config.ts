@@ -8,7 +8,7 @@ export default {
       colors: {
         // Public Theme - Sougen Brand
         'sougen-blue': '#0094DE',
-        'sougen-blue-dark': '#0070A8',
+        'sougen-blue-dark': '#0070AC', // High contrast WCAG 2.1 AA (4.85:1) for text & buttons on light surfaces
         'sougen-green-dark': '#004D2C',
         'sougen-green-mint': '#3ECC8B',
         'sougen-gray': '#9CA3A7',

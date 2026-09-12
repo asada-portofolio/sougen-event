@@ -4,6 +4,7 @@ import { TalentCard } from '../shared/TalentCard';
 import { SectionHeader } from '../shared/SectionHeader';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 export interface GuestSectionProps {
   guests: EventTalent[];
@@ -18,36 +19,43 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -234 : 234;
+      const scrollAmount = direction === 'left' ? -231 : 231;
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
     isDragging.current = true;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.add('cursor-grabbing');
       scrollContainerRef.current.classList.remove('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
       startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
       scrollLeft.current = scrollContainerRef.current.scrollLeft;
+      try {
+        scrollContainerRef.current.setPointerCapture(e.pointerId);
+      } catch {}
     }
   };
 
-  const onMouseLeaveOrUp = () => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.6;
+    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const onPointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = false;
     if (scrollContainerRef.current) {
       scrollContainerRef.current.classList.remove('cursor-grabbing');
       scrollContainerRef.current.classList.add('cursor-grab', 'snap-x', 'snap-mandatory', 'scroll-smooth');
-    }
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    if (scrollContainerRef.current) {
-      const x = e.pageX - scrollContainerRef.current.offsetLeft;
-      const walk = (x - startX.current) * 2;
-      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+      try {
+        if (scrollContainerRef.current.hasPointerCapture(e.pointerId)) {
+          scrollContainerRef.current.releasePointerCapture(e.pointerId);
+        }
+      } catch {}
     }
   };
 
@@ -68,23 +76,26 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
           title="Our Lineup"
           description="Saksikan penampilan spektakuler dari cosplayer, grup idol, hingga musisi lokal yang siap memukau Anda."
           align="center"
-          className="mb-12"
+          className="mb-8 lg:mb-12"
         />
         
-        {/* Unified Responsive Cards Container */}
-        <div className="mx-auto max-w-[85%] lg:max-w-[75%]">
+        {/* Unified Responsive Container: Grid on mobile (first 4 items), carousel on desktop */}
+        <div className="mx-auto max-w-full lg:max-w-[75%]">
           <div 
             ref={scrollContainerRef}
-            onMouseDown={onMouseDown}
-            onMouseLeave={onMouseLeaveOrUp}
-            onMouseUp={onMouseLeaveOrUp}
-            onMouseMove={onMouseMove}
-            className="grid grid-cols-2 gap-4 lg:flex lg:overflow-x-auto lg:snap-x lg:snap-mandatory lg:pb-6 lg:gap-6 lg:no-scrollbar lg:scroll-smooth lg:cursor-grab lg:select-none"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUpOrCancel}
+            onPointerCancel={onPointerUpOrCancel}
+            className="grid grid-cols-2 lg:flex mt-6 lg:mt-8 lg:overflow-x-auto lg:snap-x lg:snap-mandatory pb-2 gap-4 no-scrollbar lg:scroll-smooth lg:cursor-grab select-none lg:touch-pan-x"
           >
             {guests.map((et, idx) => (
               <div 
                 key={et.id} 
-                className={`shrink-0 w-full lg:w-[210px] lg:snap-start ${idx >= 4 ? 'hidden lg:block' : ''}`}
+                className={cn(
+                  "lg:snap-start lg:shrink-0 lg:w-[215px]",
+                  idx >= 4 && "hidden lg:block"
+                )}
               >
                 <TalentCard
                   name={et.talent.stageName}
@@ -98,53 +109,40 @@ export function GuestSection({ guests, eventSlug }: GuestSectionProps) {
             ))}
           </div>
 
-          {/* Mobile Footer */}
-          {guests.length > 4 && eventSlug && (
-            <div className="flex justify-end mt-6 lg:hidden">
-              <Link 
-                to={`/event/${eventSlug}`} 
-                className="inline-flex items-center gap-1.5 text-xs font-inter font-bold text-sougen-blue-dark hover:text-sougen-blue transition-colors duration-300"
-              >
-                <span>Lihat selengkapnya</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          )}
-
-          {/* Desktop Footer */}
-          <div className="hidden lg:flex items-center justify-end gap-8 mt-6 pr-2">
+          {/* Action Row & Carousel Navigation */}
+          <div className="flex items-center justify-between lg:justify-end gap-4 mt-6 lg:mt-4 pr-1">
             {eventSlug && (
               <Link 
-                to={`/event/${eventSlug}`} 
-                className="inline-flex items-center gap-2 text-sm font-inter font-semibold text-rpo-black/60 hover:text-sougen-blue transition-colors duration-300"
+                to={`/event/${eventSlug}#lineup`} 
+                className="inline-flex items-center gap-1.5 text-xs lg:text-sm font-inter font-bold lg:font-semibold text-sougen-blue-dark lg:text-rpo-black/70 lg:hover:text-sougen-blue-dark transition-colors duration-300"
               >
-                <span>Lihat semua</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Lihat semua lineup</span>
+                <ArrowRight className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
               </Link>
             )}
 
             {guests.length > 4 && (
-              <div className="flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-2.5">
                 <button 
                   onClick={() => scroll('left')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll left"
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={() => scroll('right')}
-                  className="p-2.5 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
+                  className="p-2 rounded-full border border-rpo-black/10 bg-white hover:bg-sougen-blue hover:text-white hover:border-sougen-blue text-rpo-black/60 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sougen-blue/20"
                   aria-label="Scroll right"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             )}
           </div>
 
-          {/* Unified Section Divider */}
-          <div className="mt-10 lg:mt-12 w-full h-1.5 lg:h-2 bg-sougen-blue rounded-full" />
+          {/* Responsive Divider */}
+          <div className="mt-8 w-full max-w-[85%] lg:max-w-full h-1.5 lg:h-2 bg-sougen-blue rounded-full mx-auto" />
         </div>
       </div>
     </section>

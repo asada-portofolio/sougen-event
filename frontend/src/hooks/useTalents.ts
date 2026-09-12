@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { Talent } from '../types/event';
 
-export function useTalents(enabled: boolean = true) {
+export function useTalents(options: { enabled?: boolean } = {}) {
+  const { enabled = true } = options;
   const [talents, setTalents] = useState<Talent[]>([]);
   const [loading, setLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<Error | null>(null);

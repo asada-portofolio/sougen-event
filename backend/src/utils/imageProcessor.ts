@@ -92,11 +92,12 @@ export async function processAndSaveImage(
   subDir: string,
   options: ImageProcessOptions,
 ): Promise<SingleImageResult | GalleryImageResult> {
+  const defaultMaxWidth = subDir.includes('talents') || subDir.includes('communities') ? 800 : 1920;
   const {
     generateThumb,
-    fullMaxWidth = 1920,
-    thumbMaxWidth = 400,
-    quality = 80,
+    fullMaxWidth = defaultMaxWidth,
+    thumbMaxWidth = 380,
+    quality = 82,
   } = options;
 
   const outputDir = path.join(UPLOAD_DIR, subDir);
@@ -114,16 +115,16 @@ export async function processAndSaveImage(
     const fullFilename = `${baseName}_full.webp`;
     const thumbFilename = `${baseName}_thumb.webp`;
 
-    // Proses full version
+    // Proses full preview version (resolusi tinggi, jernih & tajam saat ditekan di lightbox/modal)
     await sharp(fileBuffer)
       .resize({ width: fullMaxWidth, withoutEnlargement: true })
-      .webp({ quality })
+      .webp({ quality, effort: 4 })
       .toFile(path.join(outputDir, fullFilename));
 
-    // Proses thumbnail version
+    // Proses thumbnail version (kompresi maksimal, seringan mungkin untuk kecepatan load awal halaman)
     await sharp(fileBuffer)
       .resize({ width: thumbMaxWidth, withoutEnlargement: true })
-      .webp({ quality: quality - 10 })
+      .webp({ quality: 60, effort: 6 })
       .toFile(path.join(outputDir, thumbFilename));
 
     // Hitung dimensi proporsional setelah resize
@@ -143,7 +144,7 @@ export async function processAndSaveImage(
 
     await sharp(fileBuffer)
       .resize({ width: fullMaxWidth, withoutEnlargement: true })
-      .webp({ quality })
+      .webp({ quality, effort: 4 })
       .toFile(path.join(outputDir, filename));
 
     return {

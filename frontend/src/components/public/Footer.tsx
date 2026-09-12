@@ -5,8 +5,7 @@ import { Mail, MessageCircle, Phone } from 'lucide-react';
 import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter, FaTiktok } from 'react-icons/fa6';
 
 export function Footer() {
-  const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
-  const { channels, loading } = useContactChannels(isDesktop);
+  const { channels, loading } = useContactChannels();
 
   // Filter channels
   const socialTypes = ['INSTAGRAM', 'FACEBOOK', 'TIKTOK', 'TWITTER', 'YOUTUBE'];
@@ -41,8 +40,8 @@ export function Footer() {
                 <img 
                   src="/images/main-logo.png" 
                   alt="Sougen Logo" 
-                  width="43"
-                  height="32"
+                  width={320}
+                  height={240}
                   loading="lazy"
                   decoding="async"
                   className="h-8 w-auto object-contain" 
@@ -158,7 +157,7 @@ export function Footer() {
 
         {/* Bottom Copyright */}
         <div className="mt-8 pt-4 border-t border-white/10 flex justify-center items-center">
-          <p className="text-xs text-white/70">&copy; {new Date().getFullYear()} Sougen Creative Management. All rights reserved.</p>
+          <p className="text-[11px] text-white/40">&copy; {new Date().getFullYear()} Sougen Creative Management. All rights reserved.</p>
         </div>
       </div>
     </footer>

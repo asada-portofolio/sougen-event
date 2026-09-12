@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { EventDay } from '../../types/event';
 import { SectionHeader } from '../shared/SectionHeader';
 import { cn } from '../../lib/utils';
-import { Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin, ExternalLink } from 'lucide-react';
 
 export interface ProgramRundownSectionProps {
   days: EventDay[];
@@ -51,83 +51,86 @@ export function ProgramRundownSection({ days, location }: ProgramRundownSectionP
           theme="light"
         />
 
-        {/* Global Location (Desktop only) */}
+        {/* Global Location (Interactive Google Maps Link) */}
         {location && (
-          <div className="hidden lg:flex justify-center mt-8">
-            <div className="inline-flex items-center gap-3 px-6 py-2.5 bg-white border border-rpo-black/10 rounded-full shadow-sm">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sougen-blue/10 text-sougen-blue-dark shrink-0">
-                <MapPin className="w-4 h-4" />
+          <div className="flex justify-center mt-6 lg:mt-8 px-4">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Buka peta lokasi ${location} di Google Maps`}
+              className="group inline-flex items-center gap-2.5 sm:gap-3.5 px-4 sm:px-5 py-2 bg-white hover:bg-sougen-blue/[0.04] border border-rpo-black/10 hover:border-sougen-blue/40 rounded-full shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer max-w-full"
+            >
+              <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-sougen-blue/10 text-sougen-blue group-hover:bg-sougen-blue group-hover:text-white transition-colors duration-300 shrink-0">
+                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-rpo-black/80 font-inter font-semibold text-sm md:text-base">
-                {location}
-              </span>
-            </div>
+              <div className="flex flex-col text-left min-w-0">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold text-gray-600 uppercase tracking-wider leading-none">
+                  VENUE LOKASI
+                </span>
+                <span className="text-rpo-black/90 group-hover:text-sougen-blue font-inter font-bold text-xs sm:text-sm tracking-wide mt-0.5 sm:mt-1 transition-colors truncate">
+                  {location}
+                </span>
+              </div>
+              <div className="ml-1 pl-2.5 sm:pl-3.5 border-l border-rpo-black/10 flex items-center gap-1 text-sougen-blue-dark text-[11px] sm:text-xs font-bold shrink-0">
+                <span>Maps</span>
+                <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </a>
           </div>
         )}
 
         {/* Mobile View: Tab Navigation (Point 31) */}
-        <div className="mt-10 flex lg:hidden bg-gray-100/90 rounded-xl p-1.5 border border-rpo-black/10 mx-auto max-w-[90%] shadow-inner overflow-hidden">
-          {days.map((day) => {
-            const isActive = activeDayId === day.id;
-            return (
-              <button
-                key={day.id}
-                onClick={() => setActiveDayId(day.id)}
-                className={cn(
-                  "relative flex-1 py-3 text-center transition-all duration-300 font-inter font-bold uppercase text-sm tracking-wider rounded-lg",
-                  isActive 
-                    ? "bg-sougen-blue text-white shadow-sm z-10" 
-                    : "text-rpo-black/75 hover:text-rpo-black hover:bg-white/50"
-                )}
-              >
-                Day {day.dayNumber}
-                
-                {/* Triangle Indicator for Active Tab */}
-                {isActive && (
-                  <div className="absolute -bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-sougen-blue drop-shadow-sm z-20" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Mobile View: Active Day Info Header (Date+Time Left, Location Right) */}
-        <div className="mt-6 lg:hidden flex justify-between items-start mx-auto max-w-[90%] bg-white p-4 rounded-xl border border-rpo-black/5 shadow-sm relative z-0">
-          {/* Left: Date & Time */}
-          <div className="flex flex-col gap-1.5">
-            <h3 className="font-poppins font-bold text-rpo-black text-sm">{formatDate(activeDay.date)}</h3>
-            <div className="flex items-center gap-1.5 text-sougen-blue-dark font-inter text-xs font-bold bg-sougen-blue/10 w-fit px-2 py-0.5 rounded-md">
-              <Clock className="w-3.5 h-3.5" />
-              <span>{getDayTimeRange(activeDay)}</span>
-            </div>
+        {days.length > 1 && (
+          <div className="mt-8 flex lg:hidden bg-white/50 rounded-xl p-1.5 border border-rpo-black/5 mx-auto max-w-[90%] shadow-sm overflow-hidden">
+            {days.map((day) => {
+              const isActive = activeDayId === day.id;
+              return (
+                <button
+                  key={day.id}
+                  onClick={() => setActiveDayId(day.id)}
+                  className={cn(
+                    "relative flex-1 py-2.5 text-center transition-all duration-300 font-inter font-bold uppercase text-xs tracking-wider rounded-lg",
+                    isActive 
+                      ? "bg-sougen-blue-dark text-white shadow-sm z-10" 
+                      : "text-gray-700 hover:text-gray-900 font-bold"
+                  )}
+                >
+                  Day {day.dayNumber}
+                  
+                  {/* Triangle Indicator for Active Tab */}
+                  {isActive && (
+                    <div className="absolute -bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-sougen-blue-dark drop-shadow-sm z-20" />
+                  )}
+                </button>
+              );
+            })}
           </div>
-          
-          {/* Right: Location */}
-          {location && (
-            <div className="flex flex-col items-end text-right gap-1 max-w-[45%]">
-              <div className="flex items-center gap-1 text-rpo-black/70 font-inter text-xs font-semibold">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>Lokasi</span>
-              </div>
-              <p className="font-poppins font-semibold text-rpo-black text-xs leading-tight">{location}</p>
-            </div>
-          )}
-        </div>
+        )}
 
-        {/* Mobile View: Active Day Timeline */}
+        {/* Mobile View: Active Day Timeline (Desktop Unified Style) */}
         <div className="mt-6 lg:hidden max-w-[90%] mx-auto">
-          <DayTimeline day={activeDay} formatDate={formatDate} isMobile={true} />
+          <DayTimeline 
+            day={activeDay} 
+            formatDate={formatDate} 
+            getDayTimeRange={getDayTimeRange} 
+          />
         </div>
 
         {/* Desktop View: Constrained to match divider width */}
         <div className="hidden lg:block mx-auto max-w-[75%]">
           {/* Side-by-side grid of all days */}
           <div 
-            className="grid mt-12 gap-8"
+            className="grid mt-12 gap-8 items-start"
             style={{ gridTemplateColumns: `repeat(${days.length}, minmax(0, 1fr))` }}
           >
             {days.map((day) => (
-              <DayTimeline key={day.id} day={day} formatDate={formatDate} isMobile={false} />
+              <DayTimeline 
+                key={day.id} 
+                day={day} 
+                formatDate={formatDate} 
+                getDayTimeRange={getDayTimeRange} 
+              />
             ))}
           </div>
 
@@ -143,46 +146,64 @@ export function ProgramRundownSection({ days, location }: ProgramRundownSectionP
   );
 }
 
-function DayTimeline({ day, formatDate, isMobile = false }: { day: EventDay, formatDate: (dateStr?: string) => string, isMobile?: boolean }) {
+function DayTimeline({ 
+  day, 
+  formatDate, 
+  getDayTimeRange,
+}: { 
+  day: EventDay; 
+  formatDate: (dateStr?: string) => string; 
+  getDayTimeRange?: (day: EventDay) => string;
+}) {
   return (
-    <div className="bg-[#FAFAFA] p-6 md:p-8 rounded-xl border border-rpo-black/5 h-full">
-      <div className="flex items-center gap-3 mb-2">
-        <h3 className="bg-sougen-blue text-white font-poppins font-bold text-sm px-3 py-1 rounded-md">
-          Day {day.dayNumber}
-        </h3>
+    <div className="bg-[#FAFAFA] p-4 sm:p-5 lg:p-6 rounded-2xl border border-rpo-black/5 h-full relative">
+      {/* Sticky Column Header ("Nama Day yang Melayang") */}
+      <div className="sticky top-16 md:top-20 z-10 bg-[#FAFAFA]/95 backdrop-blur-md pb-3 pt-1 -mx-2 px-2 border-b border-rpo-black/5 mb-4">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="bg-sougen-blue-dark text-white font-poppins font-bold text-xs uppercase px-3 py-1 rounded-md tracking-wider shadow-sm inline-block m-0">
+            Day {day.dayNumber}
+          </h3>
+          {getDayTimeRange && getDayTimeRange(day) && (
+            <div className="flex items-center gap-1 text-sougen-blue-dark font-mono text-[11px] font-bold bg-sougen-blue-dark/10 border border-sougen-blue-dark/20 px-2 py-0.5 rounded">
+              <Clock className="w-3 h-3" />
+              <span>{getDayTimeRange(day)}</span>
+            </div>
+          )}
+        </div>
+        <p className="text-rpo-black/70 font-inter font-semibold text-xs mt-2 tracking-wide">
+          {formatDate(day.date)}
+        </p>
       </div>
       
-      {/* Show date only on Desktop, Mobile already has it in the header */}
-      {!isMobile && (
-        <p className="text-rpo-black/70 font-inter mb-8">{formatDate(day.date)}</p>
-      )}
-      
-      {/* Timeline with left red line */}
-      <div className={cn("relative pl-8 space-y-6", isMobile ? "mt-6" : "")}>
-        {/* Vertical red line */}
-        <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-sougen-blue/20" />
+      {/* Timeline with left accent line & tighter gap */}
+      <div className="relative pl-6 space-y-2.5">
+        {/* Vertical accent line */}
+        <div className="absolute left-2 top-2 bottom-2 w-[1.5px] bg-sougen-blue-dark/20" />
 
         {day.rundownItems.map((item) => (
-          <div key={item.id} className="relative">
+          <div key={item.id} className="relative group">
             {/* Dot on the timeline */}
-            <div className="absolute -left-5 top-1.5 w-3 h-3 rounded-full bg-sougen-blue border-2 border-white shadow-sm" />
+            <div className="absolute -left-[18.5px] top-3.5 w-2.5 h-2.5 rounded-full bg-sougen-blue-dark border-2 border-white shadow-sm group-hover:scale-125 transition-transform" />
             
-            <div className="bg-white p-4 rounded-lg border border-rpo-black/5 hover:border-sougen-blue/30 transition-colors duration-300">
-              <div className="flex items-center gap-2 text-sougen-blue-dark font-inter text-sm font-bold mb-1.5">
-                <Clock className="w-4 h-4" />
+            <div className="bg-white p-3 px-3.5 rounded-xl border border-rpo-black/5 hover:border-sougen-blue-dark/40 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-300">
+              <div className="flex items-center gap-1.5 text-sougen-blue-dark font-mono font-black text-sm lg:text-[14px] tracking-wide mb-1">
+                <Clock className="w-4 h-4 stroke-[3]" />
                 <span>{item.time.split('-')[0].trim()}</span>
               </div>
-              <h4 className="font-poppins font-bold text-rpo-black text-lg">{item.activityName}</h4>
+              <h4 className="font-poppins font-bold text-rpo-black text-[14px] lg:text-[15px] leading-snug">{item.activityName}</h4>
               
-              {/* Show item location only on Desktop, Mobile has global location in header */}
-              {!isMobile && item.location && (
-                <p className="text-rpo-black/70 font-inter text-sm mt-1.5">{item.location}</p>
+              {item.location && (
+                <div className="flex items-center gap-1 text-gray-600 font-inter text-xs mt-1">
+                  <MapPin className="w-3 h-3 text-sougen-blue-dark shrink-0" />
+                  <span className="truncate">{item.location}</span>
+                </div>
               )}
             </div>
           </div>
         ))}
+
         {day.rundownItems.length === 0 && (
-          <p className="text-rpo-black/70 font-inter text-center italic py-4">Jadwal belum tersedia.</p>
+          <p className="text-gray-500 font-inter text-xs text-center italic py-6">Jadwal belum tersedia.</p>
         )}
       </div>
     </div>

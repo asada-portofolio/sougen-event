@@ -3,16 +3,9 @@ import { useFaqs } from '../../hooks/useFaqs';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../ui/Accordion';
 import { Skeleton } from '../ui/Skeleton';
 import { ChevronRight } from 'lucide-react';
-import type { FaqItem } from '../../types/faq';
 
-export interface FaqContactSectionProps {
-  initialFaqs?: FaqItem[];
-}
-
-export function FaqContactSection({ initialFaqs }: FaqContactSectionProps = {}) {
-  const { faqs: fetchedFaqs, loading: fetchLoading, error } = useFaqs(!initialFaqs);
-  const faqs = initialFaqs ?? fetchedFaqs;
-  const loading = !initialFaqs && fetchLoading;
+export function FaqContactSection() {
+  const { faqs, loading, error } = useFaqs();
 
   // Membatasi FAQ yang tampil di halaman Home maksimal 5
   const homeFaqs = faqs.slice(0, 5);
@@ -56,8 +49,8 @@ export function FaqContactSection({ initialFaqs }: FaqContactSectionProps = {}) 
                 <Accordion type="single" collapsible className="w-full">
                   {homeFaqs.map((faq, index) => (
                     <AccordionItem key={faq.id} value={`home-faq-${faq.id}`} className="border-b border-black/5 last:border-0">
-                      <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue text-sm md:text-base py-4 flex items-start gap-3">
-                        <span className="shrink-0 flex items-center justify-center w-5 h-5 bg-sougen-blue text-white text-[10px] font-black rounded-md shadow-sm mt-0.5">
+                      <AccordionTrigger className="text-left font-poppins font-bold text-rpo-black hover:text-sougen-blue-dark text-sm md:text-base py-4 flex items-start gap-3">
+                        <span className="shrink-0 flex items-center justify-center w-5 h-5 bg-sougen-blue-dark text-white text-[10px] font-black rounded-md shadow-sm mt-0.5">
                           {index + 1}
                         </span>
                         <span className="flex-1">{faq.question}</span>
@@ -73,7 +66,7 @@ export function FaqContactSection({ initialFaqs }: FaqContactSectionProps = {}) 
             
             {!loading && homeFaqs.length > 0 && (
               <div className="mt-6 text-center md:text-left">
-                <Link to="/faq" className="inline-block font-poppins font-bold text-sougen-blue-dark text-sm hover:text-sougen-blue transition-colors duration-300">
+                <Link to="/faq" className="inline-block font-poppins font-bold text-sougen-blue-dark text-sm hover:text-sougen-green-dark transition-colors duration-300">
                   Lihat Semua FAQ &rarr;
                 </Link>
               </div>
@@ -91,7 +84,7 @@ export function FaqContactSection({ initialFaqs }: FaqContactSectionProps = {}) 
               </p>
               <Link 
                 to="/contact" 
-                className="inline-flex items-center justify-center gap-2 bg-sougen-blue text-white font-poppins font-bold px-8 py-4 rounded-md hover:bg-sougen-green-dark transition-colors duration-300 w-full sm:w-auto group shadow-md"
+                className="inline-flex items-center justify-center gap-2 bg-sougen-blue-dark text-white font-poppins font-bold px-8 py-4 rounded-md hover:bg-sougen-green-dark transition-colors duration-300 w-full sm:w-auto group shadow-md"
               >
                 Hubungi Kami
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

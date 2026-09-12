@@ -52,12 +52,12 @@ export function ContactInfoBox({ className }: ContactInfoBoxProps) {
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
                 channel.isEmergencyContact
                   ? "bg-rpo-negative text-white"
-                  : "bg-sougen-blue/10 text-sougen-blue"
+                  : "bg-sougen-blue-dark/10 text-sougen-blue-dark"
               )}>
                 {getIcon(channel.type)}
               </div>
               <div className="flex flex-col pt-1">
-                <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-rpo-black/50">
+                <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-600">
                   {channel.type}
                   {channel.isEmergencyContact && (
                     <span className="px-1.5 py-0.5 rounded-sm bg-rpo-negative text-white text-[10px] shadow-sm font-bold">
@@ -70,7 +70,7 @@ export function ContactInfoBox({ className }: ContactInfoBoxProps) {
                     href={channel.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-rpo-black transition-colors hover:text-sougen-blue"
+                    className="text-sm font-medium text-rpo-black transition-colors hover:text-sougen-blue-dark"
                   >
                     {channel.label || channel.value}
                   </a>

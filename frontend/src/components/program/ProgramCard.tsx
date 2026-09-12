@@ -10,6 +10,8 @@ import 'yet-another-react-lightbox/styles.css';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
+import Download from 'yet-another-react-lightbox/plugins/download';
+import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
 
 export interface ProgramCardProps {
   program: Program;
@@ -164,11 +166,15 @@ export function ProgramCard({ program, registrationUrl }: ProgramCardProps) {
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
           index={lightboxIndex}
-          slides={program.photos.map(p => ({ 
+          slides={program.photos.map((p, idx) => ({ 
             src: getImageUrl(p.imageUrlFull),
-            alt: p.caption || `Dokumentasi ${program.name}`
+            alt: p.caption || `Dokumentasi ${program.name}`,
+            download: {
+              url: getImageUrl(p.imageUrlFull),
+              filename: `${program.slug || 'program'}-dokumentasi-${idx + 1}.webp`,
+            },
           }))}
-          plugins={[Zoom, Thumbnails]}
+          plugins={[Zoom, Thumbnails, Download, Fullscreen]}
           carousel={{ padding: 0, spacing: 0, imageFit: 'contain' }}
           animation={{ fade: 250, swipe: 250 }}
           styles={{

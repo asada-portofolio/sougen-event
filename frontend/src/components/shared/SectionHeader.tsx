@@ -37,31 +37,24 @@ export function SectionHeader({
       )}
     >
       <div className={cn(
-        "flex flex-col",
-        {
-          'items-start': align === 'left' || align === 'center', // Tetap rata kiri untuk title/badge walau di-center
-          'items-center': align === 'full-center',
-          'items-end': align === 'right'
-        }
+        "text-[10px] sm:text-[11px] font-extrabold px-2 py-1 tracking-[0.5px] mb-1 self-start",
+        (align === 'center' || align === 'full-center') && "self-center",
+        align === 'right' && "self-end",
+        isDark ? "bg-white text-sougen-blue" : "bg-sougen-blue text-white"
       )}>
-        <div className={cn(
-          "text-[10px] sm:text-[11px] font-extrabold px-2 py-1 tracking-[0.5px] mb-1",
-          isDark ? "bg-white text-sougen-blue" : "bg-sougen-blue text-white"
-        )}>
-          {label}
-        </div>
-        
-        {/* Heading */}
-        <HeadingTag className={cn(
-          'font-poppins text-[2.5rem] sm:text-[3.8rem] font-black leading-none tracking-[-1.5px] m-0 uppercase',
-          isDark ? 'text-white' : 'text-rpo-black'
-        )}>
-          {title}
-        </HeadingTag>
-        
-        {/* Underline */}
-        <div className={cn("w-full h-[3px] mt-2 mb-4", isDark ? "bg-white/80" : "bg-sougen-blue")}></div>
+        {label}
       </div>
+      
+      {/* Heading */}
+      <HeadingTag className={cn(
+        'font-poppins text-[2.5rem] sm:text-[3.8rem] font-black leading-none tracking-[-1.5px] m-0 uppercase',
+        isDark ? 'text-white' : 'text-rpo-black'
+      )}>
+        {title}
+      </HeadingTag>
+      
+      {/* Underline */}
+      <div className={cn("w-full max-w-[280px] h-[3px] mt-2 mb-4", isDark ? "bg-white/80" : "bg-sougen-blue")} />
       {description && (
         <p className={cn(
           "max-w-[85%] sm:max-w-lg font-inter text-[13px] sm:text-[15px] font-semibold leading-[1.6] mt-2",

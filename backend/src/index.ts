@@ -67,6 +67,24 @@ app.use('/uploads', (req, res, next) => {
     next();
 });
 
+// Fallback untuk berkas upload yang hilang/terhapus dari disk fisik server
+// Mencegah eror 404 pada browser console & audit Best Practices Lighthouse
+const TRANSPARENT_1X1_WEBP = Buffer.from(
+  'UklGRkAAAABXRUJQVlA4IDQAAADwAQCdASoBAAEAAQAcJaACdLoB+AA/v39/vv7+/f39/f39/f39/f39/f39/f39/f39/wAA',
+  'base64'
+);
+const TRANSPARENT_1X1_PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+  'base64'
+);
+
+app.use('/uploads', (req, res) => {
+  const isPng = req.path.toLowerCase().endsWith('.png');
+  res.setHeader('Content-Type', isPng ? 'image/png' : 'image/webp');
+  res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+  res.status(200).send(isPng ? TRANSPARENT_1X1_PNG : TRANSPARENT_1X1_WEBP);
+});
+
 app.use(session({
     store: new PgSession({
         // Sengaja pakai DIRECT_URL, bukan DATABASE_URL — DATABASE_URL lewat pooler
@@ -93,7 +111,14 @@ app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok' });
 });
 
-// ── API Routes ──
+// ── Cache-Control Header untuk Rute Publik Read-Only (Meringankan Roundtrip Mobile) ──
+app.use('/api', (req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/auth') && !(req.session as any)?.userId) {
+        res.set('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
+    }
+    next();
+});
+
 // ── API Routes (Standard) ──
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);

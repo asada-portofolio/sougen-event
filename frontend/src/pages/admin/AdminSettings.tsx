@@ -110,34 +110,27 @@ export default function AdminSettings() {
         {/* --- PENGATURAN UMUM TAB --- */}
         <Tabs.Content value="general" className="outline-none space-y-6">
           <div className="bg-white rounded-xl shadow-sm border border-admin-border p-6 max-w-3xl">
-            <h2 className="text-lg font-poppins font-bold text-admin-dark mb-4 border-b border-admin-border pb-2">Gambar & Media Global</h2>
-            <p className="text-sm text-admin-secondary mb-6">Unggah Gambar Latar Hero (beranda).</p>
+            <h2 className="text-lg font-poppins font-bold text-admin-dark mb-4 border-b border-admin-border pb-2">Gambar Latar Hero (Beranda)</h2>
+            <p className="text-sm text-admin-secondary mb-6">Latar belakang saat tidak ada event aktif (Template Mode).</p>
             
-            <div className="space-y-6">
-              <div className="flex items-start justify-between">
-                <div className="w-full">
-                  <label className="block text-sm font-medium text-admin-dark mb-1">Hero Image (Beranda)</label>
-                  <p className="text-xs text-admin-secondary">Latar belakang saat tidak ada event aktif (Template Mode).</p>
-                  
-                  {settings.heroImageUrl && (
-                    <div className="mt-2 w-full max-w-sm aspect-video bg-gray-100 border border-gray-200 rounded overflow-hidden">
-                      <img src={getImageUrl(settings.heroImageUrl)} alt="Hero" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  
-                  <div className="mt-3">
-                    <input type="file" accept="image/*" className="hidden" ref={heroInputRef} onChange={handleUploadHero} />
-                    <button 
-                      type="button" 
-                      onClick={() => heroInputRef.current?.click()}
-                      disabled={isUploadingHero}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm font-medium text-admin-dark border border-gray-300 rounded transition-colors"
-                    >
-                      {isUploadingHero ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
-                      {settings.heroImageUrl ? 'Ganti Gambar Hero' : 'Unggah Gambar Hero'}
-                    </button>
-                  </div>
+            <div>
+              {settings.heroImageUrl && (
+                <div className="mb-4 w-full max-w-md aspect-video bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+                  <img src={getImageUrl(settings.heroImageUrl)} alt="Hero" className="w-full h-full object-cover" />
                 </div>
+              )}
+              
+              <div>
+                <input type="file" accept="image/*" className="hidden" ref={heroInputRef} onChange={handleUploadHero} />
+                <button 
+                  type="button" 
+                  onClick={() => heroInputRef.current?.click()}
+                  disabled={isUploadingHero}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm font-medium text-admin-dark border border-gray-300 rounded-lg transition-colors cursor-pointer"
+                >
+                  {isUploadingHero ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+                  {settings.heroImageUrl ? 'Ganti Gambar Hero' : 'Unggah Gambar Hero'}
+                </button>
               </div>
             </div>
           </div>

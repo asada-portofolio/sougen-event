@@ -32,8 +32,8 @@ export function CommunityCard({ community }: CommunityCardProps) {
               <img 
                 src={getImageUrl(community.logoUrl)} 
                 alt={`Logo ${community.name}`} 
-                width="96"
-                height="96"
+                width={96}
+                height={96}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-contain mix-blend-multiply"

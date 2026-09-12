@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import * as Tabs from '@radix-ui/react-tabs';
 import { 
   ArrowLeft,
@@ -12,12 +12,13 @@ import {
   Settings,
   Loader2,
   AlertCircle,
-  Calendar,
-  MapPin,
-  ExternalLink
+  ExternalLink,
+  MapPin
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { formatDateShort } from '../../utils/date';
+import { getImageUrl } from '../../utils/getImageUrl';
+import { EventCompletenessBadge } from '../../components/admin/event/EventCompletenessBadge';
 
 import TabBasicInfo from '../../components/admin/event/TabBasicInfo';
 import TabVisual from '../../components/admin/event/TabVisual';
@@ -28,23 +29,109 @@ import TabGallery from '../../components/admin/event/TabGallery';
 import TabAdvanced from '../../components/admin/event/TabAdvanced';
 
 const TABS = [
-  { id: 'basic', label: 'Info Dasar', icon: Info, countKey: null },
-  { id: 'visual', label: 'Hero & Visual', icon: ImageIcon, countKey: null },
-  { id: 'talent', label: 'Line Up Talent', icon: Users, countKey: 'eventTalents' },
-  { id: 'program', label: 'Program & Acara', icon: Sparkles, countKey: 'eventPrograms' },
-  { id: 'rundown', label: 'Jadwal & Rundown', icon: CalendarDays, countKey: 'eventDays' },
-  { id: 'gallery', label: 'Galeri Foto', icon: LayoutGrid, countKey: 'galleryPhotos' },
-  { id: 'advanced', label: 'Pengaturan Lanjut', icon: Settings, countKey: null },
+  { id: 'basic', label: 'Info Dasar', desc: 'Identitas, waktu & venue', icon: Info },
+  { id: 'visual', label: 'Hero & Visual', desc: 'Poster & gambar header', icon: ImageIcon },
+  { id: 'talent', label: 'Line Up Talent', desc: 'Bintang tamu & performer', icon: Users },
+  { id: 'program', label: 'Program Acara', desc: 'Aktivitas & pendaftaran', icon: Sparkles },
+  { id: 'rundown', label: 'Jadwal Rundown', desc: 'Agenda per hari acara', icon: CalendarDays },
+  { id: 'gallery', label: 'Galeri Foto', desc: 'Dokumentasi festival', icon: LayoutGrid },
+  { id: 'advanced', label: 'Pengaturan Lanjut', desc: 'Drive & tindakan lanjutan', icon: Settings },
 ];
 
 export default function AdminEventDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   
   const [eventData, setEventData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  
+  const initialTab = searchParams.get('tab') || 'basic';
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [highlightedFieldId, setHighlightedFieldId] = useState<string | null>(searchParams.get('highlight'));
 
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(70);
+  const [paddingOffset, setPaddingOffset] = useState(16);
+
+  useEffect(() => {
+    const measureHeader = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+      setPaddingOffset(window.innerWidth >= 768 ? 32 : 16);
+    };
+    measureHeader();
+    window.addEventListener('resize', measureHeader);
+    return () => window.removeEventListener('resize', measureHeader);
+  }, [eventData]);
+
+  // Sync tab & highlight from URL params
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab);
+    }
+    const hl = searchParams.get('highlight');
+    if (hl) {
+      setHighlightedFieldId(hl);
+    }
+  }, [searchParams]);
+
+  // Apply smooth scroll & highlight class when target is present
+  useEffect(() => {
+    if (!highlightedFieldId || loading) return;
+
+    const timer = setTimeout(() => {
+      const el = document.getElementById(highlightedFieldId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('animate-field-highlight');
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [highlightedFieldId, activeTab, loading]);
+
+  // Dismiss highlight when user interacts with target element
+  useEffect(() => {
+    if (!highlightedFieldId) return;
+
+    const handleInteraction = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      const el = document.getElementById(highlightedFieldId);
+      if (el && (el.contains(target) || el === target)) {
+        el.classList.remove('animate-field-highlight');
+        setHighlightedFieldId(null);
+        
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('highlight');
+        setSearchParams(newParams, { replace: true });
+      }
+    };
+
+    document.addEventListener('click', handleInteraction, true);
+    document.addEventListener('focusin', handleInteraction, true);
+    document.addEventListener('keydown', handleInteraction, true);
+
+    return () => {
+      document.removeEventListener('click', handleInteraction, true);
+      document.removeEventListener('focusin', handleInteraction, true);
+      document.removeEventListener('keydown', handleInteraction, true);
+      const el = document.getElementById(highlightedFieldId);
+      if (el) el.classList.remove('animate-field-highlight');
+    };
+  }, [highlightedFieldId, searchParams, setSearchParams]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('tab', value);
+    newParams.delete('highlight');
+    setSearchParams(newParams);
+  };
+  
   useEffect(() => {
     const fetchDetail = async () => {
       try {
@@ -62,9 +149,8 @@ export default function AdminEventDetail() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-        <Loader2 className="w-9 h-9 animate-spin text-sougen-blue" />
-        <p className="text-sm font-medium text-admin-secondary">Memuat data event...</p>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="w-8 h-8 animate-spin text-sougen-blue" />
       </div>
     );
   }
@@ -76,7 +162,7 @@ export default function AdminEventDetail() {
         <h2 className="text-xl font-poppins font-semibold text-admin-dark">Event Tidak Ditemukan</h2>
         <button 
           onClick={() => navigate('/admin/event')}
-          className="mt-4 px-5 py-2.5 bg-sougen-blue text-white rounded-xl text-sm font-medium hover:bg-sougen-blue/90 transition-colors shadow-sm"
+          className="mt-4 px-4 py-2 border border-admin-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
         >
           Kembali ke Daftar Event
         </button>
@@ -88,161 +174,196 @@ export default function AdminEventDetail() {
     setEventData((prev: any) => ({ ...prev, ...updatedData }));
   };
 
-  return (
-    <div className="space-y-6 pb-24">
-      {/* Event Command Center Hero Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-6 md:p-8 text-white shadow-lg border border-slate-700/60">
-        {/* Glow backdrop decorative lighting */}
-        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-96 h-96 bg-sougen-blue/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 -mb-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+  const currentTabObj = TABS.find(t => t.id === activeTab) || TABS[0];
+  const CurrentTabIcon = currentTabObj.icon;
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-start gap-4 md:gap-5">
+  return (
+    <div className="space-y-6 pb-20">
+      
+      {/* Executive Event Header Card */}
+      <div 
+        ref={headerRef}
+        className="bg-white border border-admin-border/80 rounded-2xl p-5 sm:p-6 shadow-xs"
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          
+          {/* Left Side: Back button, Poster preview & Event Info */}
+          <div className="flex items-start sm:items-center gap-4 min-w-0">
             <button 
               onClick={() => navigate('/admin/event')}
-              className="mt-1 p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all border border-white/15 shadow-sm shrink-0 active:scale-95"
-              title="Kembali ke Manajemen Event"
+              className="p-2.5 border border-admin-border/80 bg-gray-50 hover:bg-white text-admin-secondary hover:text-admin-dark rounded-xl transition-all shadow-2xs shrink-0 cursor-pointer"
+              title="Kembali ke Daftar Event"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
 
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-xs ${
-                  eventData.isActive 
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
-                    : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${eventData.isActive ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-                  {eventData.isActive ? 'Event Publik' : 'Draft / Nonaktif'}
-                </span>
+            {/* Poster Thumbnail */}
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-gray-100 border border-admin-border/80 shrink-0 shadow-2xs flex items-center justify-center">
+              {eventData.posterImageUrl ? (
+                <img 
+                  src={getImageUrl(eventData.posterImageUrl)} 
+                  alt={eventData.name} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <ImageIcon className="w-6 h-6 text-gray-400" />
+              )}
+            </div>
 
-                {eventData.theme && (
-                  <span className="text-xs text-slate-300 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10 truncate max-w-[280px]">
-                    {eventData.theme}
-                  </span>
-                )}
+            {/* Titles, Theme, and Status Badges */}
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <span className="text-[11px] font-mono font-bold text-sougen-blue uppercase tracking-wider">
+                  Pengelolaan Event
+                </span>
+                <span className="text-gray-300">•</span>
+                <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-inter font-bold uppercase tracking-wider ${eventData.isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-600 border border-gray-200'}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${eventData.isActive ? 'bg-emerald-500' : 'bg-gray-400'}`} />
+                  {eventData.isActive ? 'Publik' : 'Draft'}
+                </span>
+                <EventCompletenessBadge event={eventData} />
               </div>
 
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-poppins font-black text-white tracking-tight drop-shadow-sm truncate">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-poppins font-bold text-admin-dark truncate tracking-tight">
                 {eventData.name}
               </h1>
-
-              <div className="flex flex-wrap items-center gap-4 mt-3 text-xs md:text-sm text-slate-300 font-inter">
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-sougen-blue shrink-0" />
-                  <span>{formatDateShort(eventData.startDate)} - {formatDateShort(eventData.endDate)}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
-                  <span className="truncate max-w-[300px]">{eventData.location}</span>
-                </div>
-              </div>
+              {eventData.theme && (
+                <p className="text-xs sm:text-sm text-admin-secondary line-clamp-1 mt-0.5">
+                  {eventData.theme}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="flex flex-wrap items-center gap-3 shrink-0 self-start md:self-center">
+          {/* Right Side: Quick Meta & External Link */}
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-admin-border/60">
+            <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-admin-border/60 text-xs text-admin-secondary">
+              <CalendarDays className="w-4 h-4 text-sougen-blue shrink-0" />
+              <span className="font-medium text-admin-dark">
+                {formatDateShort(eventData.startDate)} - {formatDateShort(eventData.endDate)}
+              </span>
+            </div>
+            {eventData.location && (
+              <div className="hidden xl:flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-admin-border/60 text-xs text-admin-secondary max-w-[200px]">
+                <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
+                <span className="font-medium text-admin-dark truncate">
+                  {eventData.location}
+                </span>
+              </div>
+            )}
+            
             <a
               href={`/event/${eventData.slug}`}
               target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sougen-blue text-white text-xs sm:text-sm font-semibold hover:bg-sougen-blue/90 transition-all shadow-md shadow-sougen-blue/30 active:scale-95"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-sougen-blue/10 hover:bg-sougen-blue hover:text-white text-sougen-blue rounded-xl border border-sougen-blue/20 text-xs font-semibold transition-all shadow-2xs cursor-pointer"
+              title="Buka halaman event di web publik"
             >
-              <span>Lihat Halaman Publik</span>
-              <ExternalLink className="w-4 h-4" />
+              <span>Web Publik</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
-        </div>
 
-        {/* Mini Stats Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-white/10 text-xs">
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
-            <Users className="w-4 h-4 text-sougen-blue" />
-            <div>
-              <p className="text-[11px] text-slate-400 font-medium">Talent</p>
-              <p className="font-bold text-white text-sm">{eventData.eventTalents?.length || 0} Terdaftar</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <div>
-              <p className="text-[11px] text-slate-400 font-medium">Program</p>
-              <p className="font-bold text-white text-sm">{eventData.eventPrograms?.length || 0} Aktivitas</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
-            <CalendarDays className="w-4 h-4 text-emerald-400" />
-            <div>
-              <p className="text-[11px] text-slate-400 font-medium">Hari & Rundown</p>
-              <p className="font-bold text-white text-sm">{eventData.eventDays?.length || 0} Hari</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
-            <LayoutGrid className="w-4 h-4 text-purple-400" />
-            <div>
-              <p className="text-[11px] text-slate-400 font-medium">Foto Galeri</p>
-              <p className="font-bold text-white text-sm">{eventData.galleryPhotos?.length || 0} Foto</p>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Tabs Navigation & Workspace */}
-      <Tabs.Root defaultValue="basic" className="space-y-6">
-        {/* Horizontal Navigation Tabs Pill Bar */}
-        <div className="sticky top-2 z-20 bg-admin-base/90 backdrop-blur-md py-1">
-          <Tabs.List className="flex items-center gap-1.5 p-1.5 bg-white border border-admin-border rounded-2xl shadow-xs overflow-x-auto hide-scrollbar">
-            {TABS.map((tab) => {
-              const count = tab.countKey ? eventData[tab.countKey]?.length : null;
-              return (
-                <Tabs.Trigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="group inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap text-admin-secondary hover:text-admin-dark hover:bg-gray-100/70 data-[state=active]:bg-sougen-blue data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:shadow-sougen-blue/25 transition-all duration-200 outline-none shrink-0"
-                >
-                  <tab.icon className="w-4 h-4 shrink-0" />
-                  <span>{tab.label}</span>
-                  {count !== null && count > 0 && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-white/20 data-[state=active]:bg-white data-[state=active]:text-sougen-blue text-admin-secondary">
-                      {count}
-                    </span>
-                  )}
-                </Tabs.Trigger>
-              );
-            })}
-          </Tabs.List>
-        </div>
+      {/* Main Workspace (Tabs Layout) */}
+      <Tabs.Root value={activeTab} onValueChange={handleTabChange} className="flex flex-col lg:flex-row gap-6 items-start">
+        
+        {/* Navigation Sidebar */}
+        <Tabs.List 
+          style={{ top: `${headerHeight - paddingOffset}px` }}
+          className="sticky z-10 bg-white border border-admin-border/80 rounded-2xl p-2.5 shadow-xs w-full lg:w-72 shrink-0 flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1.5 hide-scrollbar lg:top-6"
+        >
+          <div className="hidden lg:block px-3 py-2 text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">
+            Menu Pengaturan
+          </div>
 
-        {/* Tab Contents Card */}
-        <div className="w-full bg-white border border-admin-border rounded-2xl shadow-xs overflow-hidden">
-          <Tabs.Content value="basic" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabBasicInfo eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
-          
-          <Tabs.Content value="visual" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabVisual eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
-          
-          <Tabs.Content value="talent" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabTalent eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
-          
-          <Tabs.Content value="program" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabProgram eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
-          
-          <Tabs.Content value="rundown" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabRundown eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
-          
-          <Tabs.Content value="gallery" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabGallery eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
+          {TABS.map((tab) => {
+            const Icon = tab.icon;
+            const badgeCount = 
+              tab.id === 'talent' ? (eventData._count?.eventTalents ?? eventData.eventTalents?.length ?? 0) :
+              tab.id === 'program' ? (eventData._count?.eventPrograms ?? eventData.eventPrograms?.length ?? 0) :
+              tab.id === 'rundown' ? (eventData._count?.eventDays ?? eventData.eventDays?.length ?? 0) :
+              tab.id === 'gallery' ? (eventData._count?.galleryPhotos ?? eventData.galleryPhotos?.length ?? 0) : null;
 
-          <Tabs.Content value="advanced" className="p-6 md:p-8 lg:p-10 focus:outline-none">
-            <TabAdvanced eventData={eventData} onUpdate={handleUpdate} />
-          </Tabs.Content>
+            return (
+              <Tabs.Trigger
+                key={tab.id}
+                value={tab.id}
+                className="group flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap text-gray-600 hover:text-admin-dark hover:bg-gray-50/80 data-[state=active]:bg-sougen-blue data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:shadow-sm data-[state=active]:shadow-sougen-blue/20 transition-all cursor-pointer outline-none select-none text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                  <div>
+                    <div>{tab.label}</div>
+                    <div className="hidden lg:block text-[11px] font-normal text-gray-400 group-data-[state=active]:text-white/80 transition-colors">
+                      {tab.desc}
+                    </div>
+                  </div>
+                </div>
+
+                {badgeCount !== null && badgeCount > 0 && (
+                  <span className="hidden sm:inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-gray-100 group-data-[state=active]:bg-white/20 text-gray-600 group-data-[state=active]:text-white transition-colors">
+                    {badgeCount}
+                  </span>
+                )}
+              </Tabs.Trigger>
+            );
+          })}
+        </Tabs.List>
+
+        {/* Tab Contents Panel */}
+        <div className="flex-1 w-full min-w-0 bg-white border border-admin-border/80 rounded-2xl shadow-xs overflow-hidden">
+          
+          {/* Header Bar inside Tab */}
+          <div className="p-5 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-sougen-blue/10 text-sougen-blue flex items-center justify-center shrink-0 shadow-2xs">
+                <CurrentTabIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-base sm:text-lg font-poppins font-bold text-admin-dark leading-tight">
+                  {currentTabObj.label}
+                </h2>
+                <p className="text-xs text-admin-secondary mt-0.5">
+                  {currentTabObj.desc}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tab Contents Body */}
+          <div className="p-6 md:p-8">
+            <Tabs.Content value="basic" className="focus:outline-none">
+              <TabBasicInfo eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+            
+            <Tabs.Content value="visual" className="focus:outline-none">
+              <TabVisual eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+            
+            <Tabs.Content value="talent" className="focus:outline-none">
+              <TabTalent eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+            
+            <Tabs.Content value="program" className="focus:outline-none">
+              <TabProgram eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+            
+            <Tabs.Content value="rundown" className="focus:outline-none">
+              <TabRundown eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+            
+            <Tabs.Content value="gallery" className="focus:outline-none">
+              <TabGallery eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+
+            <Tabs.Content value="advanced" className="focus:outline-none">
+              <TabAdvanced eventData={eventData} onUpdate={handleUpdate} />
+            </Tabs.Content>
+          </div>
+
         </div>
       </Tabs.Root>
     </div>
