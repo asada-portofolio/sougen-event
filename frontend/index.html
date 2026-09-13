@@ -9,6 +9,11 @@
   <!-- Preconnect and DNS prefetch to backend API to eliminate SSL/TLS handshake latency -->
   <link rel="preconnect" href="https://sougen-event-production.up.railway.app" crossorigin />
   <link rel="dns-prefetch" href="https://sougen-event-production.up.railway.app" />
+
+  <!-- Preload critical fonts to eliminate Font Discovery Delay & FOIT on LCP elements -->
+  <link rel="preload" href="/fonts/poppins-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <title>Sougen Creative Management — Event Organizer Komunitas Kreatif</title>
 </head>
 

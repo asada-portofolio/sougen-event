@@ -15,33 +15,13 @@ const FaqContactSection = lazy(() => import('../components/home/FaqContactSectio
 export default function Home() {
   const { event, loading: eventLoading } = useActiveEvent();
   const { settings } = useSiteSettings();
-  const { talents, loading: talentsLoading } = useTalents({ enabled: !eventLoading && !event });
+  const { talents } = useTalents({ enabled: !eventLoading && !event });
 
   // Menggabungkan Guest dan Performer menjadi satu kesatuan (Talents)
   const eventTalents = event?.eventTalents || [];
 
   // Poin 29 & 30: Cek apakah admin sudah menginput jadwal/rundown untuk event ini
   const hasRundown = event && event.eventDays && event.eventDays.length > 0;
-
-  if (eventLoading || (talentsLoading && !event)) {
-    return (
-      <div className="w-full min-h-screen bg-[#FAFAFA]">
-        <SEO title="Memuat... | Sougen Creative Management" description="Memuat data..." />
-        <Skeleton className="w-full h-[85vh] min-h-[600px] rounded-none bg-rpo-black/10" />
-        <Skeleton className="w-full h-14 rounded-none bg-sougen-blue/20" />
-        <div className="max-w-7xl mx-auto py-20 px-4 space-y-24">
-          <div className="space-y-6">
-            <Skeleton className="w-32 h-6 mx-auto bg-sougen-blue/10" />
-            <Skeleton className="w-64 h-10 mx-auto bg-rpo-black/5" />
-            <Skeleton className="w-96 h-4 mx-auto bg-rpo-black/5" />
-            <div className="flex gap-6 mt-12 justify-center">
-              {[1, 2, 3].map(i => <Skeleton key={i} className="w-[280px] h-[420px] rounded-xl bg-rpo-black/5" />)}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full min-h-screen">
@@ -64,44 +44,59 @@ export default function Home() {
         }}
       />
 
-      {/* 1. Hero Section (Always rendered, adapts based on active event) */}
+      {/* 1. Hero Section (Rendered IMMEDIATELY from frame 1 - eliminates LCP render delay) */}
       <HeroSection event={event} settings={settings} />
 
-      {/* 2. Lineup/Guest Section (Semua Talent Event Aktif) */}
-      {event && (
-        <Suspense fallback={<Skeleton className="w-full h-64 bg-[#FAFAFA]" />}>
-          <GuestSection guests={eventTalents} eventSlug={event?.slug} />
-        </Suspense>
-      )}
+      {/* 2. Below-the-fold sections (Tampilkan skeleton bawah layar hanya jika data awal masih dimuat) */}
+      {eventLoading && !event ? (
+        <div className="max-w-7xl mx-auto py-16 px-4 space-y-16">
+          <div className="space-y-4 text-center">
+            <Skeleton className="w-32 h-6 mx-auto bg-sougen-blue/10" />
+            <Skeleton className="w-64 h-10 mx-auto bg-rpo-black/5" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => <Skeleton key={i} className="h-64 rounded-xl bg-rpo-black/5" />)}
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* 2. Lineup/Guest Section (Semua Talent Event Aktif) */}
+          {event && (
+            <Suspense fallback={<Skeleton className="w-full h-64 bg-[#FAFAFA]" />}>
+              <GuestSection guests={eventTalents} eventSlug={event?.slug} />
+            </Suspense>
+          )}
 
-      {/* 3. Line Up Section (Case 2: Tidak ada event aktif / Mode Standby) */}
-      {!event && (
-        <Suspense fallback={<Skeleton className="w-full h-64 bg-[#FAFAFA]" />}>
-          <LineUpSection performers={talents} />
-        </Suspense>
-      )}
+          {/* 3. Line Up Section (Case 2: Tidak ada event aktif / Mode Standby) */}
+          {!event && (
+            <Suspense fallback={<Skeleton className="w-full h-64 bg-[#FAFAFA]" />}>
+              <LineUpSection performers={talents} />
+            </Suspense>
+          )}
 
-      {/* 4. Our Activity Section (Case 2: Tampil hanya jika tidak ada jadwal event aktif) */}
-      {!hasRundown && (
-        <Suspense fallback={<Skeleton className="w-full h-64 bg-rpo-black" />}>
-          <ActivitySection />
-        </Suspense>
-      )}
+          {/* 4. Our Activity Section (Case 2: Tampil hanya jika tidak ada jadwal event aktif) */}
+          {!hasRundown && (
+            <Suspense fallback={<Skeleton className="w-full h-64 bg-rpo-black" />}>
+              <ActivitySection />
+            </Suspense>
+          )}
 
-      {/* 5. Program & Rundown Section (Case 1: Tampil hanya jika ada jadwal event aktif) */}
-      {hasRundown && (
-        <Suspense fallback={<Skeleton className="w-full h-96 bg-[#FAFAFA]" />}>
-          <ProgramRundownSection
-            days={event.eventDays || []}
-            location={event.location}
-          />
-        </Suspense>
-      )}
+          {/* 5. Program & Rundown Section (Case 1: Tampil hanya jika ada jadwal event aktif) */}
+          {hasRundown && (
+            <Suspense fallback={<Skeleton className="w-full h-96 bg-[#FAFAFA]" />}>
+              <ProgramRundownSection
+                days={event.eventDays || []}
+                location={event.location}
+              />
+            </Suspense>
+          )}
 
-      {/* 6. FAQ & Contact Section */}
-      <Suspense fallback={<Skeleton className="w-full h-96 bg-[#FAFAFA]" />}>
-        <FaqContactSection />
-      </Suspense>
+          {/* 6. FAQ & Contact Section */}
+          <Suspense fallback={<Skeleton className="w-full h-96 bg-[#FAFAFA]" />}>
+            <FaqContactSection />
+          </Suspense>
+        </>
+      )}
     </div>
   );
 }

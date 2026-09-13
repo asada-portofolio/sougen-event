@@ -2,11 +2,11 @@ import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PublicLayout from './layouts/PublicLayout'
 import { ScrollToTop } from './components/shared/ScrollToTop'
+import Home from './pages/Home'
 
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'))
 
-const Home = lazy(() => import('./pages/Home'))
 const EventList = lazy(() => import('./pages/EventList'))
 const EventDetail = lazy(() => import('./pages/EventDetail'))
 const LineUp = lazy(() => import('./pages/LineUp'))
