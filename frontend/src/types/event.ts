@@ -62,6 +62,7 @@ export interface ActiveEvent {
   startDate: string;
   endDate: string;
   location: string;
+  description: string | null;
   heroMode: HeroMode;
   heroImageUrl: string | null;
   posterImageUrl: string | null;
