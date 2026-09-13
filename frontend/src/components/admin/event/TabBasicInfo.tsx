@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Calendar, MapPin, Loader2, Save, FileText, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Loader2, Save } from 'lucide-react';
 import { api } from '../../../services/api';
+import { getImageUrl } from '../../../utils/getImageUrl';
 
 const updateSchema = z.object({
   name: z.string().min(3, 'Nama event minimal 3 karakter'),
@@ -21,11 +22,21 @@ interface TabBasicInfoProps {
   onUpdate: (data: any) => void;
 }
 
+function formatDDMMYY(dateStrOrObj: string | Date): string {
+  if (!dateStrOrObj) return '';
+  const d = new Date(dateStrOrObj);
+  if (isNaN(d.getTime())) return '';
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = String(d.getFullYear()).slice(-2);
+  return `${day}/${month}/${year}`;
+}
+
 export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<UpdateValues>({
+  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<UpdateValues>({
     resolver: zodResolver(updateSchema),
     defaultValues: {
       name: eventData?.name || '',
@@ -50,155 +61,181 @@ export default function TabBasicInfo({ eventData, onUpdate }: TabBasicInfoProps)
     }
   }, [eventData, reset]);
 
+  // Watch for live preview
+  const wName = watch('name');
+  const wTheme = watch('theme');
+  const wStartDate = watch('startDate');
+  const wEndDate = watch('endDate');
+  const wLocation = watch('location');
+
   const onSubmit = async (data: UpdateValues) => {
     setIsSaving(true);
     setMessage(null);
     try {
       const res = await api.put(`/api/events/${eventData.id}`, data);
       onUpdate(res.data);
-      setMessage({ type: 'success', text: 'Informasi event berhasil disimpan.' });
+      setMessage({ type: 'success', text: 'Informasi berhasil disimpan.' });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Gagal menyimpan perubahan.' });
     } finally {
       setIsSaving(false);
-      setTimeout(() => setMessage(null), 3500);
+      // clear success message after 3 seconds
+      setTimeout(() => setMessage(null), 3000);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 max-w-4xl">
-      
-      {/* Section 1: Identitas & Tema Acara */}
-      <div className="bg-gray-50/50 border border-admin-border/80 rounded-2xl p-5 sm:p-6 space-y-5">
-        <div className="flex items-center gap-2.5 pb-3 border-b border-admin-border/60">
-          <FileText className="w-4 h-4 text-sougen-blue" />
-          <h3 className="font-poppins font-bold text-sm sm:text-base text-admin-dark">
-            Identitas & Narasi Acara
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div id="field-name" className="md:col-span-2 rounded-xl transition-all">
-            <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-              Nama Event <span className="text-red-500">*</span>
-            </label>
-            <input
-              {...register('name')}
-              type="text"
-              placeholder="Contoh: Sougen Matsuri 2026"
-              className="w-full px-4 py-2.5 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all font-medium"
-            />
-            {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
-          </div>
-
-          <div id="field-theme" className="md:col-span-2 rounded-xl transition-all">
-            <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-              Tema / Tagline Event
-            </label>
-            <input
-              {...register('theme')}
-              type="text"
-              placeholder="Contoh: The Ultimate Pop-Culture Festival"
-              className="w-full px-4 py-2.5 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
-            />
-            {errors.theme && <p className="mt-1 text-xs text-red-500">{errors.theme.message}</p>}
-          </div>
-
-          <div id="field-description" className="md:col-span-2 rounded-xl transition-all">
-            <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-              Deskripsi Lengkap Event
-            </label>
-            <textarea
-              {...register('description')}
-              rows={5}
-              placeholder="Tuliskan deskripsi lengkap atau gambaran umum mengenai festival ini..."
-              className="w-full px-4 py-3 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all resize-y leading-relaxed font-inter"
-            />
-            {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
-          </div>
-        </div>
-      </div>
-
-      {/* Section 2: Jadwal & Lokasi */}
-      <div className="bg-gray-50/50 border border-admin-border/80 rounded-2xl p-5 sm:p-6 space-y-5">
-        <div className="flex items-center gap-2.5 pb-3 border-b border-admin-border/60">
-          <MapPin className="w-4 h-4 text-sougen-blue" />
-          <h3 className="font-poppins font-bold text-sm sm:text-base text-admin-dark">
-            Waktu & Tempat Pelaksanaan
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div id="field-dates" className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5 rounded-xl transition-all">
-            <div>
-              <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-                Tanggal Mulai <span className="text-red-500">*</span>
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      {/* Form Kiri */}
+      <div className="xl:col-span-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div id="field-name" className="md:col-span-2 p-2 rounded-xl transition-all">
+              <label className="block text-sm font-medium text-admin-dark mb-1">
+                Nama Event <span className="text-red-500">*</span>
               </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  {...register('startDate')}
-                  type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all font-medium"
-                />
-              </div>
-              {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-                Tanggal Selesai <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  {...register('endDate')}
-                  type="date"
-                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all font-medium"
-                />
-              </div>
-              {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
-            </div>
-          </div>
-
-          <div id="field-location" className="md:col-span-2 rounded-xl transition-all">
-            <label className="block text-xs font-semibold text-admin-dark uppercase tracking-wider mb-1.5">
-              Lokasi / Venue Acara <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                {...register('location')}
+                {...register('name')}
                 type="text"
-                placeholder="Contoh: Celebes Convention Center, Makassar"
-                className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-xl text-sm bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all font-medium"
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
               />
+              {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
             </div>
-            {errors.location && <p className="mt-1 text-xs text-red-500">{errors.location.message}</p>}
+
+            <div id="field-theme" className="md:col-span-2 p-2 rounded-xl transition-all">
+              <label className="block text-sm font-medium text-admin-dark mb-1">
+                Tema / Tagline
+              </label>
+              <input
+                {...register('theme')}
+                type="text"
+                placeholder="Contoh: Bersama Membangun Negeri"
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+              />
+              {errors.theme && <p className="mt-1 text-xs text-red-500">{errors.theme.message}</p>}
+            </div>
+
+            <div id="field-description" className="md:col-span-2 p-2 rounded-xl transition-all">
+              <label className="block text-sm font-medium text-admin-dark mb-1">
+                Deskripsi Event
+              </label>
+              <textarea
+                {...register('description')}
+                rows={4}
+                placeholder="Tuliskan deskripsi lengkap atau gambaran umum mengenai event ini..."
+                className="w-full px-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all resize-y"
+              />
+              {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
+            </div>
+
+            <div id="field-dates" className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-2 rounded-xl transition-all">
+              <div>
+                <label className="block text-sm font-medium text-admin-dark mb-1">
+                  Tanggal Mulai <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    {...register('startDate')}
+                    type="date"
+                    className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+                  />
+                </div>
+                {errors.startDate && <p className="mt-1 text-xs text-red-500">{errors.startDate.message}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-admin-dark mb-1">
+                  Tanggal Selesai <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    {...register('endDate')}
+                    type="date"
+                    className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+                  />
+                </div>
+                {errors.endDate && <p className="mt-1 text-xs text-red-500">{errors.endDate.message}</p>}
+              </div>
+            </div>
+
+            <div id="field-location" className="md:col-span-2 p-2 rounded-xl transition-all">
+              <label className="block text-sm font-medium text-admin-dark mb-1">
+                Lokasi <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <MapPin className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  {...register('location')}
+                  type="text"
+                  className="w-full pl-10 pr-4 py-2.5 border border-admin-border rounded-lg text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
+                />
+              </div>
+              {errors.location && <p className="mt-1 text-xs text-red-500">{errors.location.message}</p>}
+            </div>
           </div>
-        </div>
+
+          <div className="pt-4 border-t border-admin-border flex items-center justify-between">
+            <div>
+              {message && (
+                <span className={`text-sm font-medium ${message.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {message.text}
+                </span>
+              )}
+            </div>
+            <button 
+              type="submit" 
+              disabled={isSaving}
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-medium rounded-lg hover:bg-sougen-blue/90 transition-colors shadow-sm disabled:opacity-70"
+            >
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              Simpan Perubahan
+            </button>
+          </div>
+        </form>
       </div>
 
-      {/* Save Action Bar */}
-      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          {message && (
-            <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
-              {message.type === 'success' && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
-              {message.text}
-            </span>
-          )}
+      {/* Preview Kanan */}
+      <div className="hidden xl:block">
+        <h3 className="text-sm font-poppins font-semibold text-admin-dark mb-4">Live Preview (Card)</h3>
+        <div className="bg-white border border-admin-border rounded-xl overflow-hidden shadow-sm pointer-events-none opacity-90 scale-95 origin-top">
+          <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center overflow-hidden">
+             {eventData.posterImageUrl ? (
+                <img 
+                  src={getImageUrl(eventData.posterImageUrl)} 
+                  alt="Poster" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-sm font-medium text-gray-400">Belum ada poster</span>
+              )}
+          </div>
+          <div className="p-5">
+            <h4 className="font-poppins font-bold text-lg text-admin-dark mb-1 line-clamp-1">
+              {wName || 'Nama Event'}
+            </h4>
+            <p className="text-sm text-admin-secondary mb-4 line-clamp-1">
+              {wTheme || 'Tidak ada tema'}
+            </p>
+            <div className="space-y-2 mt-auto text-sm text-admin-secondary">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 shrink-0" />
+                <span>
+                  {wStartDate ? formatDDMMYY(wStartDate) : 'Mulai'} - {wEndDate ? formatDDMMYY(wEndDate) : 'Selesai'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 shrink-0" />
+                <span className="line-clamp-1">{wLocation || 'Lokasi'}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <button 
-          type="submit" 
-          disabled={isSaving}
-          className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sougen-blue text-white text-sm font-semibold rounded-xl hover:bg-sougen-blue/90 active:scale-[0.98] transition-all shadow-sm disabled:opacity-70 cursor-pointer"
-        >
-          {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-          Simpan Perubahan
-        </button>
+        <p className="text-xs text-admin-secondary text-center mt-4">
+          Tampilan ini mensimulasikan kartu event yang muncul di halaman utama.
+        </p>
       </div>
-    </form>
+    </div>
   );
 }
