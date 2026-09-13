@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation, Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { downloadImage } from '../../utils/downloadImage';
-import RichTextEditor from '../../components/admin/RichTextEditor';
+const RichTextEditor = lazy(() => import('../../components/admin/RichTextEditor'));
 import { getImageUrl } from '../../utils/getImageUrl';
 import { cn } from '../../lib/utils';
 
@@ -600,10 +600,12 @@ export default function AdminProgramForm() {
                   control={control}
                   name="rulesHtml"
                   render={({ field }) => (
-                    <RichTextEditor 
-                      content={field.value || ''} 
-                      onChange={field.onChange} 
-                    />
+                    <Suspense fallback={<div className="h-48 flex items-center justify-center text-sm text-gray-400">Memuat editor teks...</div>}>
+                      <RichTextEditor 
+                        content={field.value || ''} 
+                        onChange={field.onChange} 
+                      />
+                    </Suspense>
                   )}
                 />
               </div>
