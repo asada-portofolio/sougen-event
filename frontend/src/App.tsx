@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PublicLayout from './layouts/PublicLayout'
+import { ScrollToTop } from './components/shared/ScrollToTop'
 
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'))
@@ -44,6 +45,7 @@ const PageLoader = () => (
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route element={<PublicLayout />}>
