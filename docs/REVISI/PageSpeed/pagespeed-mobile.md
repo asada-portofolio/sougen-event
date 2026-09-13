@@ -286,5 +286,3 @@ Bagian ini mendokumentasikan setiap masalah performa yang masih menahan skor LCP
   - [`frontend/src/pages/admin/AdminProgramForm.tsx`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/pages/admin/AdminProgramForm.tsx)
   - [`frontend/vite.config.ts`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/vite.config.ts)
   - [`frontend/dist/index.html`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/dist/index.html)
-
-
