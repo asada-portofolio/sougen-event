@@ -5,6 +5,7 @@ import { Calendar, MapPin, Image as ImageIcon, FolderArchive, CalendarDays, Chev
 import { Link } from 'react-router-dom';
 import { AnimationText } from '../home/AnimationText';
 import { getImageUrl } from '../../utils/getImageUrl';
+import { extractDominantColor } from '../../utils/extractDominantColor';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { cn } from '../../lib/utils';
 
@@ -16,6 +17,17 @@ export interface EventHeroProps {
 export function EventHero({ event, onSelectDay }: EventHeroProps) {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isBouncing, setIsBouncing] = useState(false);
+  const [accentColor, setAccentColor] = useState<string>('#0094DE');
+
+  useEffect(() => {
+    const rawTargetImage = event.heroImageUrl || event.posterImageUrl;
+    if (rawTargetImage) {
+      const fullUrl = getImageUrl(rawTargetImage);
+      extractDominantColor(fullUrl, (color) => {
+        setAccentColor(color);
+      });
+    }
+  }, [event.heroImageUrl, event.posterImageUrl]);
 
   useEffect(() => {
     // If initially scrolled past top, disable bounce
@@ -117,7 +129,10 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
         <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 pt-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-3 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-sougen-blue animate-pulse" />
+              <span 
+                style={{ backgroundColor: accentColor }} 
+                className="w-2 h-2 rounded-full animate-pulse transition-colors duration-500" 
+              />
               <span>{event.isActive ? 'Sedang Berlangsung' : 'Event Selesai'}</span>
             </div>
 
@@ -126,7 +141,10 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
             </h1>
 
             {event.theme && (
-              <p className="text-sm sm:text-base md:text-lg text-sougen-blue font-inter font-bold drop-shadow mb-4">
+              <p 
+                style={{ color: accentColor }} 
+                className="text-sm sm:text-base md:text-lg font-inter font-bold drop-shadow mb-4 transition-colors duration-500"
+              >
                 #{event.theme}
               </p>
             )}
@@ -135,7 +153,7 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
             <div className="flex flex-col gap-2.5 py-3 my-3 border-y border-white/15 max-w-2xl">
               {/* Location Line First */}
               <div className="flex items-center gap-2 text-white/90 text-xs sm:text-sm font-inter">
-                <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
+                <MapPin style={{ color: accentColor }} className="w-4 h-4 shrink-0 transition-colors duration-500" />
                 <span className="text-white/80 font-medium line-clamp-1">{locationSummary}</span>
               </div>
 
@@ -147,17 +165,17 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
                       key={day.id} 
                       type="button"
                       onClick={() => handleDayClick(day.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-sougen-blue hover:text-white hover:border-sougen-blue active:scale-95 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-inter transition-all duration-200 cursor-pointer shadow-sm group"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:text-white active:scale-95 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-inter transition-all duration-200 cursor-pointer shadow-sm group"
                       title={`Lihat jadwal rundown Day ${day.dayNumber}`}
                     >
-                      <CalendarDays className="w-3.5 h-3.5 text-sougen-blue group-hover:text-white shrink-0" />
-                      <span className="font-bold text-sougen-blue group-hover:text-white">Day {day.dayNumber}:</span>
+                      <CalendarDays style={{ color: accentColor }} className="w-3.5 h-3.5 group-hover:text-white shrink-0 transition-colors duration-500" />
+                      <span style={{ color: accentColor }} className="font-bold group-hover:text-white transition-colors duration-500">Day {day.dayNumber}:</span>
                       <span className="text-white/90 font-medium">{formatNumericDate(day.date)}</span>
                     </button>
                   ))
                 ) : (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-inter">
-                    <Calendar className="w-3.5 h-3.5 text-sougen-blue shrink-0" />
+                    <Calendar style={{ color: accentColor }} className="w-3.5 h-3.5 shrink-0 transition-colors duration-500" />
                     <span className="text-white/90 font-medium">{formatNumericDate(event.startDate)} - {formatNumericDate(event.endDate)}</span>
                   </div>
                 )}
@@ -165,7 +183,13 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
-              <Button asChild size="lg" variant="primary" className="font-bold font-inter text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl gap-2 shadow-md transition-colors">
+              <Button 
+                asChild 
+                size="lg" 
+                variant="primary" 
+                style={{ backgroundColor: accentColor, borderColor: accentColor }}
+                className="font-bold font-inter text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl gap-2 shadow-md transition-all duration-300 hover:brightness-110"
+              >
                 <Link to={`/gallery/${event.slug}`}>
                   <ImageIcon className="w-4 h-4" />
                   <span>Lihat Galeri</span>
@@ -189,7 +213,10 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
 
   // TEMPLATE Mode
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-rpo-black px-4 lg:px-8 py-24 border-b border-sougen-blue/30">
+    <section 
+      style={{ borderBottomColor: `${accentColor}40` }}
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-rpo-black px-4 lg:px-8 py-24 border-b transition-colors duration-500"
+    >
       {/* Decorative spinning text element */}
       <div className="absolute -bottom-32 -right-32 opacity-10 hidden md:block pointer-events-none">
         <AnimationText text="REALITY PROJECT ORGANIZER" className="w-[600px] h-[600px]" />
@@ -213,8 +240,11 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
         <>
           {/* Decorative Grid Background */}
           <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-          {/* Red Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-sougen-blue/20 blur-[120px] rounded-full pointer-events-none" />
+          {/* Accent Glow */}
+          <div 
+            style={{ backgroundColor: `${accentColor}30` }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 blur-[120px] rounded-full pointer-events-none transition-colors duration-500" 
+          />
         </>
       )}
 
@@ -228,8 +258,14 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
 
             {/* ── Bagian 1: Header — Nama Brand Resmi ── */}
             <div className="relative px-6 pt-5 pb-4 text-center">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-sougen-blue" />
-              <div className="font-poppins font-black text-sougen-blue text-[1.15rem] tracking-[0.18em] uppercase leading-none">
+              <div 
+                style={{ background: `linear-gradient(to right, ${accentColor}, #00D2FF, ${accentColor})` }}
+                className="absolute top-0 left-0 right-0 h-[3.5px] transition-all duration-500" 
+              />
+              <div 
+                style={{ color: accentColor }}
+                className="font-poppins font-black text-[1.15rem] tracking-[0.18em] uppercase leading-none transition-colors duration-500"
+              >
                 Sougen Creative
               </div>
               <div className="font-inter font-bold text-gray-500 text-[0.55rem] tracking-[0.35em] uppercase mt-1.5">
@@ -246,18 +282,21 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
 
             {/* ── Bagian 2: Body — Info Event ── */}
             <div className="px-4 sm:px-5 pt-5 pb-4 flex flex-col items-center text-center">
-              <h2 className="font-poppins font-black text-sougen-blue text-[1.4rem] leading-[1.05] uppercase tracking-tight mb-1">
+              <h2 
+                style={{ color: accentColor }}
+                className="font-poppins font-black text-[1.4rem] leading-[1.05] uppercase tracking-tight mb-1 transition-colors duration-500"
+              >
                 {event.name}
               </h2>
               {event.theme && (
                 <div className="font-inter font-semibold text-rpo-black text-[0.65rem] uppercase tracking-[0.12em] mt-0.5 mb-1.5">
-                  #{event.theme}
+                  <span style={{ color: accentColor }} className="font-bold transition-colors duration-500">#</span>{event.theme}
                 </div>
               )}
 
               {/* Location Row */}
               <div className="flex items-center gap-1.5 text-gray-500 text-[0.65rem] mt-1 mb-3 w-full justify-center">
-                <MapPin className="w-3.5 h-3.5 text-sougen-blue shrink-0" />
+                <MapPin style={{ color: accentColor }} className="w-3.5 h-3.5 shrink-0 transition-colors duration-500" />
                 <span className="font-inter truncate max-w-[220px]">{locationSummary}</span>
               </div>
 
@@ -269,16 +308,21 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
                       key={day.id} 
                       type="button"
                       onClick={() => handleDayClick(day.id)}
-                      className="flex-1 min-w-0 inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-sougen-blue-dark/10 hover:bg-sougen-blue-dark hover:text-white border border-sougen-blue-dark/20 font-inter font-bold text-sougen-blue-dark text-[0.68rem] tracking-tight uppercase transition-all duration-200 active:scale-95 group cursor-pointer shadow-sm"
+                      style={{ 
+                        backgroundColor: `${accentColor}12`, 
+                        borderColor: `${accentColor}35`,
+                        color: accentColor 
+                      }}
+                      className="flex-1 min-w-0 inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl border font-inter font-bold text-[0.68rem] tracking-tight uppercase transition-all duration-200 active:scale-95 group cursor-pointer shadow-sm"
                       title={`Lihat jadwal rundown Day ${day.dayNumber}`}
                     >
-                      <CalendarDays className="w-3 h-3 text-sougen-blue-dark group-hover:text-white shrink-0" />
+                      <CalendarDays style={{ color: accentColor }} className="w-3 h-3 group-hover:text-white shrink-0 transition-colors duration-500" />
                       <span className="truncate">Day {day.dayNumber}: {formatNumericDate(day.date)}</span>
                     </button>
                   ))
                 ) : (
                   <span className="inline-flex items-center gap-1 font-inter font-bold text-gray-600 text-[0.65rem] tracking-[0.15em] uppercase">
-                    <Calendar className="w-3.5 h-3.5 text-sougen-blue-dark" />
+                    <Calendar style={{ color: accentColor }} className="w-3.5 h-3.5 transition-colors duration-500" />
                     {formatNumericDate(event.startDate)} - {formatNumericDate(event.endDate)}
                   </span>
                 )}
@@ -294,9 +338,14 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
 
             {/* ── Bagian 3: Footer — CTA ── */}
             <div className="px-6 pt-5 pb-6 flex flex-col gap-3 items-center justify-center bg-gray-50/50">
-              <Button asChild variant="outlined" className="w-full h-11 text-[0.75rem] font-bold uppercase tracking-[0.15em] gap-2">
+              <Button 
+                asChild 
+                style={{ borderColor: `${accentColor}60`, color: accentColor }}
+                variant="outlined" 
+                className="w-full h-11 text-[0.75rem] font-bold uppercase tracking-[0.15em] gap-2 hover:bg-black/5 transition-all duration-300"
+              >
                 <Link to={`/gallery/${event.slug}`}>
-                  <ImageIcon className="w-4 h-4" />
+                  <ImageIcon style={{ color: accentColor }} className="w-4 h-4 transition-colors duration-500" />
                   <span>Lihat Galeri</span>
                 </Link>
               </Button>
@@ -319,7 +368,7 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
               <span className="text-[11px] font-inter font-medium tracking-wider uppercase">
                 Scroll ke bawah
               </span>
-              <ChevronDown className="w-3.5 h-3.5 text-sougen-blue animate-bounce" />
+              <ChevronDown style={{ color: accentColor }} className="w-3.5 h-3.5 animate-bounce transition-colors duration-500" />
             </div>
           )}
         </div>
@@ -328,21 +377,19 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
         <div className="hidden md:flex w-full relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 items-center justify-center mt-6">
           <div className="p-8 lg:p-12 flex flex-col items-center text-center max-w-5xl w-full">
 
-            {/* Sougen presenter line */}
-            <div className="flex items-center gap-3 mb-5 lg:mb-4 opacity-90">
-              <img 
-                src="/images/main-logo.png" 
-                alt="Logo Sougen Creative Management" 
-                width={320}
-                height={240}
-                className="h-8 lg:h-6 w-auto object-contain" 
-              />
-              <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">Sougen Creative Management</span>
+            {/* Sougen presenter line (Logo removed as requested) */}
+            <div className="mb-5 lg:mb-4 opacity-90">
+              <span className="font-inter font-semibold text-white/80 text-xs lg:text-[10px] tracking-[0.25em] uppercase">
+                Sougen Creative Management
+              </span>
             </div>
 
             {/* Event Name & Theme */}
             {event.theme && (
-              <p className="font-inter font-bold text-sougen-blue text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-3">
+              <p 
+                style={{ color: accentColor }}
+                className="font-inter font-bold text-sm lg:text-[13px] uppercase tracking-[0.25em] mb-3 transition-colors duration-500"
+              >
                 #{event.theme}
               </p>
             )}
@@ -354,7 +401,7 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
             <div className="flex flex-col items-center gap-4 mb-8 pb-8 border-b border-white/10 w-full max-w-3xl">
               {/* Location Row First */}
               <div className="flex items-center justify-center gap-2 text-white/90">
-                <MapPin className="w-4 h-4 text-sougen-blue shrink-0" />
+                <MapPin style={{ color: accentColor }} className="w-4 h-4 shrink-0 transition-colors duration-500" />
                 <span className="font-inter font-medium text-xs lg:text-[13px] tracking-wide text-white/80">{locationSummary}</span>
               </div>
 
@@ -366,17 +413,17 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
                       key={day.id} 
                       type="button"
                       onClick={() => handleDayClick(day.id)}
-                      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 hover:bg-sougen-blue hover:text-white active:scale-95 backdrop-blur-md border border-white/20 text-white shadow-sm transition-all duration-200 cursor-pointer group"
+                      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 hover:text-white active:scale-95 backdrop-blur-md border border-white/20 text-white shadow-sm transition-all duration-200 cursor-pointer group"
                       title={`Lihat jadwal rundown Day ${day.dayNumber}`}
                     >
-                      <CalendarDays className="w-4 h-4 text-sougen-blue group-hover:text-white shrink-0" />
-                      <span className="font-poppins font-bold text-xs uppercase text-sougen-blue group-hover:text-white tracking-wider">Day {day.dayNumber}:</span>
+                      <CalendarDays style={{ color: accentColor }} className="w-4 h-4 group-hover:text-white shrink-0 transition-colors duration-500" />
+                      <span style={{ color: accentColor }} className="font-poppins font-bold text-xs uppercase group-hover:text-white tracking-wider transition-colors duration-500">Day {day.dayNumber}:</span>
                       <span className="font-inter font-medium text-xs lg:text-[13px] text-white/90 group-hover:text-white">{formatNumericDate(day.date)}</span>
                     </button>
                   ))
                 ) : (
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-sm">
-                    <Calendar className="w-4 h-4 text-sougen-blue shrink-0" />
+                    <Calendar style={{ color: accentColor }} className="w-4 h-4 shrink-0 transition-colors duration-500" />
                     <span className="font-inter font-medium text-xs lg:text-[13px] text-white/90">
                       {formatNumericDate(event.startDate)} - {formatNumericDate(event.endDate)}
                     </span>
@@ -387,9 +434,15 @@ export function EventHero({ event, onSelectDay }: EventHeroProps) {
 
             {/* CTA buttons */}
             <div className="flex flex-wrap gap-5 lg:gap-4 justify-center w-full">
-              <Button asChild variant="outlined-on-dark" size="lg" className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest gap-2">
+              <Button 
+                asChild 
+                style={{ borderColor: `${accentColor}80` }}
+                variant="outlined-on-dark" 
+                size="lg" 
+                className="px-12 h-14 lg:px-10 lg:h-11 text-sm lg:text-xs tracking-widest gap-2 hover:bg-white/10 transition-colors duration-300"
+              >
                 <Link to={`/gallery/${event.slug}`}>
-                  <ImageIcon className="w-5 h-5 lg:w-4 lg:h-4" />
+                  <ImageIcon style={{ color: accentColor }} className="w-5 h-5 lg:w-4 lg:h-4 transition-colors duration-500" />
                   <span>Lihat Galeri</span>
                 </Link>
               </Button>
