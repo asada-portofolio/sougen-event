@@ -10,23 +10,32 @@ Dokumen ini merangkum seluruh temuan masalah performa, aksesibilitas, struktur d
 
 ---
 
-## 📊 Data Diagnosa Dasar (Baseline Metrics)
+## 📊 Data Diagnosa & Riwayat Pengujian (Audit History)
 
 - **Target URL:** `https://sougen-event.vercel.app`
 - **Tipe Pengujian:** Mobile (Emulasi Moto G Power, Lighthouse 13.4.1, Slow 4G Throttling)
-- **Skor Kategori:**
-  - **Performance:** `78` / 100 *(Perlu Peningkatan)*
-  - **Accessibility:** `93` / 100
-  - **Best Practices:** `96` / 100
-  - **SEO:** `100` / 100
-  - **Agentic Browsing:** `2/3` *(Perlu Peningkatan)*
-- **Hasil Metrik Utama:**
-  - 🔴 **First Contentful Paint (FCP):** `3.2 s`
-  - 🔴 **Largest Contentful Paint (LCP):** `4.1 s`
-  - 🟡 **Speed Index (SI):** `5.0 s`
-  - 🟢 **Total Blocking Time (TBT):** `40 ms`
-  - 🟢 **Cumulative Layout Shift (CLS):** `0`
-  - 🟢 **Time to First Byte (TTFB):** `0 ms` (Respon server edge Vercel instan)
+- **Tautan Laporan Terkini:** [PageSpeed Insights Report (13 Sep 2026)](https://pagespeed.web.dev/analysis/https-sougen-event-vercel-app/s8ku9xxcfb?form_factor=mobile)
+
+### 📈 Tabel Perbandingan Skor Kategori
+
+| Kategori | Baseline Awal | Audit Terkini (Tahap 1) | Target Akhir | Status |
+| --- | :---: | :---: | :---: | :---: |
+| **Performance** | 78 / 100 | **78** / 100 | **90+** / 100 | 🟡 Perlu Optimasi LCP & FCP |
+| **Accessibility** | 93 / 100 | **95** / 100 | **95+** / 100 | 🟢 Sangat Baik (+2) |
+| **Best Practices** | 96 / 100 | **100** / 100 | **100** / 100 | 🟢 Sempurna (+4) |
+| **SEO** | 100 / 100 | **100** / 100 | **100** / 100 | 🟢 Sempurna |
+| **Agentic Browsing** | 2 / 3 | **3 / 3** | **3 / 3** | 🟢 Sempurna (100%) |
+
+### ⏱️ Tabel Perbandingan Metrik Utama (Core Web Vitals)
+
+| Metrik | Baseline Awal | Audit Terkini (Tahap 1) | Ambang Batas Baik (Good) | Keterangan Evaluasi |
+| --- | :---: | :---: | :---: | --- |
+| 🔴 **First Contentful Paint (FCP)** | 3.2 s | **3.5 s** | ≤ 1.8 s | Terhambat waktu unduh bundle JS di Slow 4G |
+| 🔴 **Largest Contentful Paint (LCP)** | 4.1 s | **4.2 s** | ≤ 2.5 s | Tertunda oleh waterfall lazy-chunk & API Railway |
+| 🟡 **Speed Index (SI)** | 5.0 s | **3.8 s** | ≤ 3.4 s | 🟢 Membaik drastis (-1.2 s) |
+| 🟢 **Total Blocking Time (TBT)** | 40 ms | **0 ms** | ≤ 200 ms | 🟢 Sempurna! Zero main-thread blocking |
+| 🟢 **Cumulative Layout Shift (CLS)** | 0 | **0** | ≤ 0.1 | 🟢 Sempurna! Nol pergeseran tata letak |
+| 🟢 **Time to First Byte (TTFB)** | 0 ms | **0 ms** | ≤ 800 ms | 🟢 Sempurna! Vercel Edge Server respons instan |
 
 ---
 
@@ -180,3 +189,62 @@ Dokumen ini merangkum seluruh temuan masalah performa, aksesibilitas, struktur d
     1. *Missing H1 Header:* Berkas tidak memiliki heading tingkat satu (`# Judul`) di baris paling atas.
     2. *Missing Links:* Berkas tidak mencantumkan tautan berformat Markdown (`- [Nama Dokumen](https://...)`) yang merujuk ke konten atau halaman penting situs web.
   - Kondisi ini menyebabkan crawler model bahasa (LLM) menandai berkas sebagai tidak valid, sehingga menurunkan skor evaluasi *Agentic Browsing*.
+
+---
+
+## 🚀 7. Rencana Aksi & Roadmap Optimasi Performa (Target Skor 90+)
+
+Bagian ini mendokumentasikan setiap masalah performa yang masih menahan skor LCP dan FCP, akar penyebab teknis, solusi konkret, dan saran perbaikan agar setiap langkah optimasi dapat dipantau (*tracking*) secara transparan hingga mencapai skor **90+**.
+
+### S. Optimasi Arsitektur Bundle JavaScript (Surgical Code Splitting)
+
+- [x] **Akar Masalah:**
+  - File bundle `vendor-react-*.js` berukuran sangat besar (**1.057 kB uncompressed / ~296 kB gzip**).
+  - Pada [`vite.config.ts`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/vite.config.ts), kondisi `id.includes('react')` terlalu agresif dan menelan seluruh pustaka yang mengandung nama 'react' (`@radix-ui/react-*`, `react-icons`, `react-dropzone`, dll.) ke dalam satu file awal.
+  - Pada jaringan Slow 4G (~200 KB/s), mengunduh 296 kB membutuhkan waktu ~1,5 detik sebelum browser dapat mulai mem-parse dan mengeksekusi JavaScript.
+- [x] **Solusi & Saran Teknis:**
+  - Perbaiki filter chunking di `vite.config.ts` agar hanya paket inti yang masuk ke `vendor-react` (`node_modules/react/`, `node_modules/react-dom/`, `react-router-dom`).
+  - Pisahkan pustaka UI komponen (`@radix-ui`, `icons`, `lucide-react`) ke dalam chunk `vendor-ui` terpisah yang dapat di-lazy load.
+  - **Hasil Implementasi (SELESAI):**
+    - `vendor-react` awal: **1.057,68 kB** (gzip: **295,90 kB**) $\rightarrow$ Berhasil turun ke **232,32 kB** (gzip: **74,77 kB**)! **(Pemangkasan sebesar 74,7%)**.
+    - Pustaka non-kritis terpisah ke chunk independen: `vendor-editor` (394 kB gzip 124 kB - admin only), `vendor-forms` (105 kB gzip 30 kB), `vendor-gallery` (53 kB gzip 18 kB), dan `vendor-ui` (708 kB gzip 182 kB).
+    - Waktu download JavaScript awal pada Slow 4G (200 KB/s) berkurang dari ~1,5 detik menjadi hanya **~0,37 detik** (menghemat ~1,1 detik waktu render awal).
+- [x] **File Terdampak:**
+  - [`frontend/vite.config.ts`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/vite.config.ts)
+
+### T. Eliminasi Waterfall Request Halaman Landing Page (Eager Load Home)
+
+- [ ] **Akar Masalah:**
+  - Di [`frontend/src/App.tsx`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/App.tsx), halaman landing page di-load via `lazy(() => import('./pages/Home'))`.
+  - Hal ini memaksa browser mengunduh bundle utama terlebih dahulu, merender `<PageLoader />` kosong, lalu memicu request jaringan kedua (*waterfall*) untuk mengunduh chunk `Home-*.js`.
+  - Terjadi latensi beruntun (*round-trip time*) sebesar 300–500 ms di jaringan mobile.
+- [ ] **Solusi & Saran Teknis:**
+  - Terapkan **Eager Loading** khusus untuk `Home.tsx` (`import Home from './pages/Home'`).
+  - Biarkan halaman lain (Admin, Gallery, FAQ, dll.) tetap memakai `lazy()` code splitting.
+  - **Hasil:** Kode halaman Home langsung tersedia bersama bundle utama tanpa perlu request jaringan kedua.
+- [ ] **File Terdampak:**
+  - [`frontend/src/App.tsx`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/App.tsx)
+
+### U. Mengatasi LCP Render Delay dari Ketergantungan API Dinamis (Client-Side Rendering Gap)
+
+- [ ] **Akar Masalah:**
+  - Di [`frontend/src/pages/Home.tsx`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/pages/Home.tsx), saat status `eventLoading` bernilai `true`, halaman hanya me-render skeleton abu-abu kosong (`<Skeleton className="w-full h-[85vh]..." />`).
+  - Elemen LCP utama yaitu judul event `<h2>` ("COSPLAY IN SQUARE") atau poster event baru dirender setelah request API ke backend Railway (`GET /api/events/active`) selesai sepenuhnya.
+  - Latensi roundtrip ke backend Railway via Slow 4G memakan waktu 700–1200 ms, menunda LCP hingga detik ke 4.2s.
+- [ ] **Solusi & Saran Teknis:**
+  - Terapkan **Instant Visual Shell (Optimistic Hero Shell)**: Render struktur HeroSection langsung dengan teks default ("Sougen Creative Management" / fallback shell) daripada skeleton abu-abu kosong saat data sedang dimuat.
+  - Manfaatkan *cache-first hydration* (misal: localStorage / TanStack Query `staleTime` & `placeholderData`) sehingga jika pengguna atau crawler membuka halaman, konten teks LCP langsung digambar pada frame pertama (detik ke ~1.8s - 2.2s).
+- [ ] **File Terdampak:**
+  - [`frontend/src/pages/Home.tsx`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/pages/Home.tsx)
+  - [`frontend/src/hooks/useActiveEvent.ts`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/src/hooks/useActiveEvent.ts)
+
+### V. Preload Aset Font Kritis WOFF2 di Dokumen HTML
+
+- [ ] **Akar Masalah:**
+  - Berkas font fisik `poppins-latin-900-normal-*.woff2` dan `poppins-latin-700-normal-*.woff2` belum dideklarasikan melalui `<link rel="preload">` di `index.html`.
+  - Browser baru meminta file font setelah CSS terurai dan pohon DOM menemukan elemen teks berkebutuhan font tersebut (*Font Discovery Delay*).
+- [ ] **Solusi & Saran Teknis:**
+  - Tambahkan tag `preload` font dengan atribut `as="font"` dan `crossorigin` pada `index.html` untuk font heading LCP.
+  - Terapkan `font-display: swap` konsisten agar teks langsung muncul menggunakan fallback font sistem saat file font sedang dalam antrean unduh.
+- [ ] **File Terdampak:**
+  - [`frontend/index.html`](file:///f:/Collage%20File/UNITAMA/SEMESTER%208/SKRIPSI%20ROMO/Coding/sougen-website/frontend/index.html)
