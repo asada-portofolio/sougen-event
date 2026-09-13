@@ -84,6 +84,6 @@ export default {
     },
   },
   plugins: [
-    formsPlugin,
+    formsPlugin({ strategy: 'class' }),
   ],
 } satisfies Config

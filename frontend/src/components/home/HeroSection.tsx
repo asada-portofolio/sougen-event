@@ -365,10 +365,12 @@ export function HeroSection({ event, settings }: HeroSectionProps) {
   return (
     <>
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-rpo-black px-4 lg:px-8 py-24">
-        {/* Decorative spinning text element */}
-        <div className="absolute -bottom-32 -right-32 opacity-10 hidden md:block pointer-events-none">
-          <AnimationText text="REALITY PROJECT ORGANIZER" className="w-[600px] h-[600px]" />
-        </div>
+        {/* Decorative spinning text element - only displayed if hero background image is configured in SEO settings */}
+        {settings?.heroImageUrl && (
+          <div className="absolute -bottom-32 -right-32 opacity-10 hidden md:block pointer-events-none">
+            <AnimationText text="REALITY PROJECT ORGANIZER" className="w-[600px] h-[600px]" />
+          </div>
+        )}
 
         {/* Top gradient for navbar readability */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />

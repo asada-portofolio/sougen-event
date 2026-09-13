@@ -1,18 +1,68 @@
 
 import { SEO } from '../components/ui/SEO';
-import * as LucideIcons from 'lucide-react';
 import { usePolicies } from '../hooks/usePolicies';
 import { SectionHeader } from '../components/shared/SectionHeader';
 import { ContactInfoBox } from '../components/shared/ContactInfoBox';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../components/ui/Accordion';
 import { Skeleton } from '../components/ui/Skeleton';
+import { 
+  Shield, 
+  AlertTriangle, 
+  Info, 
+  CheckCircle2, 
+  Ban, 
+  Heart, 
+  Users, 
+  Camera, 
+  Volume2, 
+  Sparkles, 
+  FileText, 
+  Lock, 
+  Clock, 
+  Eye, 
+  HelpCircle,
+  Flame,
+  CigaretteOff,
+  Footprints,
+  Smile,
+  Bell,
+  AlertCircle,
+  MapPin,
+  Zap,
+  HeartHandshake
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-// Dynamic Icon Component
+const POLICY_ICONS: Record<string, LucideIcon> = {
+  Shield,
+  AlertTriangle,
+  Info,
+  CheckCircle2,
+  Ban,
+  Heart,
+  Users,
+  Camera,
+  Volume2,
+  Sparkles,
+  FileText,
+  Lock,
+  Clock,
+  Eye,
+  HelpCircle,
+  Flame,
+  CigaretteOff,
+  Footprints,
+  Smile,
+  Bell,
+  AlertCircle,
+  MapPin,
+  Zap,
+  HeartHandshake
+};
+
+// Dynamic Icon Component with tree-shakeable dictionary
 const DynamicIcon = ({ name, className }: { name: string; className?: string }) => {
-  // Safe dynamic access to lucide icons
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const icons: any = LucideIcons;
-  const IconComponent = icons[name] || icons.Info;
+  const IconComponent = POLICY_ICONS[name] || Info;
   return <IconComponent className={className} />;
 };
 

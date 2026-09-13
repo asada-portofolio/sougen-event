@@ -29,9 +29,17 @@ export default defineConfig({
             return 'vendor-query';
           }
 
-          // 3. UI Components & Icons
-          if (normalized.includes('/@radix-ui/') || normalized.includes('/lucide-react/') || normalized.includes('/react-icons/')) {
-            return 'vendor-ui';
+          // 3. Radix UI (Used mostly in Admin & interactive modals)
+          if (normalized.includes('/@radix-ui/')) {
+            return 'vendor-radix';
+          }
+
+          // 4. Icons
+          if (normalized.includes('/react-icons/')) {
+            return 'vendor-react-icons';
+          }
+          if (normalized.includes('/lucide-react/')) {
+            return 'vendor-icons';
           }
         },
       },

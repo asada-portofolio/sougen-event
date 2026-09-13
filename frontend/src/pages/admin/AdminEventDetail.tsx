@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import * as Tabs from '@radix-ui/react-tabs';
 import { 
@@ -51,21 +51,7 @@ export default function AdminEventDetail() {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [highlightedFieldId, setHighlightedFieldId] = useState<string | null>(searchParams.get('highlight'));
 
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(70);
-  const [paddingOffset, setPaddingOffset] = useState(16);
 
-  useEffect(() => {
-    const measureHeader = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
-      setPaddingOffset(window.innerWidth >= 768 ? 32 : 16);
-    };
-    measureHeader();
-    window.addEventListener('resize', measureHeader);
-    return () => window.removeEventListener('resize', measureHeader);
-  }, [eventData]);
 
   // Sync tab & highlight from URL params
   useEffect(() => {
@@ -182,7 +168,6 @@ export default function AdminEventDetail() {
       
       {/* Executive Event Header Card */}
       <div 
-        ref={headerRef}
         className="bg-white border border-admin-border/80 rounded-2xl p-5 sm:p-6 shadow-xs"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
@@ -270,48 +255,59 @@ export default function AdminEventDetail() {
       {/* Main Workspace (Tabs Layout) */}
       <Tabs.Root value={activeTab} onValueChange={handleTabChange} className="flex flex-col lg:flex-row gap-6 items-start">
         
-        {/* Navigation Sidebar */}
-        <Tabs.List 
-          style={{ top: `${headerHeight - paddingOffset}px` }}
-          className="sticky z-10 bg-white border border-admin-border/80 rounded-2xl p-2.5 shadow-xs w-full lg:w-72 shrink-0 flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1.5 hide-scrollbar lg:top-6"
-        >
-          <div className="hidden lg:block px-3 py-2 text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">
-            Menu Pengaturan
-          </div>
+        {/* Navigation Sidebar: Sticky on Mobile (horizontal slider) & Sticky on Desktop (fixed sidebar) */}
+        <div className="sticky top-0 lg:top-4 z-20 w-full lg:w-72 shrink-0 bg-admin-base/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none py-1.5 lg:py-0">
+          <Tabs.List 
+            className="bg-white border border-admin-border/80 rounded-2xl p-2 sm:p-2.5 shadow-sm lg:shadow-xs w-full flex flex-col gap-1.5"
+          >
+            {/* Keterangan Teks Menu Pengaturan (Visible on Mobile & Desktop) */}
+            <div className="flex items-center justify-between px-2.5 sm:px-3 py-1 border-b border-gray-100 lg:border-none lg:pb-0.5">
+              <div className="flex items-center gap-1.5 font-mono text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                <Settings className="w-3.5 h-3.5 text-sougen-blue" />
+                <span>Menu Pengaturan</span>
+              </div>
+              <span className="block lg:hidden text-[10px] text-gray-400 font-sans">
+                Geser horizontal &rarr;
+              </span>
+            </div>
 
-          {TABS.map((tab) => {
-            const Icon = tab.icon;
-            const badgeCount = 
-              tab.id === 'talent' ? (eventData._count?.eventTalents ?? eventData.eventTalents?.length ?? 0) :
-              tab.id === 'program' ? (eventData._count?.eventPrograms ?? eventData.eventPrograms?.length ?? 0) :
-              tab.id === 'rundown' ? (eventData._count?.eventDays ?? eventData.eventDays?.length ?? 0) :
-              tab.id === 'gallery' ? (eventData._count?.galleryPhotos ?? eventData.galleryPhotos?.length ?? 0) : null;
+            {/* Tab Items: Horizontal Scroll on Mobile, Vertical Stack on Desktop */}
+            <div className="flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1.5 hide-scrollbar">
+              {TABS.map((tab) => {
+                const Icon = tab.icon;
+                const badgeCount = 
+                  tab.id === 'talent' ? (eventData._count?.eventTalents ?? eventData.eventTalents?.length ?? 0) :
+                  tab.id === 'program' ? (eventData._count?.eventPrograms ?? eventData.eventPrograms?.length ?? 0) :
+                  tab.id === 'rundown' ? (eventData._count?.eventDays ?? eventData.eventDays?.length ?? 0) :
+                  tab.id === 'gallery' ? (eventData._count?.galleryPhotos ?? eventData.galleryPhotos?.length ?? 0) : null;
 
-            return (
-              <Tabs.Trigger
-                key={tab.id}
-                value={tab.id}
-                className="group flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap text-gray-600 hover:text-admin-dark hover:bg-gray-50/80 data-[state=active]:bg-sougen-blue data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:shadow-sm data-[state=active]:shadow-sougen-blue/20 transition-all cursor-pointer outline-none select-none text-left"
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
-                  <div>
-                    <div>{tab.label}</div>
-                    <div className="hidden lg:block text-[11px] font-normal text-gray-400 group-data-[state=active]:text-white/80 transition-colors">
-                      {tab.desc}
+                return (
+                  <Tabs.Trigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="group flex items-center justify-between shrink-0 lg:shrink px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap text-gray-600 hover:text-admin-dark hover:bg-gray-50/80 data-[state=active]:bg-sougen-blue data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:shadow-sm data-[state=active]:shadow-sougen-blue/20 transition-all cursor-pointer outline-none select-none text-left"
+                  >
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                      <div>
+                        <div>{tab.label}</div>
+                        <div className="hidden lg:block text-[11px] font-normal text-gray-400 group-data-[state=active]:text-white/80 transition-colors">
+                          {tab.desc}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {badgeCount !== null && badgeCount > 0 && (
-                  <span className="hidden sm:inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-gray-100 group-data-[state=active]:bg-white/20 text-gray-600 group-data-[state=active]:text-white transition-colors">
-                    {badgeCount}
-                  </span>
-                )}
-              </Tabs.Trigger>
-            );
-          })}
-        </Tabs.List>
+                    {badgeCount !== null && badgeCount > 0 && (
+                      <span className="hidden sm:inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-gray-100 group-data-[state=active]:bg-white/20 text-gray-600 group-data-[state=active]:text-white transition-colors ml-2">
+                        {badgeCount}
+                      </span>
+                    )}
+                  </Tabs.Trigger>
+                );
+              })}
+            </div>
+          </Tabs.List>
+        </div>
 
         {/* Tab Contents Panel */}
         <div className="flex-1 w-full min-w-0 bg-white border border-admin-border/80 rounded-2xl shadow-xs overflow-hidden">

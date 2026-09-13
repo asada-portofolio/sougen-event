@@ -15,7 +15,9 @@ import {
   AlertCircle,
   X,
   Calendar,
-  ArrowRight
+  ArrowRight,
+  ArrowUpDown,
+  ChevronDown
 } from 'lucide-react';
 import type { EventBasic } from '../../hooks/useAdminEvents';
 import { useAdminEvents } from '../../hooks/useAdminEvents';
@@ -36,6 +38,7 @@ export default function AdminEventList() {
   const { events, loading, error, toggleEventStatus, createEvent } = useAdminEvents();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<string>('default');
   
   // Modal State
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -72,6 +75,21 @@ export default function AdminEventList() {
     e.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     (e.theme && e.theme.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  const sortedEvents = [...filteredEvents].sort((a, b) => {
+    if (sortBy === 'default') {
+      // Event yang aktif selalu berada paling pertama
+      if (a.isActive && !b.isActive) return -1;
+      if (!a.isActive && b.isActive) return 1;
+      return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    }
+    if (sortBy === 'name-asc') return a.name.localeCompare(b.name, 'id');
+    if (sortBy === 'name-desc') return b.name.localeCompare(a.name, 'id');
+    if (sortBy === 'location-asc') return (a.location || '').localeCompare(b.location || '', 'id');
+    if (sortBy === 'date-desc') return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    if (sortBy === 'date-asc') return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    return 0;
+  });
 
   if (loading) {
     return (
@@ -111,8 +129,8 @@ export default function AdminEventList() {
         </button>
       </div>
 
-      {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 bg-white p-3 sm:p-4 rounded-xl border border-admin-border shadow-sm">
+      {/* Filter & Sort Bar */}
+      <div className="flex flex-col md:flex-row gap-3 bg-white p-3 sm:p-4 rounded-xl border border-admin-border shadow-sm">
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -123,23 +141,45 @@ export default function AdminEventList() {
             className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm border border-admin-border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all"
           />
         </div>
-        <div className="flex items-center justify-between sm:justify-start gap-3 px-3 py-2 bg-gray-50 rounded-lg border border-admin-border text-xs sm:text-sm font-medium">
-          <div className="flex items-center gap-1.5">
-            <span className="text-admin-secondary">Total:</span>
-            <span className="text-admin-dark font-bold">{events.length}</span>
+
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3">
+          {/* Fitur Sortir Event */}
+          <div className="relative flex-1 sm:flex-initial">
+            <ArrowUpDown className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-admin-secondary pointer-events-none" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full sm:w-auto pl-8 pr-8 py-2 text-xs sm:text-sm border border-admin-border rounded-lg bg-gray-50 hover:bg-gray-100/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sougen-blue/20 focus:border-sougen-blue transition-all text-admin-dark cursor-pointer appearance-none font-medium"
+              title="Urutkan Event"
+            >
+              <option value="default">Event Aktif Teratas (Default)</option>
+              <option value="name-asc">Nama (A &rarr; Z)</option>
+              <option value="name-desc">Nama (Z &rarr; A)</option>
+              <option value="location-asc">Lokasi (A &rarr; Z)</option>
+              <option value="date-desc">Tanggal: Terbaru</option>
+              <option value="date-asc">Tanggal: Terlama</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
-          <div className="w-px h-4 bg-gray-300" />
-          <div className="flex items-center gap-1.5">
-            <span className="text-admin-secondary">Aktif:</span>
-            <span className="text-emerald-600 font-bold">{activeEventCount}</span>
+
+          <div className="flex items-center justify-between sm:justify-start gap-3 px-3 py-2 bg-gray-50 rounded-lg border border-admin-border text-xs sm:text-sm font-medium shrink-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-admin-secondary">Total:</span>
+              <span className="text-admin-dark font-bold">{events.length}</span>
+            </div>
+            <div className="w-px h-4 bg-gray-300" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-admin-secondary">Aktif:</span>
+              <span className="text-emerald-600 font-bold">{activeEventCount}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Event Grid - 2 columns on mobile, 2 on tablet, 3 on desktop */}
-      {filteredEvents.length > 0 ? (
+      {sortedEvents.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-          {filteredEvents.map(event => {
+          {sortedEvents.map(event => {
             return (
               <div 
                 key={event.id} 
